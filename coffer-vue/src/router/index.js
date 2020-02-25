@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/components/index'
-
+import personCenter from '@/components/personCenter'
+import login from '@/components/login'
+import userInfo from '@/components/userInfo'
 Vue.use(Router)
 
 export default new Router({
@@ -10,6 +12,25 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index
+    },
+    {
+      path: '/personCenter',
+      name: 'personCenter',
+      meta: {
+        auth: true
+      },
+      component: personCenter,
+      children: [
+        {
+          path: 'userInfo',
+          component: userInfo
+        }
+      ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })

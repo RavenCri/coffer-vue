@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header">
+    <div class="header" router>
       <div>
         <img src="./assets/images/logo.png" alt="图片">
       </div>
@@ -42,12 +42,12 @@
           </ul>
         </li>
         <li>
-          <a href="#">购物车</a>
-
+          
+          <router-link to="shoppingCar">购物车</router-link>
         </li>
         <li>
-          <a href="#">个人中心</a>
-
+          
+          <router-link to="personCenter">个人中心</router-link>
         </li>
       </ul>
     </div>
