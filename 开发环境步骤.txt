@@ -1,0 +1,46 @@
+
+npm install webpack -g
+
+
+npm install webpack-cli -g
+
+
+npm install  vue-cli  --global
+
+# 初始化项目
+vue init webpack coffer-vue
+
+# vscode 配置
+
+主题  Level Up Theme
+#vue
+Vetur
+
+#
+Auto Close Tag  、Auto Rename Tag 、HTML CSS Support 、
+
+# 自动补全html
+HTML Snippets
+
+# 智能提示
+JavaScript(ES6) code snippets
+
+# 路径自动发补全
+Path Intellisense
+
+#在浏览器中查看静态文件
+View In Browser
+
+# 树形
+vscode-icons  
+
+#括号颜色
+Bracket Pair Colorizer
+
+#自动修改匹配的 HTML 标签
+Auto Rename Tag
+
+Live Server
+
+#命名神器
+CodeIf
