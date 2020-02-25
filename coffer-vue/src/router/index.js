@@ -4,6 +4,7 @@ import index from '@/components/index'
 import personCenter from '@/components/personCenter'
 import login from '@/components/login'
 import userInfo from '@/components/userInfo'
+import shoppingCar from '@/components/shoppingCar'
 Vue.use(Router)
 
 export default new Router({
@@ -31,6 +32,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/shoppingCar',
+      name: 'shoppingCar',
+      component: shoppingCar
     }
   ]
 })

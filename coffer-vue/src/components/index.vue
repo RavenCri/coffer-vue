@@ -39,6 +39,7 @@
         this.$refs.goodsWindow.goods.price = goods.price;
         this.$refs.goodsWindow.goods.imageUrl = goods.imageUrl;
         this.$refs.goodsWindow.goods.buyType = buyType;
+        this.$refs.goodsWindow.goods.buyNum = 1;
         this.$refs.goodsWindow.goods.time = this.dateFormat(new Date());
         this.$refs.goodsWindow.dialogVisible = true;
       },

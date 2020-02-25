@@ -10,7 +10,11 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import userGlobal from '@/api/userGlobal.js'
+import shoppingCar from '@/api/shoppingCar.js'
+
 Vue.prototype.$userGloby = userGlobal
+
+Vue.prototype.$shoppingCar = shoppingCar
 Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({
