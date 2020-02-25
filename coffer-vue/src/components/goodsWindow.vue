@@ -1,17 +1,7 @@
 <template>
-  <el-dialog
-    title="选择商品属性"
-    :visible.sync="dialogVisible"
-    width="35%"
-    :before-close="handleClose"
-  >
+  <el-dialog title="选择商品属性" :visible.sync="dialogVisible" width="35%" :before-close="handleClose">
     <el-form ref="form" :model="goods" label-width="80px" :rules="rules">
-      <img
-        :src="goods.imageUrl"
-        alt=""
-        width="60px"
-        style="position: relative;left: 45%;"
-      />
+      <img :src="goods.imageUrl" alt="" width="60px" style="position: relative;left: 45%;" />
       <el-form-item label="商品名称">
         {{ goods.name }}
       </el-form-item>
@@ -24,21 +14,15 @@
       </el-form-item>
       <el-form-item label="选择杯型" prop="cupType">
         <el-radio-group v-model="goods.cupType">
-          <el-radio label="middleCup" value="middleCup"
-            >中杯({{
+          <el-radio label="middleCup" value="middleCup">中杯({{
               goods.price == null ? "" : goods.price.middleCup
-            }}元)</el-radio
-          >
-          <el-radio label="bigCup" value="bigCup"
-            >大杯({{
+            }}元)</el-radio>
+          <el-radio label="bigCup" value="bigCup">大杯({{
               goods.price == null ? "" : goods.price.bigCup
-            }}元)</el-radio
-          >
-          <el-radio label="bigPlusCup" value="bigPlusCup"
-            >超大杯({{
+            }}元)</el-radio>
+          <el-radio label="bigPlusCup" value="bigPlusCup">超大杯({{
               goods.price == null ? "" : goods.price.bigPlusCup
-            }}元)</el-radio
-          >
+            }}元)</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="数量">
@@ -52,15 +36,13 @@
       </el-form-item>
 
       <el-form-item label="留言">
-        <el-input
-          type="textarea"
-          v-model="goods.msg"
-          placeholder="可以向我们提出建议哦~"
-        ></el-input>
+        <el-input type="textarea" v-model="goods.msg" placeholder="可以向我们提出建议哦~"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">{{
-          buyTypeChinese[goods.buyType]==null?goods.buyType:buyTypeChinese[goods.buyType]
+          buyTypeChinese[goods.buyType] == null
+            ? goods.buyType
+            : buyTypeChinese[goods.buyType]
         }}</el-button>
         <el-button @click="cancelOrder">取消</el-button>
       </el-form-item>
@@ -69,126 +51,167 @@
 </template>
 
 <script>
-export default {
-  mounted() {
-    this.initForm();
-  },
-
-  data() {
-    return {
-      dialogVisible: false,
-      goods: {
-        name: null,
-        sweetNess: null,
-        cupType: null,
-        prise: null,
-        imageUrl: null,
-        msg: null,
-        time: null,
-        buyNum: 0,
-        buyType: null
-      },
-      buyTypeChinese: {
-        buy: "购买",
-        addShoppingCar: "加购物车"
-      },
-      rules: {
-        sweetNess: [
-          {
-            required: true,
-            message: "请选择您需要的甜度哦~",
-            trigger: "change"
-          }
-        ],
-        cupType: [
-          { required: true, message: "请选择你的杯型哦~", trigger: "change" }
-        ]
-      }
-    };
-  },
-  methods: {
-    add() {
-      this.goods.buyNum += 1;
+  export default {
+    mounted() {
+      this.initForm();
     },
-    dec() {
-      if (this.goods.buyNum >= 2) {
-        this.goods.buyNum -= 1;
-      } else {
-        this.$message({
-          message: "不可以再减少了哦",
-          type: "warning"
-        });
-      }
-    },
-    onSubmit() {
-      this.validate(flag => {
-        if (flag) {
-          this.dialogVisible = false;
 
-          if (this.goods.buyType == "buy") {
-            this.$message({
-              message: "您成功购买了商品" + this.goods.name,
-              type: "success"
-            });
-          } else if (this.goods.buyType == "addShoppingCar") {
-            this.addShoppingCar(this.goods);
-          } else if (this.goods.buyType == "updataGoodsInfo") {
-            this.$message({ message: "您更新了商品信息", type: "success" });
-          }
-        } else {
-          this.$message({ message: "请务必填写完整", type: "warning" });
+    data() {
+      return {
+        buyCar: null,
+        dialogVisible: false,
+        goods: {
+          name: null,
+          sweetNess: null,
+          cupType: null,
+          prise: null,
+          imageUrl: null,
+          msg: null,
+          time: null,
+          buyNum: 0,
+          buyType: null
+        },
+        buyTypeChinese: {
+          buy: "购买",
+          addShoppingCar: "加购物车",
+          updataGoodsInfo: "修改"
+        },
+        rules: {
+          sweetNess: [
+            {
+              required: true,
+              message: "请选择您需要的甜度哦~",
+              trigger: "change"
+            }
+          ],
+          cupType: [
+            { required: true, message: "请选择你的杯型哦~", trigger: "change" }
+          ]
         }
-      });
+      };
     },
-    addShoppingCar() {
-      var car = this.$shoppingCar.getShoppringCar();
-      console.log(car)
-      if (car == '{}') {
-        console.log("购物车为空")
-        car = new Array();
-      } 
-      car.push(this.goods);
-      this.$shoppingCar.setShoppringCar(car);
+    methods: {
+      add() {
+        this.goods.buyNum += 1;
+      },
+      dec() {
+        if (this.goods.buyNum >= 2) {
+          this.goods.buyNum -= 1;
+        } else {
+          this.$message({
+            message: "不可以再减少了哦",
+            type: "warning"
+          });
+        }
+      },
+      onSubmit() {
+        this.validate(flag => {
+          if (flag) {
+            this.dialogVisible = false;
+
+            if (this.goods.buyType == "buy") {
+              this.$message({
+                message: "您成功购买了商品" + this.goods.name,
+                type: "success"
+              });
+            } else if (this.goods.buyType == "addShoppingCar") {
+              this.addShoppingCar(this.goods);
+            } else if (this.goods.buyType == "updataGoodsInfo") {
+              var currGoods = this.buyCar[this.$parent.currentClickIndex];
+              currGoods.buyNum = this.goods.buyNum;
+              currGoods.sweetNess = this.goods.sweetNess;
+              currGoods.cupType = this.goods.cupType;
+              // this.buyCar.splice(this.$parent.currentClickIndex,1,currGoods)
+              let index = 0;
+              for (index; index < this.buyCar.length; index++) {
+                const e = this.buyCar[index];
+                // 如果不是当前元素 并且 与当前商品的属性一样的时候应该合并
+                if (
+                  index != this.$parent.currentClickIndex &&
+                  e.name === this.goods.name &&
+                  e.cupType === this.goods.cupType &&
+                  e.sweetNess === this.goods.sweetNess
+                ) {
+                  currGoods.buyNum += e.buyNum;
+                  break;
+                }
+              }
+              // 去除掉后面同样的属性的商品
+              this.buyCar.splice(index, 1);
+              console.log(this.buyCar);
+              this.setShoppingCar();
+              // 调用父组件  刷新表格
+              this.$parent.init();
+            }
+          } else {
+            this.$message({ message: "请务必填写完整", type: "warning" });
+          }
+        });
+      },
+      addShoppingCar() {
+        if (this.buyCar == "{}") {
+          console.log("购物车为空");
+          this.buyCar = new Array();
+        }
+        let addFlag = true;
+        this.buyCar.forEach((e) => {
+          if (e.name === this.goods.name &&
+            e.cupType === this.goods.cupType &&
+            e.sweetNess === this.goods.sweetNess)
+            {
+              addFlag = false;
+              e.buyNum += this.goods.buyNum;
+            }
+        });
+        // 如果当前购物车不存在同属性的商品
+        if(addFlag){ this.buyCar.push(this.goods);}
+        
+        this.setShoppingCar();
         this.$message({
           message: this.goods.name + "已为您加入了购物车",
           type: "success"
         });
-    },
-    cancelOrder() {
-      this.dialogVisible = false;
-      this.$refs["form"].resetFields();
-    },
-    handleClose(done) {
-      this.$refs["form"].resetFields();
-      done();
-    },
-    initForm() {
-      this.goods.name = null;
-      this.goods.sweetNess = null;
-      this.goods.cupType = null;
-      this.goods.prise = null;
-      this.goods.imageUrl = null;
-      this.goods.buyNum = 0;
-      this.goods.msg = null;
-      this.goods.time = null;
-      this.goods.buyType = null;
-    },
-    validate(callback) {
-      this.$refs["form"].validate(valid => {
-        callback(valid);
-      });
+      },
+      setShoppingCar() {
+        this.$shoppingCar.setShoppringCar(this.buyCar);
+      },
+      cancelOrder() {
+        this.dialogVisible = false;
+        this.$refs["form"].resetFields();
+      },
+      handleClose(done) {
+        this.$refs["form"].resetFields();
+        done();
+      },
+      initForm() {
+        this.goods.name = null;
+        this.goods.sweetNess = null;
+        this.goods.cupType = null;
+        this.goods.prise = null;
+        this.goods.imageUrl = null;
+        this.goods.buyNum = 0;
+        this.goods.msg = null;
+        this.goods.time = null;
+        this.goods.buyType = null;
+        this.buyCar = this.$shoppingCar.getShoppringCar();
+      },
+      validate(callback) {
+        this.$refs["form"].validate(valid => {
+          callback(valid);
+        });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.num {
-  font-size: 20px;
-  user-select: none;
-}
-.num i:nth-child(1):hover,
-.num i:nth-child(3):hover {
-  color: blueviolet;
-}
+  .num {
+    font-size: 20px;
+    user-select: none;
+  }
+
+  .num i:nth-child(1):hover,
+  .num i:nth-child(3):hover {
+    color: blueviolet;
+  }
 </style>

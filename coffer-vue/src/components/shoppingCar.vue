@@ -29,11 +29,12 @@
         <el-table-column label="商品规格" width="180">
           <template slot-scope="scope">
             <el-tag size="medium">{{
-              cuyTypeChinese[scope.row.cupType]
-            }}</el-tag>
-            <el-tag size="medium">{{
               sweetNessChinese[scope.row.sweetNess]
             }}</el-tag>
+            <el-tag size="medium">{{
+              cuyTypeChinese[scope.row.cupType]
+            }}</el-tag>
+            
           </template>
         </el-table-column>
         <el-table-column label="数量" width="180">
@@ -113,10 +114,12 @@ export default {
           this.$refs.goodsWindow.goods.price = e.price;
           this.$refs.goodsWindow.goods.imageUrl = e.imageUrl;
           this.$refs.goodsWindow.goods.buyNum = e.buyNum;
-          this.$refs.goodsWindow.goods.buyType = "修改";
+          this.$refs.goodsWindow.goods.sweetNess = e.sweetNess;
+          this.$refs.goodsWindow.goods.cupType = e.cupType;
+          this.$refs.goodsWindow.goods.buyType = "updataGoodsInfo";
           // 当前修改的商品下标
-          (this.currentClickIndex = index),
-            (this.$refs.goodsWindow.dialogVisible = true);
+          this.currentClickIndex = index,
+          this.$refs.goodsWindow.dialogVisible = true;
         }
       });
     },
