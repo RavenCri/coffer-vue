@@ -12,7 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import userGlobal from '@/api/userGlobal.js'
 import shoppingCar from '@/api/shoppingCar.js'
 
-Vue.prototype.$userGloby = userGlobal
+Vue.prototype.$userGlobal = userGlobal
 
 Vue.prototype.$shoppingCar = shoppingCar
 Vue.use(ElementUI);
@@ -27,7 +27,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some(record => record.meta.auth)) {
     console.log("需要验证")
-    if (userGlobal.getUserInfo() !== '{}') {
+    if (userGlobal.alreadyLogin()) {
       next()
     } else {
       console.log("进入验证")

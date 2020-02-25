@@ -1,4 +1,7 @@
 
+function alreadyLogin(){
+    return getUserInfo() !== '{}' ? true:false
+}
 function getUserInfo(){
   
     return sessionStorage.getItem('user')==null?'{}':JSON.parse(sessionStorage.getItem('user'));
@@ -9,5 +12,5 @@ function setUserInfo(user){
 }
 
 export default{
-    getUserInfo,setUserInfo
+    alreadyLogin,getUserInfo,setUserInfo
 }

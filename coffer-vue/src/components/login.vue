@@ -81,7 +81,7 @@ export default {
       });
     },
     setUserInfo(user){
-        this.$userGloby.setUserInfo(user);
+        this.$userGlobal.setUserInfo(user);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

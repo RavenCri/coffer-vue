@@ -15,12 +15,8 @@
               <p>商品名: {{ scope.row.name }}</p>
               <p>价格: {{ scope.row.price[scope.row.cupType] }}</p>
               <div slot="reference" class="name-wrapper">
-                <img
-                  :src="scope.row.imageUrl"
-                  alt=""
-                  width="50px"
-                  style="display: block;margin-bottom: 5px;position: relative;left: 10px;"
-                />
+                <img :src="scope.row.imageUrl" alt="" width="50px"
+                  style="display: block;margin-bottom: 5px;position: relative;left: 10px;" />
                 <el-tag size="medium">{{ scope.row.name }}</el-tag>
               </div>
             </el-popover>
@@ -34,7 +30,7 @@
             <el-tag size="medium">{{
               cuyTypeChinese[scope.row.cupType]
             }}</el-tag>
-            
+
           </template>
         </el-table-column>
         <el-table-column label="数量" width="180">
@@ -47,139 +43,216 @@
               <i class="el-icon-remove" @click="dec(scope.$index)"></i> 杯
             </div>
             <!-- (scope.row.buyNum*scope.row.price[scope.row.cupType]).toFixed(2)  -->
-            <el-tag size="medium"
-              >小计：{{
+            <el-tag size="medium">小计：{{
                 (scope.row.buyNum * scope.row.price[scope.row.cupType]).toFixed(
                   2
                 )
               }}
-              元</el-tag
-            >
+              元</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <hr style="margin-top: 50px;" />
+    <div class="totalMoney">
+      <span style="display: block;" :class="{textline:logined}">合计：{{totalMoney}}元</span>
+      <span style="display: block;" v-if="logined">会员优惠价格：{{vipMoney.toFixed(2)}}元</span>
+      <div>
+        <el-button type="primary" round @click="countMoney">结算金额</el-button>
+      </div>
     </div>
     <goodsWindow ref="goodsWindow" />
   </div>
 </template>
 
 <script>
-import goodsWindow from "@/components/goodsWindow";
-export default {
-  mounted() {
-    this.init();
-  },
-  data() {
-    return {
-      shoppingCar: null,
-      currentClickIndex: null,
-      cuyTypeChinese: {
-        middleCup: "中杯",
-        bigCup: "大杯",
-        bigPlusCup: "超大杯"
-      },
-      sweetNessChinese: {
-        littleSweet: "少糖",
-        middleSweet: "中糖",
-        manySweet: "多糖"
-      }
-    };
-  },
-  methods: {
-    init() {
-      this.shoppingCar = this.$shoppingCar.getShoppringCar();
+  import goodsWindow from "@/components/goodsWindow";
+  export default {
+    mounted() {
+      this.init();
     },
-    handleEdit(index, row) {
-      console.log(index, row);
-      this.shoppingCar.forEach(e => {
-        if (
-          e.name == row.name &&
-          e.cupType == row.cupType &&
-          e.sweetNess == row.sweetNess
-        ) {
-          this.$refs.goodsWindow.goods.name = e.name;
-          this.$refs.goodsWindow.goods.price = e.price;
-          this.$refs.goodsWindow.goods.imageUrl = e.imageUrl;
-          this.$refs.goodsWindow.goods.buyNum = e.buyNum;
-          this.$refs.goodsWindow.goods.sweetNess = e.sweetNess;
-          this.$refs.goodsWindow.goods.cupType = e.cupType;
-          this.$refs.goodsWindow.goods.buyType = "updataGoodsInfo";
-          // 当前修改的商品下标
-          this.currentClickIndex = index,
-          this.$refs.goodsWindow.dialogVisible = true;
+    data() {
+      return {
+        totalMoney: 0,
+        vipMoney: 0,
+        shoppingCar: null,
+        currentClickIndex: null,
+        logined: false,
+        cuyTypeChinese: {
+          middleCup: "中杯",
+          bigCup: "大杯",
+          bigPlusCup: "超大杯"
+        },
+        sweetNessChinese: {
+          littleSweet: "少糖",
+          middleSweet: "中糖",
+          manySweet: "多糖"
         }
-      });
+      };
     },
-    handleDelete(index, row) {
-      console.log(index, row);
-      // splice 会改变原数组 ，而 slice不会 ，
-      /*
-        slice只会返回要截取的数组 （1，2）等价于 [1,2)
-        splice返回被删除的项目
-      */
-      this.shoppingCar.splice(index, 1);
-      this.setShoppringCar();
-    },
-    add(index) {
-      this.shoppingCar[index].buyNum += 1;
-      this.setShoppringCar();
-    },
-
-    dec(index) {
-      if (this.shoppingCar[index].buyNum >= 2) {
-        this.shoppingCar[index].buyNum -= 1;
-        this.setShoppringCar();
-      } else {
-        this.$message({
-          message: "不可以再减少了哦",
-          type: "warning"
+    methods: {
+      init() {
+        this.shoppingCar = this.$shoppingCar.getShoppringCar();
+        this.calculationMoney();
+        this.logined = this.$userGlobal.alreadyLogin();
+        console.log(this.logined)
+      },
+      calculationMoney() {
+        this.totalMoney = this.vipMoney = 0;
+        this.shoppingCar.forEach((e) => {
+          this.totalMoney += (e.buyNum * e.price[e.cupType])
         });
+        this.vipMoney = this.totalMoney * 0.95;
+      },
+      handleEdit(index, row) {
+        console.log(index, row);
+        this.shoppingCar.forEach(e => {
+          if (
+            e.name == row.name &&
+            e.cupType == row.cupType &&
+            e.sweetNess == row.sweetNess
+          ) {
+            this.$refs.goodsWindow.goods.name = e.name;
+            this.$refs.goodsWindow.goods.price = e.price;
+            this.$refs.goodsWindow.goods.imageUrl = e.imageUrl;
+            this.$refs.goodsWindow.goods.buyNum = e.buyNum;
+            this.$refs.goodsWindow.goods.sweetNess = e.sweetNess;
+            this.$refs.goodsWindow.goods.cupType = e.cupType;
+            this.$refs.goodsWindow.goods.buyType = "updataGoodsInfo";
+            // 当前修改的商品下标
+            this.currentClickIndex = index;
+            this.calculationMoney();
+            this.$refs.goodsWindow.dialogVisible = true;
+          }
+        });
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+        // splice 会改变原数组 ，而 slice不会 ，
+        /*
+          slice只会返回要截取的数组 （1，2）等价于 [1,2)
+          splice返回被删除的项目
+        */
+        this.shoppingCar.splice(index, 1);
+        this.setShoppringCar();
+        this.calculationMoney();
+      },
+      add(index) {
+        this.shoppingCar[index].buyNum += 1;
+        this.setShoppringCar();
+        this.calculationMoney();
+      },
+
+      dec(index) {
+        if (this.shoppingCar[index].buyNum >= 2) {
+          this.shoppingCar[index].buyNum -= 1;
+          this.setShoppringCar();
+        } else {
+          this.$message({
+            message: "不可以再减少了哦",
+            type: "warning"
+          });
+        }
+        this.calculationMoney();
+      },
+      setShoppringCar() {
+        this.$shoppingCar.setShoppringCar(this.shoppingCar);
+      },
+      countMoney() {
+        if (this.logined) {
+          this.$message({
+            message: "您共需要支付" + this.vipMoney + "元",
+            type: "warning"
+          });
+        } else {
+          this.$confirm('登陆可享会员优惠，是否需要登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({name:'login'});
+          }).catch(() => {
+            this.$message({
+              message: "您共需要支付" + this.totalMoney + "元",
+              type: "warning"
+            });
+          });
+
+        }
       }
     },
-    setShoppringCar() {
-      this.$shoppingCar.setShoppringCar(this.shoppingCar);
+    components: {
+      goodsWindow
     }
-  },
-  components: {
-    goodsWindow
-  }
-};
+  };
 </script>
 
 <style scoped>
-.title {
-  text-align: center;
-  margin: 10px auto 20px;
-  font-size: 25px;
-}
+  .title {
+    text-align: center;
+    margin: 10px auto 20px;
+    font-size: 25px;
+  }
 
-.title > i {
-  font-size: 60px;
-}
+  .title>i {
+    font-size: 60px;
+  }
 
-.content {
-  width: 60%;
-  margin: 0 auto;
-}
-.num {
-  font-size: 20px;
-  user-select: none;
-}
-.num i:nth-child(1):hover,
-.num i:nth-child(3):hover {
-  color: blueviolet;
-}
+  .content {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .num {
+    font-size: 20px;
+    user-select: none;
+  }
+
+  .num i:nth-child(1):hover,
+  .num i:nth-child(3):hover {
+    color: blueviolet;
+  }
+
+  .totalMoney {
+    position: relative;
+    text-align: center;
+  }
+
+  .totalMoney span:nth-child(1) {
+    position: relative;
+    top: 20px;
+
+    color: aquamarine;
+  }
+
+  .totalMoney span:nth-child(2) {
+    position: relative;
+    top: 30px;
+    color: blueviolet;
+  }
+
+ 
+  /* 父元素下 第二个子元素的 每个div */
+  .totalMoney div:nth-child(2),
+  .totalMoney div:nth-child(3)  {
+
+    position: relative;
+    top: 50px;
+  }
+
+  .totalMoney::after {
+    content: "";
+    display: block;
+    height: 30px;
+  }
+
+  .textline {
+    text-decoration: line-through;
+  }
 </style>

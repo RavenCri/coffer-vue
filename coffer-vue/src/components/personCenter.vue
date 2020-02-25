@@ -52,9 +52,9 @@
                 this.$router.push({ name: 'login' });
             },
             setUserInfo(user) {
-                this.$userGloby.setUserInfo(user);
+                this.$userGlobal.setUserInfo(user);
             }, getUserInfo() {
-               return  this.$userGloby.getUserInfo();
+               return  this.$userGlobal.getUserInfo();
             }
         }
 

@@ -8,7 +8,7 @@
       <ul id='navigationOut'>
 
         <li>
-          <a href="#">咖啡栏目</a>
+          <a href="/">咖啡栏目</a>
           <ul class="navigationIn">
             <li><a href="#hot">美式咖啡</a></li>
             <li><a href="#hot">卡布奇诺</a></li>
