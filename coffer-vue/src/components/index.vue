@@ -4,16 +4,18 @@
       <p>顾客您好,本店饮品如下：</p>
     </div>
     <div style="margin-top: 60px;">
-    
-      
-     
+
+
+
       <div style="width: 80%; margin: 0 auto; position: relative;top: 50px;">
-        <p style="padding: 5px 20px;margin-left: 43%; background-color: black;color: blanchedalmond;font-size: 25px;text-align: center;width: 100px;"><span >新品上线</span></p>
+        <p
+          style="padding: 5px 20px;margin-left: 43%; background-color: black;color: blanchedalmond;font-size: 25px;text-align: center;width: 100px;">
+          <span>新品上线</span></p>
         <hr>
         <el-carousel :interval="2000" type="card" height="400px" width="500px">
           <el-carousel-item v-for="item in newGoods" :key="item.name">
-            <div>
-              <img :src="item.imageUrl" @click="clickImageGoods(item.name)" width=100% height=100% alt="?" />
+            <div @click="clickImageGoods(item.name)" :style="{ 'background-image': 'url(' + item.imageUrl + ')','background-repeat':'no-repeat','background-size':'cover','height':'100%' ,'width':'100%'}" >
+              <!-- <img :src="item.imageUrl"  width=100% height=100% alt="?" /> -->
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -21,7 +23,9 @@
     </div>
     <div v-for="(item, index) in commodity" :key="index">
       <div class="tag">
-        <p><span style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond;">{{ item.type }}</span></p>
+        <p :id="item.type"><span
+            style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond;">{{ item.type }}</span>
+        </p>
         <hr />
         <div class="center">
           <div v-for="(item2, index2) in item.goods" :key="index2">
@@ -48,13 +52,27 @@
   import goodsWindow from "@/components/goodsWindow"
   export default {
     name: "index",
+    mounted() {
+      this.$axios.get("/goods/newGoods").then(res => {
+          console.log(res.data)
+          this.newGoods = res.data;
+         }).catch(function (error) {
+            console.log(error);
+        });
+        this.$axios.get("/goods/goods").then(res => {
+          // console.log(res.data)
+          this.commodity = res.data;
+         }).catch(function (error) {
+            console.log(error);
+        });
+    },
     methods: {
 
       clickImageGoods(name) {
         let good;
-        
+
         this.commodity.forEach(commod => {
-         
+
           commod.goods.forEach(e => {
             console.log(e)
             if (e.name == name) {
@@ -109,6 +127,7 @@
     },
     data() {
       return {
+      
         newGoods: [
           {
             imageUrl: require("../assets/images/fml.jpg"),
@@ -221,7 +240,7 @@
   }
 
   .content {
-    width: 80%;
+    width: 60%;
     margin: 0 auto;
   }
 

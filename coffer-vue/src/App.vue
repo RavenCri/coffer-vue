@@ -8,29 +8,29 @@
       <ul id='navigationOut'>
 
         <li>
-          <a href="/">咖啡栏目</a>
-          <ul class="navigationIn">
+          <a href="/">饮品专区</a>
+          <!-- <ul class="navigationIn">
             <li><a href="#hot">美式咖啡</a></li>
             <li><a href="#hot">卡布奇诺</a></li>
             <li><a href="#hot">摩卡咖啡</a></li>
-          </ul>
+          </ul> -->
         </li>
         <li>
-          <a href="#">点心栏目</a>
-          <ul class="navigationIn">
+          <a href="#糕点专区">糕点专区</a>
+          <!-- <ul class="navigationIn">
             <li><a href="#hot">甜品</a></li>
             <li><a href="#hot">培根</a></li>
             <li><a href="#hot">坚果</a></li>
-          </ul>
+          </ul> -->
 
         </li>
         <li>
-          <a href="#">套餐栏目</a>
-          <ul class="navigationIn">
+          <a href="#套餐专区">套餐专区</a>
+          <!-- <ul class="navigationIn">
             <li><a href="#hot">松饼+饮料</a></li>
             <li><a href="#hot">冰美式&蓝莓</a></li>
 
-          </ul>
+          </ul> -->
         </li>
         <li>
           <a href="#">消耗品</a>
