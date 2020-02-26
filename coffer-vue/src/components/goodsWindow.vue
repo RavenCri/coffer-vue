@@ -146,9 +146,14 @@
           } else {
             this.$message({ message: "请务必填写完整", type: "warning" });
           }
+          /* 一定要初始化！ 不然 第一次加购物车以后 
+          第二次再购买 会把之前购买的商品同步修改了 */
+          this.initForm();
         });
       },
       addShoppingCar() {
+        
+      
         if (this.buyCar == "{}") {
           console.log("购物车为空");
           this.buyCar = new Array();
@@ -194,6 +199,7 @@
         this.goods.time = null;
         this.goods.buyType = null;
         this.buyCar = this.$shoppingCar.getShoppringCar();
+        this.$refs["form"].resetFields();
       },
       validate(callback) {
         this.$refs["form"].validate(valid => {
