@@ -1,61 +1,72 @@
 <template>
-  <el-dialog title="选择商品属性" :visible.sync="dialogVisible" width="35%" :before-close="handleClose">
-    <el-form ref="form" :model="goods" label-width="80px" :rules="rules">
-      <img :src="goods.imageUrl" alt="" width="60px" style="position: relative;left: 45%;" />
-      <el-form-item label="商品名称">
-        {{ goods.name }}
-      </el-form-item>
-      <el-form-item label="选择甜度" prop="sweetNess">
-        <el-select v-model="goods.sweetNess" placeholder="请选择您喜欢的甜度">
-          <el-option label="少糖" value="littleSweet"></el-option>
-          <el-option label="中糖" value="middleSweet"></el-option>
-          <el-option label="多糖" value="manySweet"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="选择杯型" prop="cupType">
-        <el-radio-group v-model="goods.cupType">
-          <el-radio label="middleCup" value="middleCup">中杯({{
+  <div>
+    <el-dialog title="选择商品属性" :visible.sync="dialogVisible" width="35%" 
+    :before-close="handleClose" :close-on-press-escape=false  
+    :close-on-click-modal=false
+    >
+      <el-form ref="form" :model="goods" label-width="80px" :rules="rules">
+        <img :src="goods.imageUrl" alt="" width="60px" style="position: relative;left: 45%;" />
+        <el-form-item label="商品名称">
+          {{ goods.name }}
+        </el-form-item>
+        <el-form-item label="选择甜度" prop="sweetNess">
+          <el-select v-model="goods.sweetNess" placeholder="请选择您喜欢的甜度">
+            <el-option label="少糖" value="littleSweet"></el-option>
+            <el-option label="中糖" value="middleSweet"></el-option>
+            <el-option label="多糖" value="manySweet"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择杯型" prop="cupType">
+          <el-radio-group v-model="goods.cupType">
+            <el-radio label="middleCup" value="middleCup">中杯({{
               goods.price == null ? "" : goods.price.middleCup
             }}元)</el-radio>
-          <el-radio label="bigCup" value="bigCup">大杯({{
+            <el-radio label="bigCup" value="bigCup">大杯({{
               goods.price == null ? "" : goods.price.bigCup
             }}元)</el-radio>
-          <el-radio label="bigPlusCup" value="bigPlusCup">超大杯({{
+            <el-radio label="bigPlusCup" value="bigPlusCup">超大杯({{
               goods.price == null ? "" : goods.price.bigPlusCup
             }}元)</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="数量">
-        <div class="num">
-          <i class="el-icon-circle-plus" @click="add"></i>
-          <span style="width:30px;display:inline-block;text-align:center">{{
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="数量">
+          <div class="num">
+            <i class="el-icon-circle-plus" @click="add"></i>
+            <span style="width:30px;display:inline-block;text-align:center">{{
             goods.buyNum
           }}</span>
-          <i class="el-icon-remove" @click="dec"></i> 杯
-        </div>
-      </el-form-item>
+            <i class="el-icon-remove" @click="dec"></i> 杯
+          </div>
+        </el-form-item>
 
-      <el-form-item label="留言">
-        <el-input type="textarea" v-model="goods.msg" placeholder="可以向我们提出建议哦~"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">{{
+        <el-form-item label="留言">
+          <el-input type="textarea" v-model="goods.msg" placeholder="可以向我们提出建议哦~"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">{{
           buyTypeChinese[goods.buyType] == null
             ? goods.buyType
             : buyTypeChinese[goods.buyType]
         }}</el-button>
-        <el-button @click="cancelOrder">取消</el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+          <el-button @click="cancelOrder">取消</el-button>
+        </el-form-item>
+      </el-form>
+
+    </el-dialog>
+    <payWindow ref="payWindow" />
+
+  </div>
 </template>
 
 <script>
+  import payWindow from "@/components/payWindow"
   export default {
     mounted() {
       this.initForm();
     },
-
+    components:{
+      payWindow
+    },
     data() {
       return {
         buyCar: null,
@@ -107,9 +118,13 @@
       onSubmit() {
         this.validate(flag => {
           if (flag) {
+           
             this.dialogVisible = false;
-
             if (this.goods.buyType == "buy") {
+              this.$refs.payWindow.money=this.goods.price[this.goods.cupType];
+              this.$refs.payWindow.canncelMsg= '确定取消订单吗?';
+              this.$refs.payWindow.cancelBut= '取消订单';
+              this.$refs.payWindow.centerDialogVisible = true;
               this.$message({
                 message: "您成功购买了商品" + this.goods.name,
                 type: "success"
@@ -145,6 +160,7 @@
             }
           } else {
             this.$message({ message: "请务必填写完整", type: "warning" });
+            return;
           }
           /* 一定要初始化！ 不然 第一次加购物车以后 
           第二次再购买 会把之前购买的商品同步修改了 */
@@ -153,8 +169,8 @@
         });
       },
       addShoppingCar() {
-        
-      
+
+
         if (this.buyCar == "{}") {
           console.log("购物车为空");
           this.buyCar = new Array();
@@ -163,15 +179,14 @@
         this.buyCar.forEach((e) => {
           if (e.name === this.goods.name &&
             e.cupType === this.goods.cupType &&
-            e.sweetNess === this.goods.sweetNess)
-            {
-              addFlag = false;
-              e.buyNum += this.goods.buyNum;
-            }
+            e.sweetNess === this.goods.sweetNess) {
+            addFlag = false;
+            e.buyNum += this.goods.buyNum;
+          }
         });
         // 如果当前购物车不存在同属性的商品
-        if(addFlag){ this.buyCar.push(this.goods);}
-        
+        if (addFlag) { this.buyCar.push(this.goods); }
+
         this.setShoppingCar();
         this.$message({
           message: this.goods.name + "已为您加入了购物车",
@@ -200,7 +215,7 @@
         this.goods.time = null;
         this.goods.buyType = null;
         this.buyCar = this.$shoppingCar.getShoppringCar();
-       
+
       },
       validate(callback) {
         this.$refs["form"].validate(valid => {

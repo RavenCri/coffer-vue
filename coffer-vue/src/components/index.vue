@@ -45,11 +45,13 @@
       </div>
     </div>
     <goodsWindow ref="goodsWindow" />
+   
   </div>
 </template>
 
 <script>
   import goodsWindow from "@/components/goodsWindow"
+
   export default {
     name: "index",
     mounted() {

@@ -68,15 +68,20 @@
       </div>
     </div>
     <goodsWindow ref="goodsWindow" />
+    
+    <payWindow ref="payWindow" />
+    
   </div>
 </template>
 
 <script>
+  import payWindow from "@/components/payWindow";
   import goodsWindow from "@/components/goodsWindow";
   export default {
     mounted() {
       this.init();
-    },
+    }, 
+   
     data() {
       return {
         totalMoney: 0,
@@ -96,6 +101,7 @@
         }
       };
     },
+   
     methods: {
       init() {
         this.shoppingCar = this.$shoppingCar.getShoppringCar();
@@ -190,11 +196,16 @@
           this.$message.error('购物车目前为空哦~');
           return;
         }
+        this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
+        this.$refs.payWindow.cancelBut = '取消支付';
+        this.$refs.payWindow.centerDialogVisible = true;
         if (this.logined) {
           this.$message({
             message: "您共需要支付" + this.vipMoney + "元",
             type: "warning"
           });
+          this.$refs.payWindow.money=this.vipMoney;
+          
         } else {
           this.$confirm('登陆可享会员优惠95折，是否需要登录?', '提示', {
             confirmButtonText: '确定',
@@ -208,12 +219,14 @@
               type: "warning"
             });
           });
-
+         
+          this.$refs.payWindow.money=this.totalMoney;
         }
+        
       }
     },
     components: {
-      goodsWindow
+      goodsWindow,payWindow
     }
   };
 </script>
