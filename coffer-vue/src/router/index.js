@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/components/index'
-import personCenter from '@/components/personCenter'
+import personCenter from '@/components/usercenter/personCenter'
 import login from '@/components/login'
-import userInfo from '@/components/userInfo'
+import userInfo from '@/components/usercenter/userInfo'
+import updateInfo from '@/components/usercenter/updateInfo'
+import userBill from '@/components/usercenter/userBill'
 import shoppingCar from '@/components/shoppingCar'
 Vue.use(Router)
 
@@ -25,7 +27,15 @@ export default new Router({
         {
           path: 'userInfo',
           component: userInfo
-        }
+        },
+        {
+          path: 'userBill',
+          component: userBill
+        },
+        {
+          path: 'updateInfo',
+          component: updateInfo
+        },
       ]
     },
     {

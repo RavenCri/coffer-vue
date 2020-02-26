@@ -4,9 +4,12 @@
       <p>顾客您好,本店饮品如下：</p>
     </div>
     <div style="margin-top: 60px;">
-      <p style="text-align: center;font-size: 25px;margin-bottom: 10px;">新品上线</p>
-      <hr>
+    
+      
+     
       <div style="width: 80%; margin: 0 auto; position: relative;top: 50px;">
+        <p style="padding: 5px 20px;margin-left: 43%; background-color: black;color: blanchedalmond;font-size: 25px;text-align: center;width: 100px;"><span >新品上线</span></p>
+        <hr>
         <el-carousel :interval="2000" type="card" height="400px" width="500px">
           <el-carousel-item v-for="item in newGoods" :key="item.name">
             <div>
@@ -18,7 +21,7 @@
     </div>
     <div v-for="(item, index) in commodity" :key="index">
       <div class="tag">
-        <p>{{ item.type }}</p>
+        <p><span style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond;">{{ item.type }}</span></p>
         <hr />
         <div class="center">
           <div v-for="(item2, index2) in item.goods" :key="index2">
@@ -142,6 +145,15 @@
                 }
               },
               {
+                name: "水果沙拉",
+                imageUrl: require("../assets/images/fml.jpg"),
+                price: {
+                  middleCup: "6.5",
+                  bigCup: "9",
+                  bigPlusCup: "15"
+                }
+              },
+              {
                 name: "拿铁咖啡",
                 imageUrl: require("../assets/images/frust.jpg"),
                 price: {
@@ -233,7 +245,7 @@
   }
 
   .center {
-    width: 60%;
+    width: 100%;
     margin: 20px auto 30px;
     display: flex;
     justify-content: space-around;

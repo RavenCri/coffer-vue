@@ -147,7 +147,7 @@
           slice只会返回要截取的数组 （1，2）等价于 [1,2)
           splice返回被删除的项目
         */
-        this.$confirm('此操作将从购物车移除此商品, 是否继续?', '提示', {
+        this.$confirm('此操作将从购物车移除商品{'+row.name+'}, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -196,7 +196,7 @@
             type: "warning"
           });
         } else {
-          this.$confirm('登陆可享会员优惠，是否需要登录?', '提示', {
+          this.$confirm('登陆可享会员优惠95折，是否需要登录?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
