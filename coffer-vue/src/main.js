@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import axios from 'axios'
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui';
@@ -14,6 +14,11 @@ import shoppingCar from '@/api/shoppingCar.js'
 
 Vue.prototype.$userGlobal = userGlobal
 
+//配置请求主机 
+axios.defaults.baseURL = '/api' 
+
+
+Vue.prototype.$axios = axios    
 Vue.prototype.$shoppingCar = shoppingCar
 Vue.use(ElementUI);
 /* eslint-disable no-new */
