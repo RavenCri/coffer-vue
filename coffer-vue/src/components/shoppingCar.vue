@@ -99,16 +99,16 @@
     methods: {
       init() {
         this.shoppingCar = this.$shoppingCar.getShoppringCar();
-        if (this.shoppingCar == '{}'){
+        if (this.shoppingCar == '{}') {
           this.shoppingCar = new Array();
         }
         this.calculationMoney();
         this.logined = this.$userGlobal.alreadyLogin();
-        console.log("登陆状态："+this.logined)
+        console.log("登陆状态：" + this.logined)
       },
       calculationMoney() {
         this.totalMoney = this.vipMoney = 0;
-        
+
         if (this.shoppingCar != '{}') {
           this.shoppingCar.forEach((e) => {
             this.totalMoney += (e.buyNum * e.price[e.cupType])
@@ -146,9 +146,22 @@
           slice只会返回要截取的数组 （1，2）等价于 [1,2)
           splice返回被删除的项目
         */
-        this.shoppingCar.splice(index, 1);
-        this.setShoppringCar();
-        this.calculationMoney();
+        this.$confirm('此操作将从购物车移除此商品, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.shoppingCar.splice(index, 1);
+          this.setShoppringCar();
+          this.calculationMoney();
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+
+        });
+
       },
       add(index) {
         this.shoppingCar[index].buyNum += 1;
@@ -183,7 +196,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$router.push({ name: 'login',params:{redirect: "/shoppingCar"}});
+            this.$router.push({ name: 'login', params: { redirect: "/shoppingCar" } });
           }).catch(() => {
             this.$message({
               message: "您共需要支付" + this.totalMoney + "元",
