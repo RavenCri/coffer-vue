@@ -62,7 +62,7 @@
     <hr style="margin-top: 50px;" />
     <div class="totalMoney">
       <span style="display: block;" :class="{textline:logined}">合计：{{totalMoney}}元</span>
-      <span style="display: block;" v-if="logined">会员优惠价格：{{vipMoney.toFixed(2)}}元</span>
+      <span style="display: block;" v-if="logined">会员优惠价格：{{vipMoney}}元</span>
       <div>
         <el-button type="primary" round @click="countMoney">结算金额</el-button>
       </div>
@@ -113,7 +113,8 @@
           this.shoppingCar.forEach((e) => {
             this.totalMoney += (e.buyNum * e.price[e.cupType])
           });
-          this.vipMoney = this.totalMoney * 0.95;
+          this.vipMoney = (this.totalMoney * 0.95).toFixed(2);
+          
         }
 
       },
@@ -185,6 +186,10 @@
         this.$shoppingCar.setShoppringCar(this.shoppingCar);
       },
       countMoney() {
+        if(this.shoppingCar.length == 0){
+          this.$message.error('购物车目前为空哦~');
+          return;
+        }
         if (this.logined) {
           this.$message({
             message: "您共需要支付" + this.vipMoney + "元",
@@ -265,7 +270,7 @@
     position: relative;
     top: 50px;
   }
-
+ 
   .totalMoney::after {
     content: "";
     display: block;

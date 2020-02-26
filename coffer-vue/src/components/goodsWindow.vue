@@ -149,6 +149,7 @@
           /* 一定要初始化！ 不然 第一次加购物车以后 
           第二次再购买 会把之前购买的商品同步修改了 */
           this.initForm();
+          this.$refs["form"].resetFields();
         });
       },
       addShoppingCar() {
@@ -185,8 +186,8 @@
         this.$refs["form"].resetFields();
       },
       handleClose(done) {
-        this.$refs["form"].resetFields();
         done();
+        this.$refs["form"].resetFields();
       },
       initForm() {
         this.goods.name = null;
@@ -199,7 +200,7 @@
         this.goods.time = null;
         this.goods.buyType = null;
         this.buyCar = this.$shoppingCar.getShoppringCar();
-        // this.$refs["form"].resetFields();
+       
       },
       validate(callback) {
         this.$refs["form"].validate(valid => {
