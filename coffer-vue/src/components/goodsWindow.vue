@@ -199,7 +199,7 @@
         this.goods.time = null;
         this.goods.buyType = null;
         this.buyCar = this.$shoppingCar.getShoppringCar();
-        this.$refs["form"].resetFields();
+        // this.$refs["form"].resetFields();
       },
       validate(callback) {
         this.$refs["form"].validate(valid => {

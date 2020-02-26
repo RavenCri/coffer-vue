@@ -99,16 +99,23 @@
     methods: {
       init() {
         this.shoppingCar = this.$shoppingCar.getShoppringCar();
+        if (this.shoppingCar == '{}'){
+          this.shoppingCar = new Array();
+        }
         this.calculationMoney();
         this.logined = this.$userGlobal.alreadyLogin();
         console.log(this.logined)
       },
       calculationMoney() {
         this.totalMoney = this.vipMoney = 0;
-        this.shoppingCar.forEach((e) => {
-          this.totalMoney += (e.buyNum * e.price[e.cupType])
-        });
-        this.vipMoney = this.totalMoney * 0.95;
+        
+        if (this.shoppingCar != '{}') {
+          this.shoppingCar.forEach((e) => {
+            this.totalMoney += (e.buyNum * e.price[e.cupType])
+          });
+          this.vipMoney = this.totalMoney * 0.95;
+        }
+
       },
       handleEdit(index, row) {
         console.log(index, row);
@@ -176,7 +183,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$router.push({name:'login'});
+            this.$router.push({ name: 'login' });
           }).catch(() => {
             this.$message({
               message: "您共需要支付" + this.totalMoney + "元",
@@ -237,10 +244,10 @@
     color: blueviolet;
   }
 
- 
+
   /* 父元素下 第二个子元素的 每个div */
   .totalMoney div:nth-child(2),
-  .totalMoney div:nth-child(3)  {
+  .totalMoney div:nth-child(3) {
 
     position: relative;
     top: 50px;

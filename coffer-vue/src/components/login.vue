@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <div class="lg"><i class="el-icon-user"></i><span> 登录</span></div>
+    <div class="lg"><i class="el-icon-user"></i><span> 登  录</span></div>
     <div>
       <el-form
         :model="ruleForm"
@@ -69,7 +69,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
            this.setUserInfo(this.ruleForm);
-           this.$router.go(-1);
+           //this.$router.go(-1);
+           window.history.back()
            //this.$router.push({name:'personCenter'});
         } else {
             this.$message({
