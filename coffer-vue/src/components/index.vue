@@ -3,9 +3,22 @@
     <div class="notice">
       <p>顾客您好,本店饮品如下：</p>
     </div>
+    <div style="margin-top: 60px;">
+      <p style="text-align: center;font-size: 25px;margin-bottom: 10px;">新品上线</p>
+      <hr>
+      <div style="margin-top: 30px;width: 80%; margin: 0 auto;">
+        <el-carousel :interval="2000" type="card" height="400px" width="500px">
+          <el-carousel-item v-for="item in newGoods" :key="item.name">
+            <div>
+              <img :src="item.imageUrl" @click="clickImageGoods(item.name)" width=100% height=100% alt="?" />
+            </div>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+    </div>
     <div v-for="(item, index) in commodity" :key="index">
       <div class="tag">
-        <p id="new">{{ item.type }}</p>
+        <p>{{ item.type }}</p>
         <hr />
         <div class="center">
           <div v-for="(item2, index2) in item.goods" :key="index2">
@@ -33,8 +46,23 @@
   export default {
     name: "index",
     methods: {
-      buy(goods,buyType) {
-       
+
+      clickImageGoods(name) {
+        let good;
+        
+        this.commodity.forEach(commod => {
+         
+          commod.goods.forEach(e => {
+            console.log(e)
+            if (e.name == name) {
+              good = e;
+            }
+          })
+        })
+        this.buyGoods(good)
+      },
+      buy(goods, buyType) {
+
         this.$refs.goodsWindow.goods.name = goods.name;
         this.$refs.goodsWindow.goods.price = goods.price;
         this.$refs.goodsWindow.goods.imageUrl = goods.imageUrl;
@@ -45,16 +73,16 @@
       },
       addShoppingCar(goods) {
         console.log('加购物车');
-        this.buy(goods,'addShoppingCar');
+        this.buy(goods, 'addShoppingCar');
       },
       buyGoods(goods) {
         console.log('买东西');
-        this.buy(goods,'buy');
+        this.buy(goods, 'buy');
 
       },
       dateFormat(date) {
         let ret;
-        let fmt="YYYY-mm-dd HH:MM";
+        let fmt = "YYYY-mm-dd HH:MM";
         const opt = {
           "Y+": date.getFullYear().toString(),        // 年
           "m+": (date.getMonth() + 1).toString(),     // 月
@@ -78,10 +106,31 @@
     },
     data() {
       return {
+        newGoods: [
+          {
+            imageUrl: require("../assets/images/fml.jpg"),
+            name: "水果沙拉"
+          },
+          {
+            imageUrl: require("../assets/images/frust.jpg"),
+            name: "拿铁咖啡"
+          }, {
+            imageUrl: require("../assets/images/kwf.jpg"),
+            name: "焦糖玛奇朵"
+          },
+          {
+            imageUrl: require("../assets/images/nm.jpg"),
+            name: "摩尔咖啡"
+          },
+          {
+            imageUrl: require("../assets/images/yg.jpg"),
+            name: "卡布奇诺"
+          }
 
+        ],
         commodity: [
           {
-            type: "新品上线",
+            type: "美式咖啡",
             goods: [
               {
                 name: "水果沙拉",
@@ -143,6 +192,27 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+
+  .content {
+    width: 80%;
+    margin: 0 auto;
+  }
+
   .notice {
     width: 60%;
     margin: 0 auto;
@@ -177,10 +247,10 @@
     padding: 20px;
     margin-top: 30px;
     background: linear-gradient(-45deg, #ffec61, #f321d7);
-    border-radius: 15px;
+    border-radius: 20px;
     /* box-shadow:1px 0  10px #000 inset; */
     user-select: none;
-    border: 2px solid slateblue;
+    /* border: 1px solid slateblue; */
   }
 
   .center .card:hover {
@@ -225,7 +295,7 @@
     background-color: black;
     color: white;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 15%;
   }
 
   .card div span:nth-child(1):hover,

@@ -15,8 +15,8 @@
               <p>商品名: {{ scope.row.name }}</p>
               <p>单价: {{ scope.row.price[scope.row.cupType] }} 元</p>
               <div slot="reference" class="name-wrapper">
-                <img :src="scope.row.imageUrl" alt="" width="50px"
-                  style="display: block;margin-bottom: 5px;position: relative;left: 10px;" />
+                <img :src="scope.row.imageUrl" alt="" width="50px" height="50px"
+                  style="display: block;margin-bottom: 5px;position: relative;left: 10px;border-radius: 100%;" />
                 <el-tag size="medium">{{ scope.row.name }}</el-tag>
               </div>
             </el-popover>
