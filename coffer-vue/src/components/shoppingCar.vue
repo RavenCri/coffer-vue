@@ -13,7 +13,7 @@
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>商品名: {{ scope.row.name }}</p>
-              <p>价格: {{ scope.row.price[scope.row.cupType] }}</p>
+              <p>单价: {{ scope.row.price[scope.row.cupType] }} 元</p>
               <div slot="reference" class="name-wrapper">
                 <img :src="scope.row.imageUrl" alt="" width="50px"
                   style="display: block;margin-bottom: 5px;position: relative;left: 10px;" />
@@ -104,7 +104,7 @@
         }
         this.calculationMoney();
         this.logined = this.$userGlobal.alreadyLogin();
-        console.log(this.logined)
+        console.log("登陆状态："+this.logined)
       },
       calculationMoney() {
         this.totalMoney = this.vipMoney = 0;
@@ -183,7 +183,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$router.push({ name: 'login' });
+            this.$router.push({ name: 'login',params:{redirect: "/shoppingCar"}});
           }).catch(() => {
             this.$message({
               message: "您共需要支付" + this.totalMoney + "元",

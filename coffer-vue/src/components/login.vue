@@ -38,6 +38,9 @@
 
 <script>
 export default {
+  mounted () {
+    
+  },
   data() {
     var username = (rule, value, callback) => {
       if (value === "") {
@@ -70,8 +73,17 @@ export default {
         if (valid) {
            this.setUserInfo(this.ruleForm);
            //this.$router.go(-1);
-           window.history.back()
-           //this.$router.push({name:'personCenter'});
+          // window.history.back()
+           
+          // 如果没有 要跳转的地址直接跳入
+           if(JSON.stringify(this.$route.params )!= '{}' ){
+             console.log("有目标地址传进来"+this.$route.params.redirect)
+             // 这里写path比较灵活 写name会限制死 要跳转的url
+            this.$router.push({path:decodeURIComponent(this.$route.params.redirect)});
+           }else{
+            console.log("没有目标地址传进来")
+             this.$router.push({name:'personCenter'});
+           }
         } else {
             this.$message({
             message: "登陆失败",

@@ -24,13 +24,15 @@ new Vue({
   template: '<App/>'
 })
 router.beforeEach((to, from, next) => {
-
+ 
   if (to.matched.some(record => record.meta.auth)) {
-    console.log("需要验证")
+    console.log(to.fullPath+"需要验证")
+  
     if (userGlobal.alreadyLogin()) {
       next()
     } else {
       console.log("进入验证")
+    
       //防止无限循环
       if (to.name === 'login') {
         next();
@@ -38,10 +40,11 @@ router.beforeEach((to, from, next) => {
       }
       next({
         path: '/login',
+        redirect: to.fullPath
       });
     }
   } else {
-    console.log("不需要验证")
+    console.log(to.fullPath+"不需要验证")
     next()//若点击的是不需要验证的页面,则进行正常的路由跳转
   }
 
