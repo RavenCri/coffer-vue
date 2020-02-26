@@ -78,7 +78,8 @@ export default {
           // 如果没有 要跳转的地址直接跳入
            if(JSON.stringify(this.$route.params )!= '{}' ){
              console.log("有目标地址传进来"+this.$route.params.redirect)
-             // 这里写path比较灵活 写name会限制死 要跳转的url
+             // 这里写path比较灵活 写name的话 如果目标地址携带了参数还得 再用 params或者query传过去
+             // 而path直接接受 要重定向的地址即可。
             this.$router.push({path:decodeURIComponent(this.$route.params.redirect)});
            }else{
             console.log("没有目标地址传进来")
