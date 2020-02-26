@@ -6,7 +6,7 @@
     <div style="margin-top: 60px;">
       <p style="text-align: center;font-size: 25px;margin-bottom: 10px;">新品上线</p>
       <hr>
-      <div style="margin-top: 30px;width: 80%; margin: 0 auto;">
+      <div style="width: 80%; margin: 0 auto; position: relative;top: 50px;">
         <el-carousel :interval="2000" type="card" height="400px" width="500px">
           <el-carousel-item v-for="item in newGoods" :key="item.name">
             <div>
