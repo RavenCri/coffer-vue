@@ -19,8 +19,8 @@
             </div>
           </div>
           <el-button type="warning" icon="el-icon-star-off" plain @click="addMoney">充值</el-button>
-          <el-button type="warning" plain><i class="el-icon-s-opportunity" @click="addIntegral"></i>签到</el-button>
-          <el-button type="warning" plain><i class="el-icon-present" @click="addIntegral"></i>兑换礼品</el-button>
+          <el-button type="warning" plain @click="addIntegral"><i class="el-icon-s-opportunity" ></i>签到</el-button>
+          <el-button type="warning" plain  @click="getGood"><i class="el-icon-present"></i>兑换礼品</el-button>
 
         </el-collapse-item>
         <el-collapse-item title="常用住址">
@@ -73,6 +73,9 @@
           message: "您已签到成功，本次签到积分+20",
           type: "success"
         })
+      },
+      getGood(){
+        this.$router.push({path:'/exchargeGood'})
       }
     }
 

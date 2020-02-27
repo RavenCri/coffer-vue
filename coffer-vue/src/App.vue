@@ -8,7 +8,7 @@
       <ul id='navigationOut'>
 
         <li>
-          <a href="/">首页</a>
+          <a href="/">购物区</a>
           <!-- <ul class="navigationIn">
             <li><a href="#hot">美式咖啡</a></li>
             <li><a href="#hot">卡布奇诺</a></li>
@@ -33,7 +33,7 @@
           </ul>
         </li> -->
         <li>
-          <router-link to="/exchargeGood">兑换专区</router-link>
+          <router-link to="/exchargeGood">积分商城</router-link>
         
           <!-- <ul class="navigationIn">
             <li><a href="#hot">马克杯</a></li>

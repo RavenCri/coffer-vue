@@ -33,6 +33,8 @@ git push -u origin master
 #vue
 Vetur
 
+#跳转方法名
+vue-helper
 #
 Auto Close Tag  、Auto Rename Tag 、HTML CSS Support 、
 
