@@ -14,7 +14,8 @@
         <hr>
         <el-carousel :interval="2000" type="card" height="400px" width="500px">
           <el-carousel-item v-for="item in newGoods" :key="item.name">
-            <div @click="clickImageGoods(item.name)" :style="{ 'background-image': 'url(' + item.imageUrl + ')','background-repeat':'no-repeat','background-size':'cover','height':'100%' ,'width':'100%'}" >
+            <div @click="clickImageGoods(item.name)"
+              :style="{ 'background-image': 'url(' + item.imageUrl + ')','background-repeat':'no-repeat','background-size':'cover','height':'100%' ,'width':'100%'}">
               <!-- <img :src="item.imageUrl"  width=100% height=100% alt="?" /> -->
             </div>
           </el-carousel-item>
@@ -24,49 +25,62 @@
     <div v-for="(item, index) in commodity" :key="index">
       <div class="tag">
         <p :id="item.type"><span
-            style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond;">{{ item.type }}</span>
+            style="display: inline-block; padding: 5px 20px; background-color:blanchedalmond;color:blueviolet;">{{ item.type }}</span>
         </p>
         <hr />
-        <div class="center">
+      </div>
+        <div  >
           <div v-for="(item2, index2) in item.goods" :key="index2">
-            <div class="card">
-              <span>{{item2.name}}</span></br>
-              <span><sup>$</sup>{{item2.price.middleCup}}</span><span>(中杯)</span>
-              <img :src="item2.imageUrl" alt="?" />
-              <div class="OperationArea">
-                <span @click="buyGoods(item2)"><i class="el-icon-shopping-cart-1" aria-hidden="true"></i>购买</span>
-                <span>|</span>
-                <span @click="addShoppingCar(item2)"><i class="el-icon-shopping-cart-1"
-                    aria-hidden="true"></i>购物车</span>
+            <p :id="item.type" style="width: 150px;  margin: 30px auto 0;font-size:25px"><span
+                style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond; ">{{ item2.smallColumn }}</span>
+            </p>
+            <hr />
+            <div class="center">
+              <div v-for="(item3, index3) in item2.goods" :key="index3">
+                <span :id="item3.name"></span>
+                <div class="card" >
+                  <span>{{item3.name}}</span></br>
+                  <span><sup>$</sup>{{item3.price.middleCup}}</span><span>(中杯)</span>
+                  <img :src="item3.imageUrl" alt="?" />
+                  <div class="OperationArea">
+                    <span @click="buyGoods(item3)"><i class="el-icon-shopping-cart-1" aria-hidden="true"></i>购买</span>
+                    <span>|</span>
+                    <span @click="addShoppingCar(item3)"><i class="el-icon-shopping-cart-1"
+                        aria-hidden="true"></i>购物车</span>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
-      </div>
+     
     </div>
     <goodsWindow ref="goodsWindow" />
-   
+    <div style="position: fixed;left: 10px;top: 200px;z-index: 5;">
+      <nivigation ref="nivigation" />
+    </div>
   </div>
 </template>
 
 <script>
   import goodsWindow from "@/components/goodsWindow"
-
+  import nivigation from "@/components/nivigation"
   export default {
     name: "index",
     mounted() {
       this.$axios.get("/goods/newGoods").then(res => {
-          console.log(res.data)
-          this.newGoods = res.data;
-         }).catch(function (error) {
-            console.log(error);
-        });
-        this.$axios.get("/goods/goods").then(res => {
-          // console.log(res.data)
-          this.commodity = res.data;
-         }).catch(function (error) {
-            console.log(error);
-        });
+        console.log(res.data)
+        this.newGoods = res.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
+      this.$axios.get("/goods/goods").then(res => {
+        // console.log(res.data)
+        this.commodity = res.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     methods: {
 
@@ -125,11 +139,11 @@
       }
     },
     components: {
-      goodsWindow
+      goodsWindow,nivigation
     },
     data() {
       return {
-      
+
         newGoods: [
           {
             imageUrl: require("../assets/images/fml.jpg"),
@@ -225,6 +239,20 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .move{
+   
+   
+   animation: 0.4s mv linear ;
+ }
+ @keyframes mv {
+    from{
+      
+      transform: scale(0.9);
+    }to{
+     
+      transform: scale(1.0);
+    }
+  }
   .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -257,7 +285,7 @@
   }
 
   .tag {
-    text-align: center;
+    text-align: left;
     font-size: 20px;
     margin: 40px auto 0px;
     font-size: 25px;
@@ -275,6 +303,7 @@
   }
 
   .center .card {
+    text-align: center ;
     width: 200px;
     border: 2px solid rgba(255, 255, 244, 0.5);
     padding: 20px;
@@ -314,12 +343,14 @@
     justify-content: space-around;
     font-size: 20px;
     margin-top: 20px;
+   
 
   }
 
   .card div span {
     padding: 10px;
     color: black;
+    
 
   }
 
