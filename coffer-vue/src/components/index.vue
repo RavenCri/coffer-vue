@@ -7,12 +7,12 @@
 
 
 
-      <div style="width: 80%; margin: 0 auto; position: relative;top: 50px;">
+      <div style="width: 90%; margin: 0 auto; position: relative;top: 5px;">
         <p
           style="padding: 5px 20px;margin-left: 43%; background-color: black;color: blanchedalmond;font-size: 25px;text-align: center;width: 100px;">
           <span>新品上线</span></p>
         <hr>
-        <el-carousel :interval="2000" type="card" height="400px" width="500px">
+        <el-carousel :interval="2000" type="card" style="margin-top: 20px;" height="500px" width="600px">
           <el-carousel-item v-for="item in newGoods" :key="item.name">
             <div @click="clickImageGoods(item.name)"
               :style="{ 'background-image': 'url(' + item.imageUrl + ')','background-repeat':'no-repeat','background-size':'cover','height':'100%' ,'width':'100%'}">
@@ -29,36 +29,39 @@
         </p>
         <hr />
       </div>
-        <div  >
-          <div v-for="(item2, index2) in item.goods" :key="index2">
-            <p :id="item.type" style="width: 150px;  margin: 30px auto 0;font-size:25px"><span
-                style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond; ">{{ item2.smallColumn }}</span>
-            </p>
-            <hr />
-            <div class="center">
-              <div v-for="(item3, index3) in item2.goods" :key="index3">
-                <span :id="item3.name"></span>
-                <div class="card" >
-                  <span>{{item3.name}}</span></br>
-                  <span><sup>$</sup>{{item3.price.middleCup}}</span><span>(中杯)</span>
-                  <img :src="item3.imageUrl" alt="?" />
-                  <div class="OperationArea">
-                    <span @click="buyGoods(item3)"><i class="el-icon-shopping-cart-1" aria-hidden="true"></i>购买</span>
-                    <span>|</span>
-                    <span @click="addShoppingCar(item3)"><i class="el-icon-shopping-cart-1"
-                        aria-hidden="true"></i>购物车</span>
-                  </div>
+      <div>
+        <div v-for="(item2, index2) in item.goods" :key="index2">
+          <p :id="item.type" style="width: 150px;  margin: 30px auto 0;font-size:25px"><span
+              style="display: inline-block;padding: 5px 20px; background-color: black;color: blanchedalmond; ">{{ item2.smallColumn }}</span>
+          </p>
+          <hr />
+          <div class="center">
+            <div v-for="(item3, index3) in item2.goods" :key="index3">
+              <span :id="item3.name"></span>
+              <div class="card">
+                <span>{{item3.name}}</span></br>
+                <span><sup>$</sup>{{item3.price.middleCup}}</span><span>(中杯)</span>
+                <img :src="item3.imageUrl" alt="?" />
+                <div class="OperationArea">
+                  <span @click="buyGoods(item3)"><i class="el-icon-shopping-cart-1" aria-hidden="true"></i>购买</span>
+                  <span>|</span>
+                  <span @click="addShoppingCar(item3)"><i class="el-icon-shopping-cart-1"
+                      aria-hidden="true"></i>购物车</span>
                 </div>
               </div>
             </div>
-
           </div>
+
         </div>
-     
+      </div>
+
     </div>
     <goodsWindow ref="goodsWindow" />
     <div style="position: fixed;left: 10px;top: 200px;z-index: 5;">
-      <nivigation ref="nivigation" />
+      <div class="navg">打开导航</div>
+      <div class="na">
+        <nivigation ref="nivigation" />
+      </div>
     </div>
   </div>
 </template>
@@ -86,16 +89,20 @@
 
       clickImageGoods(name) {
         let good;
-
+        console.log( "点击："+name)
         this.commodity.forEach(commod => {
-
-          commod.goods.forEach(e => {
-            console.log(e)
-            if (e.name == name) {
-              good = e;
-            }
+            // console.log( commod.goods)
+            commod.goods.forEach(e => {
+              
+              e.goods.forEach(item=>{
+                console.log("item:"+item.name)
+                if(name == item.name ){
+                  good = item;
+                }
+              })
+            })
           })
-        })
+        console.log(good)
         this.buyGoods(good)
       },
       buy(goods, buyType) {
@@ -139,7 +146,7 @@
       }
     },
     components: {
-      goodsWindow,nivigation
+      goodsWindow, nivigation
     },
     data() {
       return {
@@ -166,72 +173,9 @@
           }
 
         ],
-        commodity: [
-          {
-            type: "美式咖啡",
-            goods: [
-              {
-                name: "水果沙拉",
-                imageUrl: require("../assets/images/fml.jpg"),
-                price: {
-                  middleCup: "6.5",
-                  bigCup: "9",
-                  bigPlusCup: "15"
-                }
-              },
-              {
-                name: "水果沙拉",
-                imageUrl: require("../assets/images/fml.jpg"),
-                price: {
-                  middleCup: "6.5",
-                  bigCup: "9",
-                  bigPlusCup: "15"
-                }
-              },
-              {
-                name: "拿铁咖啡",
-                imageUrl: require("../assets/images/frust.jpg"),
-                price: {
-                  middleCup: "10",
-                  bigCup: "15",
-                  bigPlusCup: "17"
-                }
-              },
-              {
-                name: "焦糖玛奇朵",
-                imageUrl: require("../assets/images/kwf.jpg"),
-                price: {
-                  middleCup: "8",
-                  bigCup: "12",
-                  bigPlusCup: "15"
-                }
-              }
-            ]
-          },
-          {
-            type: "咖啡栏目",
-            goods: [
-              {
-                name: "摩尔咖啡",
-                imageUrl: require("../assets/images/nm.jpg"),
-                price: {
-                  middleCup: "6",
-                  bigCup: "8",
-                  bigPlusCup: "10"
-                }
-              },
-              {
-                name: "卡布奇诺",
-                imageUrl: require("../assets/images/yg.jpg"),
-                price: {
-                  middleCup: "12.5",
-                  bigCup: "15.5",
-                  bigPlusCup: "20.5"
-                }
-              }
-            ]
-          }
-        ]
+        commodity: [{ "goods": [{ "goods": [{ "price": { "middleCup": "10", "bigCup": "15", "bigPlusCup": "18" }, "imageUrl": "http://localhost/getGoodsImg?filename=s4bOnjpd8l", "name": "美式咖啡" }, { "price": { "middleCup": "10", "bigCup": "15", "bigPlusCup": "18" }, "imageUrl": "http://localhost/getGoodsImg?filename=n7vJTAZKZh", "name": "拿铁咖啡" }, { "price": { "middleCup": "9", "bigCup": "15", "bigPlusCup": "23" }, "imageUrl": "http://localhost/getGoodsImg?filename=J0XZrwARwy", "name": "卡布奇诺" }, { "price": { "middleCup": "15", "bigCup": "25", "bigPlusCup": "32" }, "imageUrl": "http://localhost/getGoodsImg?filename=qqROI9x1ov", "name": "爱尔兰咖啡" }, { "price": { "middleCup": "13", "bigCup": "15", "bigPlusCup": "17" }, "imageUrl": "http://localhost/getGoodsImg?filename=kvfdGO1ueJ", "name": "维也纳咖啡" }, { "price": { "middleCup": "16", "bigCup": "22", "bigPlusCup": "26" }, "imageUrl": "http://localhost/getGoodsImg?filename=9ct2eQCy64", "name": "意大利咖啡" }], "smallColumn": "咖啡区" }, { "goods": [{ "price": { "middleCup": "7", "bigCup": "8", "bigPlusCup": "9" }, "imageUrl": "http://localhost/getGoodsImg?filename=moDxGRdeS3", "name": "绿豆果汁" }], "smallColumn": "果汁区" }], "type": "饮品栏目" }, { "goods": [{ "goods": [{ "price": { "middleCup": "6", "bigCup": "10", "bigPlusCup": "13" }, "imageUrl": "http://localhost/getGoodsImg?filename=uMGeGOJROY", "name": "草莓蛋糕" }, { "price": { "middleCup": "14", "bigCup": "20", "bigPlusCup": "25" }, "imageUrl": "http://localhost/getGoodsImg?filename=KbJ3ODpIoN", "name": "果冻草莓甜糕" }, { "price": { "middleCup": "12", "bigCup": "15", "bigPlusCup": "18" }, "imageUrl": "http://localhost/getGoodsImg?filename=OPPDqSMrKK", "name": "冰淇淋松饼" }], "smallColumn": "点心区" }], "type": "糕点栏目" }, { "goods": [{ "goods": [{ "price": { "middleCup": "18", "bigCup": "24", "bigPlusCup": "28" }, "imageUrl": "http://localhost/getGoodsImg?filename=EtotJQyf79", "name": "经典套餐" }, { "price": { "middleCup": "15", "bigCup": "20", "bigPlusCup": "23" }, "imageUrl": "http://localhost/getGoodsImg?filename=GXTsPgT2ow", "name": "超值套餐" }], "smallColumn": "套餐区" }], "type": "套餐栏目" }]
+
+
       };
     }
   };
@@ -239,20 +183,52 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .move{
-   
-   
-   animation: 0.4s mv linear ;
- }
- @keyframes mv {
-    from{
-      
+  .move {
+
+
+    animation: 0.4s mv linear;
+  }
+
+  @keyframes mv {
+    from {
+
       transform: scale(0.9);
-    }to{
-     
+    }
+
+    to {
+
       transform: scale(1.0);
     }
   }
+
+  .na {
+    display: none;
+    width: 0px;
+  }
+
+  .navg {
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    background-color: blueviolet;
+    line-height: 80px;
+    text-align: center;
+
+  }
+
+  .navg:hover {
+    transform: scale(1.05);
+
+  }
+
+  .navg:hover+div  {
+
+    display: block;
+    /* width: 300px; */
+    
+   
+  }
+
   .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -303,7 +279,7 @@
   }
 
   .center .card {
-    text-align: center ;
+    text-align: center;
     width: 200px;
     border: 2px solid rgba(255, 255, 244, 0.5);
     padding: 20px;
@@ -343,14 +319,14 @@
     justify-content: space-around;
     font-size: 20px;
     margin-top: 20px;
-   
+
 
   }
 
   .card div span {
     padding: 10px;
     color: black;
-    
+
 
   }
 
