@@ -9,11 +9,11 @@
 
         <li>
           <a href="/">首页</a>
-          <ul class="navigationIn">
+          <!-- <ul class="navigationIn">
             <li><a href="#hot">美式咖啡</a></li>
             <li><a href="#hot">卡布奇诺</a></li>
             <li><a href="#hot">摩卡咖啡</a></li>
-          </ul>
+          </ul> -->
         </li>
         <!-- <li>
           <a href="#糕点专区">糕点专区</a>
@@ -33,7 +33,8 @@
           </ul>
         </li> -->
         <li>
-          <a href="#">消耗品</a>
+          <router-link to="/exchargeGood">兑换专区</router-link>
+        
           <ul class="navigationIn">
             <li><a href="#hot">马克杯</a></li>
             <li><a href="#hot">保温杯</a></li>
@@ -43,11 +44,11 @@
         </li>
         <li>
           
-          <router-link to="shoppingCar">购物车</router-link>
+          <router-link to="/shoppingCar">购物车</router-link>
         </li>
         <li>
           
-          <router-link to="personCenter">个人中心</router-link>
+          <router-link to="/personCenter">个人中心</router-link>
         </li>
       </ul>
     </div>

@@ -200,7 +200,13 @@
       transform: scale(1.0);
     }
   }
-
+  @keyframes change {
+    0%{background-color: blueviolet;}
+    25%{background-color:cornflowerblue;}
+    50%{background-color:darkcyan;}
+    75%{background-color:deeppink;}
+    100%{background-color:dodgerblue;}
+  }
   .na {
     display: none;
    
@@ -215,6 +221,8 @@
     line-height: 60px;
     text-align: center;
     z-index: 8;
+    animation: 2s change linear infinite;
+    color: floralwhite;
   }
 
   .navg:hover {
@@ -247,7 +255,7 @@
   }
 
   .content {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
   }
 
