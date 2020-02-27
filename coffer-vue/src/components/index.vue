@@ -58,7 +58,7 @@
     </div>
     <goodsWindow ref="goodsWindow" />
     <div style="position: fixed;left: 10px;top: 200px;z-index: 5;">
-      <div class="navg">打开导航</div>
+      <div class="navg">导航</div>
       <div class="na">
         <nivigation ref="nivigation" />
       </div>
@@ -203,28 +203,29 @@
 
   .na {
     display: none;
-    width: 0px;
+   
   }
 
   .navg {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 100%;
     background-color: blueviolet;
-    line-height: 80px;
+    font-size: 18px;
+    line-height: 60px;
     text-align: center;
-
+    z-index: 8;
   }
 
   .navg:hover {
-    transform: scale(1.05);
-
+    transform: scale(1.2);
+    
   }
 
-  .navg:hover+div  {
+  .navg:hover+.na, .na:hover{
 
     display: block;
-    /* width: 300px; */
+    
     
    
   }

@@ -87,7 +87,7 @@
   .container {
     position: relative;
     margin: 0 auto;
-    padding: 0px 0;
+    padding: 5px 0;
     clear: both;
   }
 
