@@ -22,33 +22,42 @@
         },
         methods: {
             randomString(len) {
-               
-               len = len || 32;
-               var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-               var maxPos = $chars.length;
-               var pwd = '';
-               for (i = 0; i < len; i++) {
-                   pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-               }
-               return pwd;
-           },
+
+                len = len || 32;
+                /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (let i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+                }
+
+                return pwd;
+            },
             exchargeGood(item) {
 
                 if (this.logined) {
                     // 后台获取积分 判断积分是否足够
                     let jf = 5000;
                     if (jf > item.needIntegral) {
+                        this.randomString(32)
                         this.$confirm('您确定消费' + item.needIntegral + '点积分兑换' + item.name + "吗？", '提示', {
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
-                            return this.randomString(32)
-                        }).then(() => {
+                            return this.randomString(10)
+                        }).then((pwd) => {
                             console.log("进来")
                             this.$message({
-                                message: "兑换成功，你可凭取此号码去前台兑换。请妥善保存。" ,
+                                message: "兑换成功，你可凭取此号码去前台兑换。请妥善保存。",
                                 type: "success"
+                            });
+                            this.$alert('请保管好您的兑换码：'+pwd+" 凭此兑换码前去前台兑换", '兑换提示', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                   
+                                }
                             });
 
                         }).catch(() => {
@@ -73,7 +82,7 @@
                     })
                 }
             },
-           
+
         },
         data() {
             return {

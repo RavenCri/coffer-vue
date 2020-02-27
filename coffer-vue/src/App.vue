@@ -35,12 +35,12 @@
         <li>
           <router-link to="/exchargeGood">兑换专区</router-link>
         
-          <ul class="navigationIn">
+          <!-- <ul class="navigationIn">
             <li><a href="#hot">马克杯</a></li>
             <li><a href="#hot">保温杯</a></li>
             <li><a href="#hot">随行杯</a></li>
             <li><a href="#hot">吸管杯</a></li>
-          </ul>
+          </ul> -->
         </li>
         <li>
           
@@ -49,6 +49,13 @@
         <li>
           
           <router-link to="/personCenter">个人中心</router-link>
+          <ul class="navigationIn">
+            <li><router-link to="/personCenter/userInfo">账户中心</router-link></li>
+            <li><router-link to="/personCenter/userBill">修改密码</router-link></li>
+            <li><router-link to="/personCenter/updateInfo">我的账单</router-link></li>
+         
+           
+          </ul>
         </li>
       </ul>
     </div>
