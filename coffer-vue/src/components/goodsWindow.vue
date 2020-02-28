@@ -234,6 +234,7 @@
 
         if (this.$userGlobal.alreadyLogin()) {
           let userInfo = this.$userGlobal.getUserInfo();
+          console.log(JSON.stringify(userInfo))
           if (userInfo.money < param.price[param.cupType] * param.buyNum) {
             this.$message({
               message: "您当前余额为：" + userInfo.money + "元，不足以支付该商品，请先充值哦~",
@@ -253,13 +254,14 @@
           console.log(response);
           if (this.$userGlobal.alreadyLogin()) {
             let userInfo = this.$userGlobal.getUserInfo();
-            userInfo.money -= param.price[param.cupType] * param.buyNum;
+            userInfo.money -= param.price[param.cupType] * param.buyNum*0.95;
             userInfo.money = userInfo.money.toFixed(2);
             this.$userGlobal.setUserInfo(userInfo);
-            this.$message({
-              message: "您成功购买了"+param.name+",请及时去前台取餐哦",
-              type: "warning"
+            this.$alert("您成功购买了" + param.name + ",请及时去前台取餐哦", '购买成功', {
+              confirmButtonText: '确定',
+              
             });
+          
           } else {
             this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
             this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
