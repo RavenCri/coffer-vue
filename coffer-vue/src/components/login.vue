@@ -71,8 +71,8 @@
                 // window.history.back() 
                 // 如果没有 要跳转的地址直接跳入
                 let msg = res.data.message;
-                //把vip卡号也存进去
-                msg.vipId = this.ruleForm.password;
+               
+                
                 this.setUserInfo(JSON.parse(msg));
                 if (JSON.stringify(this.$route.params) != '{}') {
                   console.log("有目标地址传进来" + this.$route.params.redirect)

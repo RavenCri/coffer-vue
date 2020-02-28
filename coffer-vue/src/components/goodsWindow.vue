@@ -132,15 +132,7 @@
 
 
               this.addOrder(this.goods);
-              this.$message({
-                message: "您成功购买了商品" + this.goods.name,
-                type: "success"
-              });
 
-              this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
-              this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
-              this.$refs.payWindow.cancelBut = '取消订单';
-              this.$refs.payWindow.centerDialogVisible = true;
 
             } else if (this.goods.buyType == "addShoppingCar") {
               this.addShoppingCar(this.goods);
@@ -182,8 +174,8 @@
           }
           /* 一定要初始化！ 不然 第一次加购物车以后 
           第二次再购买 会把之前购买的商品同步修改了 */
-        // this.initForm();
-         //this.$refs["form"].resetFields();
+          // this.initForm();
+          //this.$refs["form"].resetFields();
         });
       },
       addShoppingCar() {
@@ -239,9 +231,16 @@
         param = JSON.parse(JSON.stringify(param));
         //param.cupType = this.cuyTypeChinese[param.cupType];
         //param.sweetNess = this.cuyTypeChinese[param.sweetNess];
-        
-        if(this.$userGlobal.alreadyLogin()){
+
+        if (this.$userGlobal.alreadyLogin()) {
           let userInfo = this.$userGlobal.getUserInfo();
+          if (userInfo.money < param.price[param.cupType] * param.buyNum) {
+            this.$message({
+              message: "您当前余额为：" + userInfo.money + "元，不足以支付该商品，请先充值哦~",
+              type: "warning"
+            });
+            return;
+          }
           param.vipId = userInfo.vipId;
         }
         this.$axios.post("/order/addPay", {
@@ -252,6 +251,22 @@
           }
         }).then(response => {
           console.log(response);
+          if (this.$userGlobal.alreadyLogin()) {
+            let userInfo = this.$userGlobal.getUserInfo();
+            userInfo.money -= param.price[param.cupType] * param.buyNum;
+            userInfo.money = userInfo.money.toFixed(2);
+            this.$userGlobal.setUserInfo(userInfo);
+            this.$message({
+              message: "您成功购买了"+param.name+",请及时去前台取餐哦",
+              type: "warning"
+            });
+          } else {
+            this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
+            this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
+            this.$refs.payWindow.cancelBut = '取消订单';
+            this.$refs.payWindow.centerDialogVisible = true;
+          }
+
         }).catch(function (error) {
           console.log(error);
         });
@@ -267,7 +282,7 @@
           callback(valid);
         });
       }
-      
+
     }
   };
 </script>
