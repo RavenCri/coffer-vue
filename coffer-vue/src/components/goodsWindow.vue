@@ -1,9 +1,7 @@
 <template>
   <div>
-    <el-dialog title="选择商品属性" :visible.sync="dialogVisible" width="35%" 
-    :before-close="handleClose" :close-on-press-escape=false  
-    :close-on-click-modal=false
-    >
+    <el-dialog title="选择商品属性" :visible.sync="dialogVisible" width="35%" :before-close="handleClose"
+      :close-on-press-escape=false :close-on-click-modal=false>
       <el-form ref="form" :model="goods" label-width="80px" :rules="rules">
         <img :src="goods.imageUrl" alt="" width="60px" style="position: relative;left: 45%;" />
         <el-form-item label="商品名称">
@@ -64,7 +62,7 @@
     mounted() {
       this.initForm();
     },
-    components:{
+    components: {
       payWindow
     },
     data() {
@@ -98,6 +96,16 @@
           cupType: [
             { required: true, message: "请选择你的杯型哦~", trigger: "change" }
           ]
+        },
+        cuyTypeChinese: {
+          middleCup: "中杯",
+          bigCup: "大杯",
+          bigPlusCup: "超大杯"
+        },
+        sweetNessChinese: {
+          littleSweet: "少糖",
+          middleSweet: "中糖",
+          manySweet: "多糖"
         }
       };
     },
@@ -118,19 +126,26 @@
       onSubmit() {
         this.validate(flag => {
           if (flag) {
-           
+
             this.dialogVisible = false;
             if (this.goods.buyType == "buy") {
-              this.$refs.payWindow.money=this.goods.price[this.goods.cupType];
-              this.$refs.payWindow.canncelMsg= '确定取消订单吗?';
-              this.$refs.payWindow.cancelBut= '取消订单';
-              this.$refs.payWindow.centerDialogVisible = true;
+
+
+              this.addOrder(this.goods);
               this.$message({
                 message: "您成功购买了商品" + this.goods.name,
                 type: "success"
               });
+
+              this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
+              this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
+              this.$refs.payWindow.cancelBut = '取消订单';
+              this.$refs.payWindow.centerDialogVisible = true;
+
             } else if (this.goods.buyType == "addShoppingCar") {
               this.addShoppingCar(this.goods);
+              this.initForm();
+              this.$refs["form"].resetFields();
             } else if (this.goods.buyType == "updataGoodsInfo") {
               var currGoods = this.buyCar[this.$parent.currentClickIndex];
               currGoods.buyNum = this.goods.buyNum;
@@ -157,6 +172,9 @@
               this.setShoppingCar();
               // 调用父组件  刷新表格
               this.$parent.init();
+
+              this.initForm();
+              this.$refs["form"].resetFields();
             }
           } else {
             this.$message({ message: "请务必填写完整", type: "warning" });
@@ -164,8 +182,8 @@
           }
           /* 一定要初始化！ 不然 第一次加购物车以后 
           第二次再购买 会把之前购买的商品同步修改了 */
-          this.initForm();
-          this.$refs["form"].resetFields();
+        // this.initForm();
+         //this.$refs["form"].resetFields();
         });
       },
       addShoppingCar() {
@@ -217,11 +235,39 @@
         this.buyCar = this.$shoppingCar.getShoppringCar();
 
       },
+      addOrder(param) {
+        param = JSON.parse(JSON.stringify(param));
+        //param.cupType = this.cuyTypeChinese[param.cupType];
+        //param.sweetNess = this.cuyTypeChinese[param.sweetNess];
+        
+        if(this.$userGlobal.alreadyLogin()){
+          let userInfo = this.$userGlobal.getUserInfo();
+          param.vipId = userInfo.vipId;
+        }
+        this.$axios.post("/order/addPay", {
+          param
+        }, {
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          }
+        }).then(response => {
+          console.log(response);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      selectOrder(param) {
+
+        this.$axios.get("/order/selectOrderByVipId", { param }).then(function (response) {
+          console.log(response);
+        })
+      },
       validate(callback) {
         this.$refs["form"].validate(valid => {
           callback(valid);
         });
       }
+      
     }
   };
 </script>

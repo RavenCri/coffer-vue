@@ -3,10 +3,10 @@
     <div class="lg"><i class="el-icon-user"></i><span> 登 录</span></div>
     <div>
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="账号" prop="username">
+        <!-- <el-form-item label="账号" prop="username">
           <el-input type="el-input" v-model="ruleForm.username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
+        </el-form-item> -->
+        <el-form-item label="会员卡卡号" prop="password">
           <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
         </el-form-item>
 
@@ -25,13 +25,13 @@
 
     },
     data() {
-      var username = (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error("请输入账号"));
-        } else {
-          callback();
-        }
-      };
+      // var username = (rule, value, callback) => {
+      //   if (value === "") {
+      //     callback(new Error("请输入账号"));
+      //   } else {
+      //     callback();
+      //   }
+      // };
       var password = (rule, value, callback) => {
         if (value === "") {
           callback(new Error("请输入密码"));
@@ -41,11 +41,11 @@
       };
       return {
         ruleForm: {
-          username: "",
+          // username: "",
           password: ""
         },
         rules: {
-          username: [{ validator: username, trigger: "blur" }],
+          // username: [{ validator: username, trigger: "blur" }],
           password: [{ validator: password, trigger: "blur" }]
         }
       };
@@ -54,20 +54,26 @@
       submitForm(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            this.setUserInfo(this.ruleForm);
 
-            this.$axios.get("/user/login", {       // 还可以直接把参数拼接在url后边
-              params: {
-                uname: formName['username'],
-                pwd: formName.password
+
+            this.$axios.post("/vip/login", {
+
+              vipId: this.ruleForm.password
+            }, {
+              headers: {
+                'Content-type': 'application/json;charset=UTF-8'
               }
             }).then(res => {
-            
+
               console.log(res)
-              if (res.data.state == 2000) {
-                    //this.$router.go(-1);
-                    // window.history.back() 
+              if (res.data.state == 200) {
+                //this.$router.go(-1);
+                // window.history.back() 
                 // 如果没有 要跳转的地址直接跳入
+                let msg = res.data.message;
+                //把vip卡号也存进去
+                msg.vipId = this.ruleForm.password;
+                this.setUserInfo(JSON.parse(msg));
                 if (JSON.stringify(this.$route.params) != '{}') {
                   console.log("有目标地址传进来" + this.$route.params.redirect)
                   // 这里写path比较灵活 写name的话 如果目标地址携带了参数还得 再用 params或者query传过去

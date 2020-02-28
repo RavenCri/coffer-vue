@@ -10,7 +10,7 @@
             会员状态<i class="header-icon el-icon-info"></i>
           </template>
           <div style="font-size: 18px;">
-            <span style="color: forestgreen;"><i class="el-icon-position"></i>余额：500元</span></br>
+            <span style="color: forestgreen;"><i class="el-icon-position"></i>余额：{{money}}元</span></br>
             <span style="color: indianred;"><i class="el-icon-star-off"></i>积分：{{integral}}</span></br>
             <span style="color: lightgreen;"><i class="el-icon-medal-1"></i>会员等级：V7</span></br>
             <div style="width: 200px;margin: 0 auto;">
@@ -19,7 +19,7 @@
             </div>
           </div>
           <el-button type="warning" icon="el-icon-star-off" plain @click="addMoney">充值</el-button>
-          <el-button type="warning" plain @click="addIntegral"><i class="el-icon-s-opportunity" ></i>签到</el-button>
+          <el-button type="warning" plain @click="addIntegral" :disabled="regist"><i class="el-icon-s-opportunity" ></i>签到</el-button>
           <el-button type="warning" plain  @click="getGood"><i class="el-icon-present"></i>兑换礼品</el-button>
 
         </el-collapse-item>
@@ -45,9 +45,17 @@
     components: {
       payWindow
     },
+    mounted () {
+      this.integral = this.$userGlobal.getUserInfo().credit;
+      this.money = this.$userGlobal.getUserInfo().money
+      console.log(this.$userGlobal.getUserInfo().alreadlyRegist)
+      this.regist =  this.$userGlobal.getUserInfo().alreadlyRegist==undefined?false:this.$userGlobal.getUserInfo().alreadlyRegist
+    },
     data() {
       return {
-        integral: 500
+        integral: 0,
+        money:0,
+        regist:false
       }
     },
     methods: {
@@ -73,6 +81,10 @@
           message: "您已签到成功，本次签到积分+20",
           type: "success"
         })
+        this.regist = true;
+        var user = this.$userGlobal.getUserInfo();
+        user.alreadlyRegist = true;
+        this.$userGlobal.setUserInfo(user);
       },
       getGood(){
         this.$router.push({path:'/exchargeGood'})

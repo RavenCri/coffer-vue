@@ -12,6 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import userGlobal from '@/api/userGlobal.js'
 import shoppingCar from '@/api/shoppingCar.js'
 
+
 Vue.prototype.$userGlobal = userGlobal
 
 //配置请求主机 

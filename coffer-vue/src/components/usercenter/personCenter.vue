@@ -44,7 +44,7 @@
             }
         },
         mounted() {
-            this.userName = this.getUserInfo().username;
+            this.userName = this.getUserInfo().name;
          },
         methods: {
             signOut() {
