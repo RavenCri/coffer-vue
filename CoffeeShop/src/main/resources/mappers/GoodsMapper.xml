@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Management.CoffeeShop.mapper.GoodsMapper">
+
+	<!--查出来的用户数据结果集  -->
+	<!--数据库的字段名跟Vip类里面的用户属性(set方法)  -->
+	<resultMap type="Management.CoffeeShop.entity.Goods" id="GoodsEntityMap">
+		<id column="id" property="id"/>
+		<result column="number" property="number"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="amount" property="amount"/>
+		<result column="type" property="type"/>
+		<result column="path" property="path"/>
+	</resultMap>
+	
+	<!--插入商品数据  -->
+	<!--Integer insert(Goods goods);  -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO goods(
+			number,name,price,amount,type,image_url,add_time
+		)VALUES(
+			#{number},#{name},#{price},#{amount},#{type},#{image_url},#{add_time}
+		)
+	</insert>
+	
+	<!--根据商品编号查询商品数据  -->
+	<!--Goods findByNumber(Integer number);-->
+	<select id="findByNumber" resultMap="GoodsEntityMap">
+		SELECT 
+			* 
+		FROM 
+			goods
+		WHERE 
+			number=#{number}
+	</select>
+	
+	<!--根据商品编号查询商品数据  -->
+	<!--Goods findByName(String name);-->
+	<select id="findByName" resultMap="GoodsEntityMap">
+		SELECT 
+			* 
+		FROM 
+			goods
+		WHERE 
+			name=#{name}
+	</select>
+	
+	<!--根据商品编号查询商品数据  -->
+	<!--Goods findByName(String name);-->
+	<select id="findByNameOrNumber" resultMap="GoodsEntityMap">
+		SELECT 
+			* 
+		FROM 
+			goods 
+		WHERE 
+			name=#{name} or number=#{number}
+	</select>
+	
+	<!--查询所有商品数据  -->
+	<!--List<Goods> findAll();-->
+	<select id="findAll" resultMap="GoodsEntityMap">
+		SELECT 
+			* 
+		FROM 
+			goods
+	</select>
+
+
+	<select id="findGoodsByType" resultMap="GoodsEntityMap">
+		SELECT
+			*
+		FROM
+			goods where type =${type}
+	</select>
+
+	<select id="findNewGoods" resultMap="GoodsEntityMap">
+		SELECT
+			*
+		FROM
+			goods order by add_time desc limit 0,6
+	</select>
+
+	<!--删除商品信息  -->
+	<delete id="deleteByNumber">
+		DELETE FROM 
+			goods 
+		WHERE 
+			number=#{number}
+	</delete>
+	
+	<!--根据商品编号修改商品资料  -->
+	<!--Integer updateByNumber(Integer number);  -->
+	<update id="updateByNumber">
+		UPDATE 
+			goods 
+		SET 
+			name=#{name},price=#{price},amount=#{amount},type=#{type} 
+		WHERE 
+			number=#{number}
+	</update>
+	
+</mapper>

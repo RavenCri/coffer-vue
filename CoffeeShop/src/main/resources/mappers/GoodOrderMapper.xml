@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Management.CoffeeShop.mapper.GoodOrderMapper">
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="bid">
+        INSERT INTO good_order(
+            vid,bid,good_num,money,fmoney,created_time,commodity_specification,good_id
+        )VALUES(
+        	#{vid},#{bid},#{good_num},#{money},#{fmoney},#{created_time},#{commodity_specification},#{good.id}
+        )
+    </insert>
+
+    <resultMap type="Management.CoffeeShop.entity.GoodOrder" id="orderResult">
+        <id column="id" property="id"/>
+        <result column="bid" property="bid"/>
+        <result column="vid" property="vid"/>
+        <result column="good_num" property="good_num"/>
+        <result column="commodity_specification" property="commodity_specification"/>
+        <result column="fmoney" property="fmoney"/>
+        <result column="money" property="money"/>
+        <result column="created_time" property="created_time"/>
+        <association property="good" column="good_id"
+                     javaType="Management.CoffeeShop.entity.Goods"
+                     select="Management.CoffeeShop.mapper.GoodsMapper.findByNumber" >
+
+        </association>
+
+    </resultMap>
+
+    <select id="selectOrderById" resultMap="orderResult">
+        select * from good_order where bid = #{bid}
+    </select>
+    <select id="selectOrderByVipId" resultMap="orderResult">
+        select * from good_order where vid = #{vid}
+    </select>
+</mapper>

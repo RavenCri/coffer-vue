@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="">会员管理</a></li>
+        <li class="layui-nav-item"><a href="">商品管理</a></li>
+        <li class="layui-nav-item"><a href="/orderManager">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
+        <li class="layui-nav-item"><a href=""> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a>
+        </li>
+        <li class="layui-nav-item"><a href="">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">会员管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="vip-add.html">添加会员</a>
+              </dd>
+              <dd>
+                <a href="vip-delete.html">删除会员</a>
+              </dd>
+              <dd>
+                <a href="vip-change.html">修改信息</a>
+              </dd>
+              <dd>
+                <a href="vip-select.html">查询会员</a>
+              </dd>
+              <dd>
+                <a href="vip-recharge.html">充值余额</a>
+              </dd>
+              <dd>
+                <a href="vip-log.html">会员日志</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+    
+   
+    
+    <div class="layui-body" id="log">
+    <div class="layui-form">
+  <table class="layui-table">
+    <colgroup>
+      <col width="80">
+      <col width="100">
+      <col width="150">
+      <col>
+    </colgroup>
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>会员名</th>
+        <th>时间</th>
+        <th>事件</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>贤心</td>
+        <td>1989-10-14</td>
+        <td>创建了账号</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>贤心</td>
+        <td>1989-10-14</td>
+        <td>创建了账号</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>贤心</td>
+        <td>1989-10-14</td>
+        <td>创建了账号</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    </div>
+
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+  <script type="text/javascript"
+    src="../bootstrap3/js/css3-mediaqueries.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+  layui.use('form',function(){
+      var form = layui.form;
+          //刷新界面 所有元素
+          form.render();
+
+});
+			$("#btn-addVip").click(function() {
+				$.ajax({
+					"url" : "/vip/reg",
+					"data" : $("#form-addVip").serialize(),
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							alert("添加会员成功!");
+						} else {
+							alert("添加会员失败!" + result.message);
+						}
+					}
+				});
+			});
+		</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Management.CoffeeShop.mapper.VipMapper">
+
+	<!--查出来的用户数据结果集  -->
+	<!--数据库的字段名跟Vip类里面的用户属性(set方法)  -->
+	<resultMap type="Management.CoffeeShop.entity.Vip" id="VipEntityMap">
+		<id column="vid" property="vid"/>
+		<result column="vname" property="vname"/>
+		<result column="vphone" property="vphone"/>
+		<result column="vmoney" property="vmoney"/>
+		<result column="credit" property="credit"/>
+		<result column="recent_time" property="recentTime"/>
+		<result column="reg_time" property="regTime"/>
+	</resultMap>
+	
+	<!--插入用户数据  -->
+	<!--Integer insert(Vip vip);  -->
+	<!--useGeneratedKeys:允许 JDBC 支持自动生成主键  -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="vid">
+		INSERT INTO vip(
+			vname,vphone,vmoney,reg_time,vtype,vip_id
+		)VALUES(
+			#{vname},#{vphone},#{vmoney},#{regTime},#{vtype},#{vip_id}
+		)
+	</insert>
+	
+	<!--根据用户id更新手机号码  -->
+	<!--Integer updateVphoneByVid(Integer vid,String vphone);  -->
+	<update id="updateVphoneByVid">
+		UPDATE 
+			vip 
+		SET 
+			vphone=#{vphone} 
+		WHERE 
+			vid=#{vid}
+	</update>
+	
+	<!--根据用户手机号码更新余额  -->
+	<!--Integer updateVmoneyByVphone(Integer vid,String vphone);  -->
+	<update id="updateVmoneyByVphone">
+		UPDATE 
+			vip 
+		SET 
+			vmoney=#{vmoney} 
+		WHERE 
+			vphone=#{vphone}
+	</update>
+
+	<select id="getVipByVipId" resultMap="VipEntityMap">
+		SELECT
+			*
+		FROM
+			vip
+		WHERE
+			vip_id=#{vip_id}
+	</select>
+	<!--根据用户手机号查询用户数据  -->
+	<!--User findByVphone(String vphone);  -->
+	<select id="findByVphone" resultMap="VipEntityMap">
+		SELECT 
+			* 
+		FROM 
+			vip 
+		WHERE 
+			vphone=#{vphone}
+	</select>
+	
+	<!--根据用户手机号查询用户数据  -->
+	<!--User findByVid(Integer vid);  -->
+	<select id="findByVid" resultMap="VipEntityMap">
+		SELECT 
+			* 
+		FROM 
+			vip 
+		WHERE 
+			vid=#{vid}
+	</select>
+	
+	<!--根据用户名查询用户数据  -->
+	<!--User findByVname(String vname);  -->
+	<select id="findByVname" resultMap="VipEntityMap">
+		SELECT 
+			* 
+		FROM 
+			vip 
+		WHERE 
+			vname=#{vname}
+	</select>
+	
+	<!--查询所有用户数据  -->
+	<!--Vip findAllInfo();  -->
+	<select id="findAllInfo" resultMap="VipEntityMap">
+		SELECT 
+			* 
+		FROM 
+			vip
+	</select>
+	
+	<!--删除会员信息  -->
+	<delete id="deleteByVphone">
+		DELETE FROM 
+			vip 
+		WHERE 
+			vphone=#{vphone}
+	</delete>
+</mapper>

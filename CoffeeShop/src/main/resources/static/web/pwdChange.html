@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#addVip {
+	width: 600px;
+	height: 400px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin: 20px 20px 0 20px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="vip-add.html">会员管理</a></li>
+        <li class="layui-nav-item"><a href="goods-add.html">商品管理</a></li>
+        <li class="layui-nav-item"><a href="">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
+        <li class="layui-nav-item"><a href=""> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a>
+        </li>
+        <li class="layui-nav-item"><a href="login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">帐号管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="pwdChange.html">修改密码</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+    
+   
+    
+    <div class="layui-body" id="addVip">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+        <form class="layui-form" id="form-pwdChange">
+          <div class="layui-form-item">
+            <label class="layui-form-label">原密码</label>
+            <div class="layui-input-block">
+              <input type="text" name="oldPwd" autocomplete="off"
+                placeholder="请输入原密码" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+              <input type="text" name="newPwd" autocomplete="off"
+                placeholder="请输入新密码" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input id="btn-pwdChange" type="button" class="layui-btn"
+                value="立即提交" />
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+  <script type="text/javascript"
+    src="../bootstrap3/js/css3-mediaqueries.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+  layui.use('form',function(){
+      var form = layui.form;
+          //刷新界面 所有元素
+          form.render();
+});
+			$("#btn-pwdChange").click(function() {
+				var oldPwd=$("input[name=oldPwd]").val();
+				var newPwd=$("input[name=newPwd]").val();
+				alert(oldPwd);
+				alert(newPwd);
+				if(a==""||b==""){
+					alert("输入框不得为空!");
+				}
+				$.ajax({
+					"url" : "/user/pwdChange",
+					"data" : $("#form-pwdChange").serialize(),
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							alert("修改密码成功!");
+						} else {
+							alert("修改密码失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("修改失败!");
+					}
+				});
+			});
+			
+			
+		</script>
+</body>
+</html>

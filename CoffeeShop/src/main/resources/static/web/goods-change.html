@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#deleteGoods {
+    width: 880px;
+	height: 450px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin: 65px 20px 0 20px;
+}
+#btn{
+    margin:10px 20px 0 235px;
+}
+#form-fastSelect {
+  margin-top: -38px;
+  margin-left: 200px;
+}
+#Name-select,#Number-select{
+    height:32px;
+    margin-left:10px;
+}
+#btn-select{
+margin-left:200px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="vip-add.html">会员管理</a></li>
+        <li class="layui-nav-item"><a href="goods-add.html">商品管理</a></li>
+        <li class="layui-nav-item"><a href="/orderManager">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="">账号管理</a></li>
+        <li class="layui-nav-item"><a href="javascript:;"> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="">更换头像</a>
+            </dd>
+            <dd>
+              <a href="">修改密码</a>
+            </dd>
+          </dl></li>
+        <li class="layui-nav-item"><a href="">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+         <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">商品管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="goods-add.html">添加商品</a>
+              </dd>
+              <dd>
+                <a href="goods-delete.html">删除商品</a>
+              </dd>
+              <dd>
+                <a href="goods-change.html">修改信息</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+    
+    
+    <div id="btn">
+      <input type="button" class="layui-btn" value="显示全部商品信息"
+        onclick="fn1()" /> 
+        <form id="form-fastSelect"> 
+        <input id="btn-select" type="button"
+        class="layui-btn layui-btn-normal" value="快速搜索商品信息" onclick="fn2()" />
+        <input id="Name-select" type="text" name="name"
+        placeholder="请输入商品名称快速查询" />
+        <input id="Number-select" type="text" name="number"
+        placeholder="请输入商品编号快速查询" />
+        </form>
+    </div>
+    <div class="layui-body" id="deleteGoods">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+      <form id="form-updateInfo">
+        <table class="layui-table">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>商品编号</th>
+              <th>商品名称</th>
+              <th>商品价格</th>
+              <th>商品库存</th>
+              <th>商品类型</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="tbodydata">
+          </tbody>
+        </table>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+<script type="text/javascript"
+  src="../bootstrap3/js/css3-mediaqueries.js"></script>
+<script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+  function fn1(){
+		$.ajax({
+			"url" : "/goods/allInfo",
+			"data" :{},
+			"type" : "post",
+			"dataType" : "json",
+			"success" : function(data) {
+				var str="";
+				for(i in data){
+					var type = data[i].type;
+					var gtype = "";
+                  if(type == 0){
+                    gtype="<select name='type'><option value='0'>饮品</option><option value='1'>点心</option><option value='2'>套餐</option><option value='3'>新品</option></select>";
+                  }else if(type == 1){
+                    gtype="<select name='type'><option value='1'>点心</option><option value='0'>饮品</option><option value='2'>套餐</option><option value='3'>新品</option></select>";
+                  }else if(type == 2){
+                    gtype="<select name='type'><option value='2'>套餐</option><option value='0'>饮品</option><option value='1'>点心</option><option value='3'>新品</option></select>";
+                  }else{
+                    gtype="<select name='type'><option value='3'>新品</option><option value='2'>套餐</option><option value='0'>饮品</option><option value='1'>点心</option></select>";
+                  }
+					str+="<tr><td>"+data[i].number+"</td><td><input id='"+data[i].number+1+"' style='width:165px' name='name' type='text' class='form-control' value='"+data[i].name+"'></td><td><input id='"+data[i].number+2+"' style='width:85px' name='price' type='text' class='form-control' value='"+data[i].price+"'></td><td><input id='"+data[i].number+3+"' style='width:85px' name='amount' type='text' class='form-control' value='"+data[i].amount+"'></td><td>"+gtype+"</td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='修改' onclick='fn4("+data[i].number+")' /></td></tr>";
+				}
+				document.getElementById("tbodydata").innerHTML=str;
+			}
+		});
+}
+
+function fn2(){
+	  if($("#Name-select").val() ==""&&$("#Number-select").val() == ""){
+		  alert("请输入商品名称或者编号再进行查询!");
+	  }else  if($("#Name-select").val()!=""&&$("#Number-select").val()!=""){
+		  alert("不可同时输入商品名称和编号!");
+	  }else{
+		$.ajax({
+			"url" : "/goods/InfoByNameOrNumber",
+			"data" : $("#form-fastSelect").serialize(),
+			"type" : "post",
+			"dataType" : "json",
+			"success" :function(result) {
+				if(result.state==2000){
+				var str="";
+				var type = result.data.type;
+				var gtype = "";
+				if(type == 0){
+					gtype="<select name='type'><option value='0'>饮品</option><option value='1'>点心</option><option value='2'>套餐</option><option value='3'>新品</option></select>";
+				}else if(type == 1){
+					gtype="<select name='type'><option value='1'>点心</option><option value='0'>饮品</option><option value='2'>套餐</option><option value='3'>新品</option></select>";
+				}else if(type == 2){
+					gtype="<select name='type'><option value='2'>套餐</option><option value='0'>饮品</option><option value='1'>点心</option><option value='3'>新品</option></select>";
+				}else{
+                  gtype="<select name='type'><option value='3'>新品</option><option value='2'>套餐</option><option value='0'>饮品</option><option value='1'>点心</option></select>";
+                }
+				str+="<tr><td>"+result.data.number+"</td><td><input style='width:165px' name='name' type='text' class='form-control' value='"+result.data.name+"'></td><td><input style='width:85px' name='price' type='text' class='form-control' value='"+result.data.price+"'></td><td><input style='width:85px' name='amount' type='text' class='form-control' value='"+result.data.amount+"'></td><td>"+gtype+"</td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='修改' onclick='fn3("+result.data.number+")' /></td></tr>";
+				document.getElementById("tbodydata").innerHTML=str;
+				}else{
+					alert("查询失败!"+result.message);
+				}
+			}
+		});
+	  }
+}
+
+function fn3(number) {
+	alert(number);
+	$.ajax({
+		"url" : "/goods/" + number + "/changeInfo",
+		"data" : $("#form-updateInfo").serialize(),
+		"type" : "post",
+		"dataType" : "json",
+		"success" : function(result) {
+			if (result.state == 2000) {
+				alert("修改商品资料成功!");
+				fn1();
+			} else {
+				alert("修改商品资料失败!" + result.message);
+			}
+		},
+		"error" : function() {
+			alert("修改失败!");
+		}
+	});
+}
+
+function fn4(number) {
+	var name = $("#"+number+1).val();
+	var price = $("#"+number+2).val();
+	var amount = $("#"+number+3).val();
+	var type = $("#"+number+4).val();
+	var goodsJson={
+			"name":name,
+			"price":price,
+			"amount":amount,
+			"type":type
+	}
+	$.ajax({
+		"url" : "/goods/" + number + "/changeInfo",
+		"data" : goodsJson,
+		"type" : "post",
+		"dataType" : "json",
+		"success" : function(result) {
+			if (result.state == 2000) {
+				alert("修改商品资料成功!");
+				fn1();
+			} else {
+				alert("修改商品资料失败!" + result.message);
+			}
+		},
+		"error" : function() {
+			alert("修改失败!");
+		}
+	});
+}
+
+
+
+  </script>
+</body>
+</html>

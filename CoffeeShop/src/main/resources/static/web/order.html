@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#body {
+	margin: 65px 20px 0 20px;
+}
+
+#addOrder {
+	width: 790px;
+	height: 450px;
+	margin: 0px 20px 0 0px;
+	float: left;
+}
+
+#orderForm {
+	width: 450px;
+	top:-20px;
+	position: absolute;
+	right:2px;
+}
+
+#btn {
+	margin: 10px 20px 0 235px;
+}
+
+#form-fastSelect {
+	margin-top: -38px;
+	margin-left: 250px;
+}
+
+#Name-select, #Number-select {
+	height: 32px;
+	margin-left: 10px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">小型咖啡店管理系统</div>
+			<!-- 头部区域（可配合layui已有的水平导航） -->
+			<ul class="layui-nav layui-layout-left">
+				<li class="layui-nav-item"><a href="vip-add.html">会员管理</a></li>
+				<li class="layui-nav-item"><a href="goods-add.html">商品管理</a></li>
+				<li class="layui-nav-item"><a href="goodOrder.html">订单管理</a></li>
+				<li class="layui-nav-item"><a href="">统计报表</a></li>
+			</ul>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
+				<li class="layui-nav-item"><a href=""> <img
+						src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+				</a></li>
+				<li class="layui-nav-item"><a href="">退出</a></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree">
+					<li class="layui-nav-item layui-nav-itemed"><a class=""
+						href="javascript:;">订单中心</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="#">订单记录</a>
+							</dd>
+							<dd>
+								<a href="/orderManager">订单管理</a>
+							</dd>
+						</dl></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="btn">
+			<input type="button" class="layui-btn" value="显示全部商品信息"
+				onclick="fn1()" />
+			<form id="form-fastSelect">
+				<input id="btn-select" type="button"
+					class="layui-btn layui-btn-normal" value="快速搜索商品信息" onclick="fn2()" />
+				<input id="Name-select" type="text" name="name"
+					placeholder="请输入商品名称快速查询" /> <input id="Number-select" type="text"
+					name="number" placeholder="请输入商品编号快速查询" />
+			</form>
+		</div>
+
+		<div class="layui-body" id="body">
+			<!-- 左边订单选择区域 -->
+			<div style="padding: 15px;" id="addOrder">
+				<table class="layui-table">
+					<colgroup>
+						<col width="110">
+						<col width="110">
+						<col width="93">
+						<col width="93">
+						<col width="93">
+						<col width="210">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th>商品编号</th>
+							<th>商品名称</th>
+							<th>价格</th>
+							<th>库存</th>
+							<th>类型</th>
+							<th>购买数量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodydata">
+					</tbody>
+				</table>
+			</div>
+			<!--右边订单表  -->
+			<div style="padding: 15px;" id="orderForm">
+				<table class="layui-table">
+					<colgroup>
+						<col width="200">
+						<col width="130">
+						<col width="90">
+						<col width="90">
+						<col width="90">
+					</colgroup>
+					<thead>
+						<tr>
+							<center>
+								<h2>订单表</h2>
+							</center>
+						</tr>
+						<tr id="timeAndNumber">
+						</tr>
+						<tr>
+							<th>品名</th>
+							<th>数量</th>
+							<th>单价</th>
+							<th>金额</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodydata1">
+					</tbody>
+					<tr id="total">
+					</tr>
+					<tr>
+						<th>会员手机</th>
+						<th colspan="3"><input id="vipPhone" style="width: 200px" type='text'
+							placeholder="请输入会员手机号码" /></th>
+						<th><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-info'
+							value="查询" onclick="fn4()"/></th>
+					</tr>
+					<tr id="vipInfo">
+					</tr>
+					<tr id="vmoneyCredit">
+					</tr>
+					<tr id="finalMoney">
+					</tr>
+					<tr id="vphoneRemain">
+					</tr>
+					<tr id="pay">
+						<th>操作</th>
+						<th colspan="4"><input style="width: 300px" type='button'
+							class='layui-btn layui-btn-sm layui-btn-radius layui-btn-info'
+							value='付款' /></th>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+		<div class="layui-footer">
+			<!-- 底部固定区域 -->
+			有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+		</div>
+	</div>
+	<script src="../layui/layui.js"></script>
+	<script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+	<script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+	<script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+	<script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+	<script type="text/javascript"
+		src="../bootstrap3/js/css3-mediaqueries.js"></script>
+	<script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+	<script type="text/javascript">
+			layui.use('form', function() {
+				var form = layui.form;
+				//刷新界面 所有元素
+				form.render();
+			});
+			
+			var orderNumber = 1;
+			$(document).ready(function(){
+				setInterval(function(){fnDate();});
+			});
+			
+			//设置订单表第一行的时间和订单编号
+			function fnDate(){
+			var time = new Date().toLocaleString();
+			first="<tr><td>时间</td><td colspan='3'>"+time+"</td><td>"+"#"+orderNumber+"</td></tr>";
+			document.getElementById("timeAndNumber").innerHTML=first;
+			}
+			
+			
+			//商品信息全部查询
+			  function fn1(){
+					$.ajax({
+						"url" : "/goods/allInfo",
+						"data" :{},
+						"type" : "post",
+						"dataType" : "json",
+						"success" : function(data) {
+							var str="";
+							for(i in data){
+								var type = data[i].type;
+								var gtype = "";
+								if(type == 0){
+									gtype = "饮品";
+								}else if(type == 1){
+									gtype = "点心";
+								}else{
+									gtype = "套餐";
+								}
+								str+="<tr><td>"+data[i].number+"</td><td id='"+data[i].number+1+"'>"+data[i].name+"</td><td id='"+data[i].number+2+"'>"+data[i].price+"</td><td>"+data[i].amount+"</td><td>"+gtype+"</td><td><input id='"+data[i].number+3+"' type='text' placeholder='请输入购买数量'/></td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-info' value='添加' onclick='fn3("+data[i].number+")'/></td></tr>";
+							}
+							document.getElementById("tbodydata").innerHTML=str;
+						}
+					});
+			  }
+			  
+			 //快速查询商品信息
+			function fn2(){
+				  if($("#Name-select").val() ==""&&$("#Number-select").val() == ""){
+					  alert("请输入商品名称或者编号再进行查询!");
+				  }else  if($("#Name-select").val()!=""&&$("#Number-select").val()!=""){
+					  alert("不可同时输入商品名称和编号!");
+				  }else{
+					$.ajax({
+						"url" : "/goods/InfoByNameOrNumber",
+						"data" : $("#form-fastSelect").serialize(),
+						"type" : "post",
+						"dataType" : "json",
+						"success" :function(result) {
+							if(result.state==2000){
+							var str="";
+							var type = result.data.type;
+							var gtype = "";
+							if(type == 0){
+								gtype = "饮品";
+							}else if(type == 1){
+								gtype = "点心";
+							}else{
+								gtype = "套餐";
+							}
+							str="<tr><td>"+result.data.number+"</td><td id='"+result.data.number+1+"'>"+result.data.name+"</td><td id='"+result.data.number+2+"'>"+result.data.price+"</td><td>"+result.data.amount+"</td><td>"+gtype+"</td><td><input  id='"+result.data.number+3+"' type='text' placeholder='请输入购买数量'/></td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-info' value='添加' onclick='fn3("+result.data.number+")' /></td></tr>";
+							document.getElementById("tbodydata").innerHTML=str;
+							}else{
+								alert("查询失败!"+result.message);
+							}
+						}
+					});
+				  }
+			}
+			
+			
+			var t="";//用来存储添加的订单
+			var arr=[];
+			var totalNum=0;//合计数量
+			var totalMoney=0;//合计金额
+			var str="";
+			var uid =1;
+			//商品添加进入订单
+			function fn3(number) {
+				var name = $("#"+number+1).text();
+				var price = $("#"+number+2).text();
+				var num = $("#"+number+3).val();
+				var p = parseFloat(price);
+				var money = p*num;
+				var cartJson={
+						"number":number,
+						"num":num,
+						"uid":uid
+				}
+				if(num<=0){
+					alert("购买数量不得小于1！");
+				}else{
+				$.ajax({
+					"url" : "/cart/" + number + "/add",
+					"data" : cartJson,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							fn31(uid);
+						} else {
+							alert("添加购物车失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("添加失败!");
+					}
+				});
+				}
+			}
+			
+			//显示在订单页面
+			function fn31(uid) {
+				str="";
+				$.ajax({
+					"url" : "/cart/" + uid + "/show",
+					"data" : uid,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							//如果不包含
+							totalNum=0;
+							totalMoney=0;
+							 for (let i = 0; i < result.data.length; i++) {
+							var money = result.data[i].price*result.data[i].num;
+							str+="<tr><td>"+result.data[i].name+"</td><td><input style='width:20px' type='button' value='-' onclick='fn61("+result.data[i].gid+")'><input id='"+result.data[i].gid+"' style='width:30px' type='text' value='"+result.data[i].num+"'><input style='width:20px' type='button' value='+' onclick='fn62("+result.data[i].gid+")'></td><td id='price"+result.data[i].gid+"'>"+result.data[i].price+"</td><td id='money"+result.data[i].gid+"'>"+money+"</td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-warm' value='删除' onclick='deleteOne("+result.data[i].gid+")' /></td></tr>";
+							totalNum=parseInt(result.data[i].num)+totalNum;
+							totalMoney=parseFloat(money)+totalMoney;
+							 }
+							str1="<tr><td>合计</td><td>"+totalNum+"</td><td></td><td id='totalMoney'>"+totalMoney+"</td><td></td></tr>";
+							document.getElementById("total").innerHTML=str1;//更新合计数据
+							document.getElementById("tbodydata1").innerHTML=str;//更新添加的订单
+						} else {
+							alert("进入订单失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("进入订单失败!");
+					}
+				});
+			}
+			
+			//通过手机号查询出会员信息，以及消费情况
+			function fn4(){
+				var vipPhone = $("#vipPhone").val();
+				var vipJson={
+						"vphone":vipPhone
+				}
+				$.ajax({
+					"url" : "/vip/ByVphone",
+					"data" : vipJson,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							var str = "";
+							var totalMoney = $("#totalMoney").text(); //获取合计金额
+							var discount=0; //优惠金额
+							var finalMoney=0; //实际支付金额
+							var vtype = result.data.vtype;
+							var type = "";
+							if (vtype == 0) {
+								type = "储蓄会员";
+							} else {
+								type = "折扣会员";
+								discount= parseFloat(totalMoney)*10/100;
+							}
+							str="<tr><td>会员类型</td><td colspan='2'>"+type+"</td><td>优惠</td><td>"+discount+"</td></tr>";
+							finalMoney=parseFloat(totalMoney)-discount;
+							str2="<tr><td>消费前余额</td><td colspan='2'>"+result.data.vmoney+"</td><td>积分</td><td>"+result.data.credit+"</td></tr>";
+							str1="<tr><td>实际消费</td><td colspan='2'>"+finalMoney+"</td><td><input id='addMoney' style='width: 80px' type='text' placeholder='充值' /></td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-info' value='快充' onclick='fn5("+result.data.vphone+")'></td></tr>";
+							var remainMoney = result.data.vmoney-finalMoney;
+							str3="<tr><td>消费后余额</td><td colspan='4'>"+remainMoney.toFixed(2)+"</td></tr>";
+							document.getElementById("vipInfo").innerHTML=str;//更新会元类型和优惠价格
+							document.getElementById("finalMoney").innerHTML=str1;//实际消费金额
+							document.getElementById("vmoneyCredit").innerHTML=str2;//会员余额和积分
+							document.getElementById("vphoneRemain").innerHTML=str3;//会员手机号和消费后剩余金额
+						} else {
+							alert("查询失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("查询失败!");
+					}
+				});
+			}
+			
+			
+			//根据手机号进行充值余额
+			function fn5(vphone){
+				var vmoney = $("#addMoney").val();
+				var vipJson = {
+					"vphone" : vphone,
+					"vmoney" : vmoney
+				};
+				$.ajax({
+							"url" : "/vip/"+vphone+"/addVmoney",
+							"data" : vipJson,
+							"type" : "post",
+							"dataType" : "json",
+							"success" : function(result) {
+								if (result.state == 2000) {
+									alert("充值成功!");
+									fn4();
+								} else {
+									alert("充值失败!" + result.message);
+								}
+							},
+							"error" : function() {
+								alert("充值失败!");
+							}
+						});
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			//商品添加进入订单
+			function fn300(number) {
+				var name = $("#"+number+1).text();
+				var price = $("#"+number+2).text();
+				var num = $("#"+number+3).val();
+				var p = parseFloat(price);
+				var money = p*num;
+				var cartJson={
+						"name":name,
+						"price":price,
+						"num":num,
+						"money":money
+				}
+				$.ajax({
+					"url" : "/cart/" + number + "/add",
+					"data" : cartJson,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							totalNum=parseInt(num)+parseInt(totalNum);
+							totalMoney=parseFloat(money)+parseFloat(totalMoney);
+							var str1="";//合计一行
+							//新添订单数据,判断是否有重复商品，如果没有重复，正常添加商品
+							if(str.indexOf(result.data.name)<=0){
+								str="<tr id='"+number+"'><td>"+result.data.name+"</td><td>"+result.data.num+"</td><td>"+result.data.price+"</td><td>"+result.data.money+"</td></tr>";
+								t+=str;
+								alert(t);
+							}else{
+								//商品重复，将数量和金额进行改变
+								var num1 = $("#"+number).children("td").eq(1).text();
+								var num2 = parseInt(num1);
+								num2+=result.data.num;
+								var money2 = num2*p;
+								t = t.replace("<tr id='"+number+"'><td>"+result.data.name+"</td><td>"+result.data.num+"</td><td>"+result.data.price+"</td><td>"+result.data.money+"</td></tr>", "<tr id='"+number+"'><td>"+result.data.name+"</td><td>"+num2+"</td><td>"+result.data.price+"</td><td>"+money2+"</td></tr>")
+								alert(t);
+							}
+							document.getElementById("tbodydata1").innerHTML=t;//更新添加的订单
+							//合计所有数量和金额
+							str1="<tr><td>合计</td><td>"+totalNum+"</td><td></td><td id='totalMoney'>"+totalMoney+"</td></tr>";
+							document.getElementById("total").innerHTML=str1;//更新合计数据
+						} else {
+							alert("添加购物车失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("添加失败!");
+					}
+				});
+			}
+			
+			//减一
+			function fn61(gid){
+				uid=1;
+				$.ajax({
+					"url" : "/cart/" + gid + "/num/del",
+					"data" : gid,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if(result.data>0.9){
+							if (result.state == 2000) {
+								$("#"+gid).val(result.data);
+								var price = parseInt($("#price"+gid).html());
+								$("#money"+gid).html(result.data*price);
+								fn31(uid);
+							} else {
+								alert("减一个失败!" + result.message);
+							}
+						}else{
+						alert("数量不得小于1");
+						}
+					},
+					"error" : function() {
+						alert("添加失败!");
+					}
+				});
+			}
+			
+			//加一
+			function fn62(gid){
+				uid=1;
+				$.ajax({
+					"url" : "/cart/" + gid + "/num/add",
+					"data" : gid,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							$("#"+gid).val(result.data);
+							var price = parseInt($("#price"+gid).html());
+							$("#money"+gid).html(result.data*price);
+							fn31(uid);
+						} else {
+							alert("加一个失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("添加失败!");
+					}
+				});
+			}
+			
+			//删除一行数据
+			function deleteOne(gid){
+				var uid=1;
+				$.ajax({
+					"url" : "/cart/" + gid + "/delete",
+					"data" : gid,
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							alert("删除该订单成功！");
+							fn31(uid);
+						} else {
+							alert("删除该订单失败!" + result.message);
+						}
+					},
+					"error" : function() {
+						alert("操作失败!");
+					}
+				});
+			}
+		</script>
+</body>
+</html>

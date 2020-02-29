@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Management.CoffeeShop.mapper.CartMapper">
+
+	 <resultMap id="CartEntityMap" type="Management.CoffeeShop.entity.Cart">
+        <id column="id" property="id"/>
+    </resultMap>
+
+    <!-- 插入购物车数据 -->
+    <!-- Integer insert(Cart cart) -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cart(
+            uid,gid,name,num,price,money
+        )VALUES(
+            #{uid},#{gid},#{name},#{num},#{price},#{money}
+        )
+    </insert>
+    
+    <!--删除一行订单信息  -->
+    <delete id="deleteByGid">
+        DELETE FROM 
+			cart 
+		WHERE 
+			gid=#{gid}
+    </delete>
+
+    <!-- 修改购物车中商品的数量 -->
+    <!--Integer updateNumByGid(
+			@Param("gid") Integer gid, 
+			@Param("num") Integer num);  -->
+    <update id="updateNumByGid">
+        UPDATE 
+            cart 
+        SET 
+            num=#{num} 
+        WHERE 
+            gid=#{gid}
+    </update>
+
+    <!-- 根据商品id查询购物车数据 -->
+    <!-- Cart findByGid(Integer gid); -->
+    <select id="findByGid"
+        resultMap="CartEntityMap">
+        SELECT 
+            * 
+        FROM 
+            cart 
+        WHERE 
+        	gid=#{gid}
+    </select>
+    
+    <!-- 根据id查询购物车数据 -->
+    <!--Cart findById(Integer id);  -->
+    <select id="findById"
+        resultMap="CartEntityMap">
+        SELECT 
+            * 
+        FROM 
+            cart 
+        WHERE 
+        	id=#{id}
+    </select>
+    
+    <!-- 根据订单uid查询购物车数据 -->
+    <!--Cart findByUid(Integer uid);  -->
+    <select id="findByUid"
+        resultMap="CartEntityMap">
+        SELECT 
+            * 
+        FROM 
+            cart 
+        WHERE 
+        	uid=#{uid}
+    </select>
+    
+    <!-- 查询某用户的购物车数据 -->
+	<!-- List<CartVO> findByVid(Integer vid); -->
+	<select id="findByVid" resultType="Management.CoffeeShop.entity.CartVO">
+    SELECT 
+    	cart.id,vid,gid,cart.num,cart.price,goods.price AS realPrice 
+    FROM 
+    	cart 
+    LEFT JOIN 
+    	goods 
+    ON 
+    	cart.gid=goods.number
+    WHERE 
+    	vid=#{vid}
+	</select>
+	
+</mapper>

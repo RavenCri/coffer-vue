@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+body{
+	margin:0;
+	background-image: url("../images/background.jpg");
+	background-repeat: no-repeat;
+	background-size:100% ; 
+	color:white;
+	text-align: center;
+	font-size: 25px;
+}
+p{
+	font-size: 24px;
+}
+#login{
+	width:400px;
+	height:300px;
+	margin:auto;
+	margin-top:300px;
+	background-color: rgba(255,255,255,0.2);
+	border-radius:5px;	
+	padding-top:20px;
+}
+.checkbox{
+	font-size: 15px;
+}
+#message{
+	margin-left:20px;
+	margin-top:30px;
+}
+
+#btn-login{
+	display: block;
+	width:335px;
+	height:50px;
+	font-size: 20px;
+	margin-left:-40px;
+	margin-top:20px;
+	font-weight: bold;
+}
+span{
+	font-size: 14px;
+	color:white;
+}
+span>a{
+	color:yellow;
+	text-decoration: none;
+}
+a:hover{
+	color:#5bc0de;
+}

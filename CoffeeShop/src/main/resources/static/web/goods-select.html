@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#addVip {
+	height: 450px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin: 65px 20px 0 20px;
+}
+
+#btn {
+	margin: 10px 20px 0 235px;
+}
+#form-fastSelect{
+    margin-top:-38px;
+    margin-left:200px;
+}
+#phone-select {
+	height: 32px;
+	margin-left: 10px;
+}
+
+#btn-select {
+	margin-left: 200px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="">会员管理</a></li>
+        <li class="layui-nav-item"><a href="">商品管理</a></li>
+        <li class="layui-nav-item"><a href="">查看餐桌</a></li>
+        <li class="layui-nav-item"><a href="">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">外卖管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="">账号管理</a></li>
+        <li class="layui-nav-item"><a href="javascript:;"> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="">更换头像</a>
+            </dd>
+            <dd>
+              <a href="">修改密码</a>
+            </dd>
+          </dl></li>
+        <li class="layui-nav-item"><a href="">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">商品管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="goods-add.html">添加商品</a>
+              </dd>
+              <dd>
+                <a href="goods-delete.html">删除商品</a>
+              </dd>
+              <dd>
+                <a href="goods-change.html">修改信息</a>
+              </dd>
+              <dd>
+                <a href="goods-select.html">查询商品</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+    <div id="btn">
+      <input type="button" class="layui-btn" value="显示全部商品信息"
+        onclick="fn1()" />  <input id="btn-select" type="button"
+        class="layui-btn layui-btn-normal" value="快速搜索商品信息" onclick="fn2()" />
+        <input id="phone-select" type="text" name="name"
+        placeholder="请输入商品名快速查询" />
+    </div>
+    <div class="layui-body" id="addVip">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+        <table class="layui-table">
+          <colgroup>
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>商品图片</th>
+              <th>名称</th>
+              <th>库存</th>
+              <th>类型</th>
+            </tr>
+          </thead>
+          <tbody id="tbodydata">
+          <tr>
+              <th>图片</th>
+              <th>xx</th>
+              <th>133</th>
+              <th>饮品</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+  <script type="text/javascript"
+    src="../bootstrap3/js/css3-mediaqueries.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+  function fn1(){
+		$.ajax({
+			"url" : "/vip/allInfo",
+			"data" : {},
+			"type" : "post",
+			"dataType" : "json",
+			"success" : function(data) {
+				var str="";
+				for(i in data){
+					str+="<tr><td>"+data[i].vid+"</td><td>"+data[i].vname+"</td><td>"+data[i].vphone+"</td><td>"+data[i].vmoney+"元</td><td>"+data[i].credit+"积分</td><td>"+data[i].recentTime+"</td><td>"+data[i].regTime+"</td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='查看' /></td></tr>";
+				}
+				document.getElementById("tbodydata").innerHTML=str;
+			}
+		});
+  }
+  
+  function fn2(){
+	  if($("#phone-select").val() == ""){
+		  alert("请输入手机号码再进行查询!");
+	  }else{
+		$.ajax({
+			"url" : "/vip/InfoByVphone",
+			"data" : $("#form-fastSelect").serialize(),
+			"type" : "post",
+			"dataType" : "json",
+			"success" :function(data) {
+				if(data.length==0){
+					alert("未查询到该会员!");
+				}else{
+				var str="";
+				for(i in data){
+					str+="<tr><td>"+data[i].vid+"</td><td>"+data[i].vname+"</td><td>"+data[i].vphone+"</td><td>"+data[i].vmoney+"元</td><td>"+data[i].credit+"积分</td><td>"+data[i].recentTime+"</td><td>"+data[i].regTime+"</td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='查看' /></td></tr>";
+				}
+				document.getElementById("tbodydata").innerHTML=str;
+				}
+			}
+		});
+	  }
+  }
+  </script>
+</body>
+</html>

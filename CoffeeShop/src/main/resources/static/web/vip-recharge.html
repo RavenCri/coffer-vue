@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#addVip {
+	height: 450px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin: 65px 20px 0 20px;
+}
+
+#btn {
+	margin: 10px 20px 0 235px;
+}
+
+#form-fastSelect {
+	margin-top: -38px;
+	margin-left: 200px;
+}
+
+#phone-select {
+	height: 32px;
+	margin-left: 10px;
+}
+
+#btn-select {
+	margin-left: 200px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="vip-add.html">会员管理</a></li>
+        <li class="layui-nav-item"><a href="goods-add.html">商品管理</a></li>
+        <li class="layui-nav-item"><a href="goodOrder.html">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="">账号管理</a></li>
+        <li class="layui-nav-item"><a href="javascript:;"> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a>
+          <dl class="layui-nav-child">
+            <dd>
+              <a href="">更换头像</a>
+            </dd>
+            <dd>
+              <a href="">修改密码</a>
+            </dd>
+          </dl></li>
+        <li class="layui-nav-item"><a href="">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">会员管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="vip-add.html">添加会员</a>
+              </dd>
+              <dd>
+                <a href="vip-delete.html">删除会员</a>
+              </dd>
+              <dd>
+                <a href="vip-change.html">修改信息</a>
+              </dd>
+              <dd>
+                <a href="vip-recharge.html">充值余额</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div id="btn">
+      <input type="button" class="layui-btn" value="显示全部会员信息"
+        onclick="fn1()" />
+      <form id="form-fastSelect">
+        <input id="btn-select" type="button"
+          class="layui-btn layui-btn-normal" value="快速搜索会员信息"
+          onclick="fn2()" /> <input id="phone-select" type="text"
+          name="vphone" placeholder="请输入手机号快速查询" />
+      </form>
+    </div>
+    <div class="layui-body" id="addVip">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+        <table class="layui-table">
+          <colgroup>
+            <col width="60">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col width="120">
+            <col width="180">
+            <col width="180">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>会员姓名</th>
+              <th>手机号码</th>
+              <th>余额</th>
+              <th>会员积分</th>
+              <th>会员类型</th>
+              <th>注册日期</th>
+              <th>充值金额</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="tbodydata">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+  <script type="text/javascript"
+    src="../bootstrap3/js/css3-mediaqueries.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+			function fn1() {
+				$
+						.ajax({
+							"url" : "/vip/allInfo",
+							"data" : {},
+							"type" : "post",
+							"dataType" : "json",
+							"success" : function(data) {
+								var str = "";
+								for (i in data) {
+									var vtype = data[i].vtype;
+									var type = "";
+									if (vtype == 0) {
+										type = "储蓄会员";
+									} else {
+										type = "折扣会员";
+									}
+									str += "<tr><td>"
+											+ data[i].vid
+											+ "</td><td>"
+											+ data[i].vname
+											+ "</td><td>"
+											+ data[i].vphone
+											+ "</td><td>"
+											+ data[i].vmoney
+											+ "元</td><td>"
+											+ data[i].credit
+											+ "积分</td><td>"
+											+ type
+											+ "</td><td>"
+											+ data[i].regTime
+											+ "</td><td><input id='"+data[i].vid+"' type='text' name='recharge' placeholder='请输入充值金额'  /></td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='充值'  onclick='fn4("
+											+ data[i].vid + ","
+											+ data[i].vphone + ")'/></td></tr>";
+								}
+								document.getElementById("tbodydata").innerHTML = str;
+							}
+						});
+			}
+
+			function fn2() {
+				if ($("#phone-select").val() == "") {
+					alert("请输入手机号码再进行查询!");
+				} else {
+					$
+							.ajax({
+								"url" : "/vip/InfoByVphone",
+								"data" : $("#form-fastSelect").serialize(),
+								"type" : "post",
+								"dataType" : "json",
+								"success" : function(data) {
+									if (data.vid == undefined) {
+										alert("未查询到该会员!");
+									} else {
+										var str = "";
+										var vtype = data.vtype;
+										var type = "";
+										if (vtype == 0) {
+											type = "储蓄会员";
+										} else {
+											type = "折扣会员";
+										}
+										str += "<tr><td>"
+												+ data.vid
+												+ "</td><td>"
+												+ data.vname
+												+ "</td><td>"
+												+ data.vphone
+												+ "</td><td>"
+												+ data.vmoney
+												+ "元</td><td>"
+												+ data.credit
+												+ "积分</td><td>"+type+"</td><td>"
+												+ data.regTime
+												+ "</td><td><input class='recharge' type='text' name='recharge' placeholder='请输入充值金额' /></td><td><input type='button' class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger' value='充值' onclick='fn3("
+												+ data.vphone
+												+ ")' /></td></tr>";
+										document.getElementById("tbodydata").innerHTML = str;
+									}
+								}
+							});
+				}
+			}
+
+			function fn3(vphone) {
+				var vmoney = $(".recharge").val();
+				var vipJson = {
+					"vphone" : vphone,
+					"vmoney" : vmoney
+				};
+				if(vmoney<0){
+					alert("充值金额不得小于0！");
+				}else{
+					$.ajax({
+						"url" : "/vip/"+vphone+"/addVmoney",
+						"data" : vipJson,
+						"type" : "post",
+						"dataType" : "json",
+						"success" : function(result) {
+							if (result.state == 2000) {
+								alert("充值成功!");
+								fn2();
+							} else {
+								alert("充值失败!" + result.message);
+							}
+						},
+						"error" : function() {
+							alert("充值失败!");
+						}
+					});
+				}
+			}
+			
+			function fn4(vid,vphone) {
+				var v = vid;
+				var vmoney = $("#"+v).val();
+				var vipJson = {
+					"vmoney" : vmoney,
+					"vphone" : vphone
+				};
+				if(vmoney<=0){
+					alert("充值金额不得小于0！");
+				}else{
+				$.ajax({
+							"url" : "/vip/"+vphone+"/addVmoney",
+							"data" : vipJson,
+							"type" : "post",
+							"dataType" : "json",
+							"success" : function(result) {
+								if (result.state == 2000) {
+									alert("充值成功!");
+									fn1();
+								} else {
+									alert("充值失败!" + result.message);
+								}
+							},
+							"error" : function() {
+								alert("充值失败!");
+							}
+						});
+				}
+			}
+		</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Management.CoffeeShop.mapper.UserMapper">
+
+	<!--查出来的用户数据结果集  -->
+	<!--数据库的字段名跟User类里面的用户属性(set方法)  -->
+	<resultMap type="Management.CoffeeShop.entity.User" id="UserEntityMap">
+		<id column="uid" property="uid"/>
+		<result column="uname" property="uname"/>
+		<result column="pwd" property="pwd"/>
+		<result column="salt" property="salt"/>
+		<result column="modified_time" property="modifiedTime"/>
+	</resultMap>
+	
+	<!--插入用户数据  -->
+	<!--Integer insert(User user);  -->
+	<!--useGeneratedKeys:允许 JDBC 支持自动生成主键  -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="uid">
+		INSERT INTO user(
+			uname,pwd,salt
+		)VALUES(
+			#{uname},#{pwd},#{salt}
+		)
+	</insert>
+	
+	<!--根据用户id更新密码  -->
+	<!--Integer updatePwdByUid(Integer uid,String pwd);  -->
+	<update id="updatePwdByUid">
+		UPDATE 
+			user 
+		SET 
+			pwd=#{pwd},
+			modified_time=#{modifiedTime}  
+		WHERE 
+			uid=#{uid}
+	</update>
+	
+	<!--根据用户id查询用户数据  -->
+	<!--User findByUid(Integer uid);  -->
+	<select id="findByUid" resultMap="UserEntityMap">
+		SELECT 
+			* 
+		FROM 
+			user 
+		WHERE 
+			uid=#{uid}
+	</select>
+	
+	<!--根据用户名查询用户数据  -->
+	<!--User findByUname(String uname);  -->
+	<select id="findByUname" resultMap="UserEntityMap">
+		SELECT 
+			* 
+		FROM 
+			user 
+		WHERE 
+			uname=#{uname}
+	</select>
+	
+</mapper>

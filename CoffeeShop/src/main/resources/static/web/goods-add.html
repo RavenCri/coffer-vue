@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小型咖啡店管理系统</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+#addGoods {
+	width: 600px;
+	height: 500px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin: 20px 20px 0 20px;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">小型咖啡店管理系统</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="vip-add.html">会员管理</a></li>
+        <li class="layui-nav-item"><a href="goods-add.html">商品管理</a></li>
+        <li class="layui-nav-item"><a href="/orderManager">订单管理</a></li>
+        <li class="layui-nav-item"><a href="">统计报表</a></li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
+        <li class="layui-nav-item"><a href=""> <img
+            src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+        </a></li>
+        <li class="layui-nav-item"><a href="">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed"><a class=""
+            href="javascript:;">商品管理</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="#">添加商品</a>
+              </dd>
+              <dd>
+                <a href="goods-delete.html">删除商品</a>
+              </dd>
+              <dd>
+                <a href="goods-change.html">修改信息</a>
+              </dd>
+            </dl></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <div class="layui-body" id="addGoods">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+        <!--enctype:上传文件所需  -->
+        <form action="reg" method="post" class="layui-form" id="form-addGoods" enctype="multipart/form-data">
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品编号</label>
+            <div class="layui-input-block">
+              <input type="text" name="number" autocomplete="off"
+                placeholder="请输入商品编号" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="name" autocomplete="off"
+                placeholder="请输入商品名称" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品价格</label>
+            <div class="layui-input-block">
+              <input type="text" name="price" autocomplete="off"
+                placeholder="(顺序由小、中、大排列，价格按空格隔开)" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品数量</label>
+            <div class="layui-input-block">
+              <input type="text" name="amount" autocomplete="off"
+                placeholder="请输入商品数量" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品类型</label>
+            <div class="layui-input-block">
+
+              <input id="radio0" type="radio" name="type" value="0"
+              title="饮品" checked> <input id="radio1"
+                type="radio" name="type" value="1" title="点心">
+              <input id="radio2" type="radio" name="type" value="2"
+                title="套餐">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">商品预览</label>
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" id="test1">上传图片</button>
+            <img  id="previewImg" src="" width="50px"/>
+            <input type="input" id="filename" name="image_url" hidden/>
+          </div>
+          <!--提交  -->
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <input id="btn-addGoods" type="button" class="layui-btn"
+                value="立即提交" />
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      有问题请联系系统管理员:&nbsp;&nbsp;李先生&nbsp;&nbsp;&nbsp;&nbsp;联系电话:17816559780&nbsp;&nbsp;&nbsp;&nbsp;地址:浙江省宁波市宁波工程学院
+    </div>
+  </div>
+  <script src="../layui/layui.js"></script>
+  <script type="text/javascript" src="../bootstrap3/jquery.min.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/bootstrap.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/holder.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/html5shiv.min.js"></script>
+  <script type="text/javascript"
+    src="../bootstrap3/js/css3-mediaqueries.js"></script>
+  <script type="text/javascript" src="../bootstrap3/js/respond.min.js"></script>
+  <script type="text/javascript">
+			layui.use(['form','upload'], function() {
+              let form = layui.form;
+              let upload = layui.upload;
+              // let $ = layui.$
+              let uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                ,url: '/upload' //上传接口
+                ,done: function(res){
+                  console.log(res)
+                  $("#previewImg").attr("src","/getGoodsImg?filename="+res.data.filename)
+                  $("#filename").val(res.data.filename)
+                }
+                ,error: function(){
+                  //请求异常回调
+                }
+              });
+				//刷新界面 所有元素
+				form.render();
+
+			});
+			
+			$("#btn-addGoods").click(function() {
+				var number=$("input[name=number]").val();
+				var name=$("input[name=name]").val();
+				var price=$("input[name=price]").val();
+				var amount=$("input[name=amount]").val();
+				var type=$("input[name=type]:checked").val();
+				if(number==""||name==""||price==""||amount==""){
+					alert("输入框不得为空!");
+				}
+				$.ajax({
+					"url" : "/goods/reg",
+					"data" :$("#form-addGoods").serialize(),
+					"type" : "post",
+					"dataType" : "json",
+					"success" : function(result) {
+						if (result.state == 2000) {
+							alert("登记商品成功!");
+						} else {
+							alert("登记商品失败!" + result.message);
+						}
+					}
+				});
+			});
+		</script>
+</body>
+</html>
