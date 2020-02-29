@@ -22,4 +22,5 @@ public interface GoodOrderMapper {
 	int addOrder(GoodOrder goodOrder);
 
 	List<GoodOrder> selectOrderByVipId(int vipId);
+	void cancelOrder(int bid);
 }

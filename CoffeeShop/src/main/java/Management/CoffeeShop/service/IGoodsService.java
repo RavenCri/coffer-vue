@@ -54,7 +54,9 @@ public interface IGoodsService {
 	 * 修改商品信息
 	 */
 	void changeInfo(Goods goods);
-	
-	
-	
+
+	/*
+		根据货物名字获取货物
+	 */
+	Goods findGoodByName(String GoodName);
 }

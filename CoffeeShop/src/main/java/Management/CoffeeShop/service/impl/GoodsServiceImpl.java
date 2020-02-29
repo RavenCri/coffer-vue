@@ -85,7 +85,9 @@ public class GoodsServiceImpl implements IGoodsService{
 		}
 		return info;
 	}
-
+	public Goods findGoodByName(String GoodName){
+		return goodsMapper.findByName(GoodName);
+	}
 	/**
 	 * 根据商品编号查询商品资料
 	 */

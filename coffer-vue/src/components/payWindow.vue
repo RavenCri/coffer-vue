@@ -35,21 +35,28 @@
                 }).then(() => {
                     this.centerDialogVisible = false;
                     this.$axios.post("/order/cancelOrder", {
-                        param:this.currOrderIdAll
+                        param: this.currOrderIdAll
                     }, {
                         headers: {
                             'Content-type': 'application/json;charset=UTF-8'
                         }
                     }).then(response => {
-                        console.log(response)
+                        console.log(response);
+                        let type;
+                        let message;
+                        if (response.data.status === "status") {
+                            type="success";message="已取消订单";
+                        } else {
+                            type="error";message=response.data.msg;
+                        }
                         this.$message({
-                        type: 'success',
-                        message: '已取消该订单'
-                    });
+                                type: 'success',
+                                message: '已取消该订单'
+                            });
                     }).catch(function (error) {
                         console.log(error);
                     });
-                   
+
 
                 }).catch(() => {
 

@@ -40,4 +40,7 @@
     <select id="selectOrderByVipId" resultMap="orderResult">
         select * from good_order where vid = #{vid}
     </select>
+    <update id="cancelOrder">
+        update good_order set order_status=#{order_status} where bid = #{bid}
+    </update>
 </mapper>

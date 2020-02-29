@@ -5,6 +5,8 @@ import Management.CoffeeShop.entity.Goods;
 import Management.CoffeeShop.entity.Vip;
 import Management.CoffeeShop.mapper.GoodOrderMapper;
 import Management.CoffeeShop.mapper.GoodsMapper;
+import Management.CoffeeShop.service.IGoodOrderService;
+import Management.CoffeeShop.service.IGoodsService;
 import Management.CoffeeShop.service.IVipService;
 import Management.CoffeeShop.util.JsonResult;
 import com.alibaba.fastjson.JSON;
@@ -21,10 +23,11 @@ import java.util.List;
 @Controller
 @RequestMapping("order")
 public class PayController {
+
     @Autowired
-    GoodOrderMapper goodOrderMapper;
+    IGoodOrderService goodOrderService;
     @Autowired
-    GoodsMapper goodsMapper;
+    IGoodsService goodsService;
     @Autowired
     IVipService vipService;
     // 取货号码
@@ -38,7 +41,7 @@ public class PayController {
 
         JSONObject param = jsonObject.getJSONObject("param");
         JSONObject price = param.getJSONObject("price");
-        Goods good = goodsMapper.findByName(param.getString("name"));
+        Goods good = goodsService.findGoodByName(param.getString("name"));
         int buyNum = param.getInteger("buyNum");
         String cupType = param.getString("cupType");
         DecimalFormat    df   = new DecimalFormat("######0.00");
@@ -72,7 +75,7 @@ public class PayController {
         }
 
         GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_describe);
-        goodOrderMapper.addOrder(goodOrder);
+        goodOrderService.addOrder(goodOrder);
 
         result.add(goodOrder.getBid());
         res.put("result",result);
@@ -85,7 +88,7 @@ public class PayController {
     @ResponseBody
     public JSONArray selectOrderByVipId(@RequestBody JSONObject json){
         String id = json.getString("id");
-        List<GoodOrder> goodOrders = goodOrderMapper.selectOrderByVipId(1);
+        List<GoodOrder> goodOrders = goodOrderService.selectOrderByVipId(1);
         return JSONArray.parseArray(JSON.toJSONString(goodOrders));
     }
 
@@ -93,7 +96,7 @@ public class PayController {
     @ResponseBody
     public String selectOrderById(@RequestBody JSONObject json){
         String id = json.getString("id");
-        GoodOrder goodOrder = goodOrderMapper.selectOrderById(1);
+        GoodOrder goodOrder = goodOrderService.selectOrderById(1);
         return JSON.toJSONString(goodOrder);
 
     }
@@ -136,7 +139,7 @@ public class PayController {
         for (int i = 0; i < param.size(); i++) {
             JSONObject curr = param.getJSONObject(i);
             JSONObject price = curr.getJSONObject("price");
-            Goods good = goodsMapper.findByName(curr.getString("name"));
+            Goods good = goodsService.findGoodByName(curr.getString("name"));
             int buyNum = curr.getInteger("buyNum");
             String cupType = curr.getString("cupType");
 
@@ -156,7 +159,7 @@ public class PayController {
                 order_describe = "0";
             }
             GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_describe);
-            goodOrderMapper.addOrder(goodOrder);
+            goodOrderService.addOrder(goodOrder);
             result.add(goodOrder.getBid());
         }
         if(vipLoginStatus){
@@ -172,10 +175,19 @@ public class PayController {
 
     @PostMapping("cancelOrder")
     @ResponseBody
-    public JSONObject cancelOrder(@RequestBody String[] array){
-        for (String string : array) {
-            System.out.println(string);
+    public JSONObject cancelOrder(@RequestBody JSONObject jsonObject){
+        JSONObject res = new JSONObject();
+        try{
+            ArrayList<Integer> array = (ArrayList)jsonObject.get("param");
+            array.forEach(i-> {
+
+                goodOrderService.cancelOrder(-1);
+            });
+            return res.fluentPut("status","success");
+        }catch (Exception e){
+            res.fluentPut("msg",e.getMessage());
+            return res.fluentPut("status","success");
         }
-        return new JSONObject().fluentPut("status","success");
+
     }
 }

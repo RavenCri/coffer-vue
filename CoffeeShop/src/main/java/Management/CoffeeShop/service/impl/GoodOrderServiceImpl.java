@@ -1,6 +1,7 @@
 package Management.CoffeeShop.service.impl;
 
 import Management.CoffeeShop.entity.GoodOrder;
+import Management.CoffeeShop.entity.Goods;
 import Management.CoffeeShop.mapper.GoodOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,11 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 	public List<GoodOrder> selectOrderByVipId(int vipId) {
 		return orderMapper.selectOrderByVipId(vipId);
 	}
+
+	@Override
+	public void cancelOrder(Integer i) {
+		orderMapper.cancelOrder(i);
+	}
+
+
 }
