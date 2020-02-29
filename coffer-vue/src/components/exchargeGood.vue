@@ -48,7 +48,7 @@
                         }).then(() => {
                             return this.randomString(10)
                         }).then((pwd) => {
-                            console.log("进来")
+                            //console.log("进来")
                             this.$message({
                                 message: "兑换成功，你可凭取此号码去前台兑换。请妥善保存。",
                                 type: "success"

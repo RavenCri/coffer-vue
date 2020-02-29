@@ -39,7 +39,8 @@ public interface GoodsMapper {
 	 * @return
 	 */
 	Goods findByNameOrNumber(@Param("name")String name,@Param("number")Integer number);
-	
+
+	Goods findById(int id);
 	/**
 	 * 查找所有商品信息
 	 * @param name

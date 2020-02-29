@@ -28,7 +28,7 @@
         <result column="created_time" property="created_time"/>
         <association property="good" column="good_id"
                      javaType="Management.CoffeeShop.entity.Goods"
-                     select="Management.CoffeeShop.mapper.GoodsMapper.findByNumber" >
+                     select="Management.CoffeeShop.mapper.GoodsMapper.findById" >
 
         </association>
 
@@ -41,6 +41,10 @@
         select * from good_order where vid = #{vid}
     </select>
     <update id="cancelOrder">
-        update good_order set order_status=#{order_status} where bid = #{bid}
+        update good_order set order_status=-1 where bid = #{bid}
     </update>
+
+    <select id="getAllOrder" resultMap="orderResult">
+        select * from good_order
+    </select>
 </mapper>

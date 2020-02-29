@@ -45,5 +45,11 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 		orderMapper.cancelOrder(i);
 	}
 
+	@Override
+	public List<GoodOrder> getAllOrder() {
+		List<GoodOrder> allOrder = orderMapper.getAllOrder();
+		return allOrder;
+	}
+
 
 }

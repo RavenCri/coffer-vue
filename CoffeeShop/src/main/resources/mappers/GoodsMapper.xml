@@ -25,7 +25,14 @@
 			#{number},#{name},#{price},#{amount},#{type},#{image_url},#{add_time}
 		)
 	</insert>
-	
+	<select id="findById" resultMap="GoodsEntityMap">
+		SELECT
+			*
+		FROM
+			goods
+		WHERE
+			id=#{id}
+	</select>
 	<!--根据商品编号查询商品数据  -->
 	<!--Goods findByNumber(Integer number);-->
 	<select id="findByNumber" resultMap="GoodsEntityMap">

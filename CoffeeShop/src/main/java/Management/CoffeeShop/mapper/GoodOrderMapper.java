@@ -23,4 +23,6 @@ public interface GoodOrderMapper {
 
 	List<GoodOrder> selectOrderByVipId(int vipId);
 	void cancelOrder(int bid);
+
+    List<GoodOrder> getAllOrder();
 }

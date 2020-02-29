@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("order")
-public class PayController {
+public class GoodOrderController {
 
     @Autowired
     IGoodOrderService goodOrderService;
@@ -179,9 +179,10 @@ public class PayController {
         JSONObject res = new JSONObject();
         try{
             ArrayList<Integer> array = (ArrayList)jsonObject.get("param");
+
             array.forEach(i-> {
 
-                goodOrderService.cancelOrder(-1);
+                goodOrderService.cancelOrder(i);
             });
             return res.fluentPut("status","success");
         }catch (Exception e){
@@ -189,5 +190,66 @@ public class PayController {
             return res.fluentPut("status","success");
         }
 
+    }
+    @GetMapping("/getAllOrder")
+    @ResponseBody
+    public JSONObject getAllOrder(){
+        List<GoodOrder> allOrder = goodOrderService.getAllOrder();
+
+        JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(allOrder));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject curr = jsonArray.getJSONObject(i);
+            String buyNamePerson;
+            String vid = curr.getString("vid");
+            if(!vid.equals("0")){
+                Vip vip = vipService.vipLogin(vid);
+                buyNamePerson = vip.getVname();
+            }else{
+                buyNamePerson = "游客";
+            }
+            curr.put("username",buyNamePerson );
+
+            curr.put("goodName",allOrder.get(i).getGood().getName() );
+            int order_status = curr.getIntValue("order_status");
+            if(order_status == 0 ){
+                curr.put("order_status","未付款" );
+            }else  if(order_status == 1){
+                curr.put("order_status","已支付" );
+            }else  if(order_status == -1 ){
+                curr.put("order_status","订单取消" );
+            }
+            String commodity_specification = curr.getString("commodity_specification");
+            String[] split = commodity_specification.split("#");
+            curr.put("cupType",cupTypeChinese(split[0]) );
+            curr.put("goodNess",goodNessChinese(split[1]) );
+        }
+       JSONObject obj = new JSONObject();
+        obj.put("data",jsonArray);
+        obj.put("code",0);
+        return obj;
+    }
+    public String goodNessChinese(String goodNess){
+        switch (goodNess){
+            case "littleSweet":
+                return "少糖";
+            case "middleSweet":
+                return "中糖";
+            case "manySweet":
+                return "多糖";
+
+        }
+        return null;
+    }
+    public String cupTypeChinese(String cupType){
+        switch (cupType){
+            case "middleCup":
+                return "中杯";
+            case "bigCup":
+                return "大杯";
+            case "bigPlusCup":
+                return "超大杯";
+
+        }
+        return null;
     }
 }

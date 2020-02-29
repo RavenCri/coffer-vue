@@ -77,7 +77,7 @@
             </ul>
         </div>
     </div>
-    <div style="position: relative;left: 200px;width: 1000px;margin: 0 auto">
+    <div style="width: 1000px;margin: 0 auto">
         <table id="demo" lay-filter="test" style=""></table>
     </div>
 </div>
@@ -91,6 +91,10 @@
 <script type="text/javascript"
         src="/bootstrap3/js/css3-mediaqueries.js"></script>
 <script type="text/javascript" src="/bootstrap3/js/respond.min.js"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">审核</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 <script th:inline="none">
     layui.use('table', function(){
         var table = layui.table;
@@ -99,18 +103,33 @@
         table.render({
             elem: '#demo'
             ,height: 312
-            ,width:700
-            ,url: '/demo/table/user/' //数据接口
+            ,width:1200
+            ,url: '/order/getAllOrder' //数据接口
             ,page: true //开启分页
             ,cols: [[ //表头
-                {field: 'id', title: '订单ID', width:100, sort: true, fixed: 'left'}
-                ,{field: 'username', title: '购买者', width:100}
-                ,{field: 'sex', title: '商品名', width:100, sort: true}
-                ,{field: 'city', title: '金额', width:100}
-                ,{field: 'classify', title: '甜度', width: 100}
-                ,{field: 'wealth', title: '杯型', width: 100, sort: true}
-                ,{field: 'wealth', title: '审核', width: 100, sort: true}
-            ]]
+                {field: 'bid', title: '订单ID', sort: true}
+                ,{field: 'username', title: '购买者',}
+                ,{field: 'goodName', title: '商品名', width:120}
+                ,{field: 'money', title: '金额', width:100}
+                ,{field: 'fmoney', title: '优惠后', width:100}
+                ,{field: 'goodNess', title: '甜度', width:100}
+                ,{field: 'cupType', title: '杯型', width:100}
+                ,{field: 'order_status', title: '订单状态', }
+                ,{ toolbar: '#barDemo',width:150 }
+            ]],done: function(res, curr, count) {
+                $("[data-field = 'good']").children().each(function () {
+                    if($(this).text() == '1'){
+
+                       // $(this).text("插件方式");
+
+                    }else if($(this).text() == '0'){
+
+                       // $(this).text("代码方式");
+
+                    }
+
+                })
+            }
         });
 
     });
