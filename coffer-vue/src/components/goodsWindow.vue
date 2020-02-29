@@ -233,7 +233,7 @@
         // 如果登陆了
         if (this.$userGlobal.alreadyLogin()) {
           let userInfo = this.$userGlobal.getUserInfo();
-          console.log(JSON.stringify(userInfo))
+        
           if (userInfo.money < param.price[param.cupType] * param.buyNum) {
             this.$message({
               message: "您当前余额为：" + userInfo.money + "元，不足以支付该商品，请先充值哦~",

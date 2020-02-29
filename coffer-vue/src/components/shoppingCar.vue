@@ -207,9 +207,10 @@
           return;
         }
         let param = JSON.parse(JSON.stringify(this.shoppingCar));
+        let vipId = "0";
         // 如果登陆了
         if (this.logined) {
-          console.log("登陆了啊"+this.logined)
+          
           let userInfo = this.$userGlobal.getUserInfo();
           
           if (userInfo.money < this.vipMoney) {
@@ -220,13 +221,9 @@
             return;
           }
           // vip的卡号传递到后台 方便优惠与扣款
-
-          let orderInfo = {
-            param:param,
-            vipId:userInfo.vipId
-          }
-          param = orderInfo;
-          console.log("登陆了啊"+ param)
+           vipId =  userInfo.vipId;
+         
+          
         } else {
 
           this.$confirm('登陆可享会员优惠95折，是否需要登录?', '提示', {
@@ -243,6 +240,11 @@
             this.$refs.payWindow.centerDialogVisible = true;
           });
         }
+        let orderInfo = {
+            param:param,
+            vipId:vipId
+          }
+          param = orderInfo;
         // 提交至后台
         this.$refs.payWindow.addPays(param);
 

@@ -22,7 +22,8 @@
                 money: 0,
                 centerDialogVisible: false,
                 canncelMsg: "",
-                cancelBut: ""
+                cancelBut: "",
+                currOrderIdAll: null
             }
         },
         methods: {
@@ -32,11 +33,24 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.centerDialogVisible = false
-                    this.$message({
+                    this.centerDialogVisible = false;
+                    this.$axios.post("/order/cancelOrder", {
+                        param:this.currOrderIdAll
+                    }, {
+                        headers: {
+                            'Content-type': 'application/json;charset=UTF-8'
+                        }
+                    }).then(response => {
+                        console.log(response)
+                        this.$message({
                         type: 'success',
-                        message: '已取消支付'
+                        message: '已取消该订单'
                     });
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                   
+
                 }).catch(() => {
 
                 });
@@ -59,19 +73,8 @@
                         'Content-type': 'application/json;charset=UTF-8'
                     }
                 }).then(response => {
-                    console.log(response);
-                    if (this.$userGlobal.alreadyLogin()) {
-                        this.flushVipInfo();
-
-                        this.$alert("您成功购买了" + param.name + ",请及时去前台取餐哦", '购买成功', {
-                            confirmButtonText: '确定',
-
-                        });
-
-                    } else {
-
-                    }
-
+                    // 后续处理
+                    this.orderRuturnHandle(response);
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -86,23 +89,18 @@
                     }
                 }).then(response => {
                     console.log(response);
-                    if (this.$userGlobal.alreadyLogin()) {
-                        this.flushVipInfo();
-                        this.$alert("您已成功付款,请及时去前台取餐哦", '购买成功', {
-                            confirmButtonText: '确定',
-
-                        });
+                    this.orderRuturnHandle(response);
+                    let flag = this.$userGlobal.alreadyLogin();
+                    // 登陆且支付成功了
+                    if (flag && response.data.status === "success") {
                         // 把购物车的数据删除掉
-                        this.$parent.shoppingCar.splice(0,this.$parent.shoppingCar.length); 
+                        this.$parent.shoppingCar.splice(0, this.$parent.shoppingCar.length);
                         this.$parent.vipMoney = 0;
                         this.$parent.totalMoney = 0;
                         this.$shoppingCar.setShoppringCar(this.$parent.shoppingCar);
-                    } else {
-                        this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
-                        this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
-                        this.$refs.payWindow.cancelBut = '取消订单';
-                        this.$refs.payWindow.centerDialogVisible = true;
                     }
+
+
 
                 }).catch(function (error) {
                     console.log(error);
@@ -121,6 +119,24 @@
                     this.$userGlobal.setUserInfo(JSON.parse(info));
                 })
 
+            },
+            orderRuturnHandle(response) {
+                console.log(response);
+                this.currOrderIdAll = response.data.result;
+                let status = response.data.status;
+                if (status && this.$userGlobal.alreadyLogin()) {
+                    this.flushVipInfo();
+                }
+                let flag = this.$userGlobal.alreadyLogin();
+                if (flag && status === "success") {
+                    this.$alert("下单成功了，请牢记您的取货号：" + response.data.takeGoodIndex + ",请及时去前台取餐哦", '购买成功', {
+                        confirmButtonText: '确定',
+                    });
+                } else if (status === "error") {
+                    this.$alert("下单失败了，错误信息：" + response.data.msg, '下单失败', {
+                        confirmButtonText: '确定',
+                    });
+                }
             }
         }
 

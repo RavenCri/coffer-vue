@@ -27,6 +27,8 @@ public class PayController {
     GoodsMapper goodsMapper;
     @Autowired
     IVipService vipService;
+    // 取货号码
+    private static int takeGoodIndex = 100;
     @PostMapping("addPay")
     @ResponseBody
     public JSONObject addPay(@RequestBody JSONObject jsonObject){
@@ -60,6 +62,8 @@ public class PayController {
                     return res;
                 }
                 order_describe = "1";
+
+                res.put("takeGoodIndex",++takeGoodIndex);
                 vip.setVmoney(vip.getVmoney()-fmoney);
                 vipService.updateMoney(vip.getVmoney(),vip);
             }
@@ -155,10 +159,23 @@ public class PayController {
             goodOrderMapper.addOrder(goodOrder);
             result.add(goodOrder.getBid());
         }
+        if(vipLoginStatus){
+
+            res.put("takeGoodIndex",++takeGoodIndex);
+        }
         res.put("result",result);
         res.put("status","success");
         res.put("msg","订单已提交");
         return res;
 
+    }
+
+    @PostMapping("cancelOrder")
+    @ResponseBody
+    public JSONObject cancelOrder(@RequestBody String[] array){
+        for (String string : array) {
+            System.out.println(string);
+        }
+        return new JSONObject().fluentPut("status","success");
     }
 }
