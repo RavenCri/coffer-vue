@@ -84,24 +84,25 @@
       }).catch(function (error) {
         console.log(error);
       });
+      this.flushInfo();
     },
     methods: {
 
       clickImageGoods(name) {
         let good;
-        console.log( "点击："+name)
+        console.log("点击：" + name)
         this.commodity.forEach(commod => {
-            // console.log( commod.goods)
-            commod.goods.forEach(e => {
-              
-              e.goods.forEach(item=>{
-                console.log("item:"+item.name)
-                if(name == item.name ){
-                  good = item;
-                }
-              })
+          // console.log( commod.goods)
+          commod.goods.forEach(e => {
+
+            e.goods.forEach(item => {
+              console.log("item:" + item.name)
+              if (name == item.name) {
+                good = item;
+              }
             })
           })
+        })
         console.log(good)
         this.buyGoods(good)
       },
@@ -143,6 +144,17 @@
           };
         };
         return fmt;
+      },
+      flushInfo() {
+        if (this.$userGlobal.alreadyLogin()) {
+          var user = this.$userGlobal.getUserInfo();
+          this.$axios.post("/vip/login", {
+            vipId: user.vipId
+          }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+            let info = res.data.message;
+            this.$userGlobal.setUserInfo(JSON.parse(info));
+          })
+        }
       }
     },
     components: {
@@ -200,16 +212,32 @@
       transform: scale(1.0);
     }
   }
+
   @keyframes change {
-    0%{background-color: blueviolet;}
-    25%{background-color:cornflowerblue;}
-    50%{background-color:darkcyan;}
-    75%{background-color:deeppink;}
-    100%{background-color:dodgerblue;}
+    0% {
+      background-color: blueviolet;
+    }
+
+    25% {
+      background-color: cornflowerblue;
+    }
+
+    50% {
+      background-color: darkcyan;
+    }
+
+    75% {
+      background-color: deeppink;
+    }
+
+    100% {
+      background-color: dodgerblue;
+    }
   }
+
   .na {
     display: none;
-   
+
   }
 
   .navg {
@@ -227,15 +255,16 @@
 
   .navg:hover {
     transform: scale(1.2);
-    
+
   }
 
-  .navg:hover+.na, .na:hover{
+  .navg:hover+.na,
+  .na:hover {
 
     display: block;
-    
-    
-   
+
+
+
   }
 
   .el-carousel__item h3 {

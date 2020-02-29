@@ -229,9 +229,8 @@
       },
       addOrder(param) {
         param = JSON.parse(JSON.stringify(param));
-        //param.cupType = this.cuyTypeChinese[param.cupType];
-        //param.sweetNess = this.cuyTypeChinese[param.sweetNess];
 
+        // 如果登陆了
         if (this.$userGlobal.alreadyLogin()) {
           let userInfo = this.$userGlobal.getUserInfo();
           console.log(JSON.stringify(userInfo))
@@ -242,36 +241,16 @@
             });
             return;
           }
+          // vip的卡号传递到后台 方便优惠与扣款
           param.vipId = userInfo.vipId;
+        } else {
+          this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
+          this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
+          this.$refs.payWindow.cancelBut = '取消订单';
+          this.$refs.payWindow.centerDialogVisible = true;
         }
-        this.$axios.post("/order/addPay", {
-          param
-        }, {
-          headers: {
-            'Content-type': 'application/json;charset=UTF-8'
-          }
-        }).then(response => {
-          console.log(response);
-          if (this.$userGlobal.alreadyLogin()) {
-            let userInfo = this.$userGlobal.getUserInfo();
-            userInfo.money -= param.price[param.cupType] * param.buyNum*0.95;
-            userInfo.money = userInfo.money.toFixed(2);
-            this.$userGlobal.setUserInfo(userInfo);
-            this.$alert("您成功购买了" + param.name + ",请及时去前台取餐哦", '购买成功', {
-              confirmButtonText: '确定',
-              
-            });
-          
-          } else {
-            this.$refs.payWindow.money = this.goods.price[this.goods.cupType];
-            this.$refs.payWindow.canncelMsg = '确定取消订单吗?';
-            this.$refs.payWindow.cancelBut = '取消订单';
-            this.$refs.payWindow.centerDialogVisible = true;
-          }
-
-        }).catch(function (error) {
-          console.log(error);
-        });
+        //提交订单到服务器
+        this.$refs.payWindow.addPay(param);
       },
       selectOrder(param) {
 

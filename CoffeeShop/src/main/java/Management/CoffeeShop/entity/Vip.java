@@ -25,6 +25,33 @@ public class Vip extends BaseEntity implements Serializable{
 	private Date regTime; //注册时间
 	private Date recentTime; //最近购买时间
 	private String vip_id;
+    private double cost_money;
+	private int exp;
+	private int count;
+
+	public double getCost_money() {
+		return cost_money;
+	}
+
+	public void setCost_money(double cost_money) {
+		this.cost_money = cost_money;
+	}
+
+	public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 
 	public String getVip_id() {
 		return vip_id;

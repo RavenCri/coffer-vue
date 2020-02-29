@@ -75,6 +75,9 @@ public class VipServiceImpl implements IVipService{
 		//注册日期,不可更改
 		Date now = new Date();
 		vip.setRegTime(now);
+		vip.setCount(0);
+		vip.setCost_money(0);
+		vip.setExp(0);
 		// 调用vipMapper的insert()方法执行注册，获取返回的受影响行数
 		Integer rows = vipMapper.insert(vip);
 		// 判断受影响的行数是否不为1

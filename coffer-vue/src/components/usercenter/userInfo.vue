@@ -19,8 +19,9 @@
             </div>
           </div>
           <el-button type="warning" icon="el-icon-star-off" plain @click="addMoney">充值</el-button>
-          <el-button type="warning" plain @click="addIntegral" :disabled="regist"><i class="el-icon-s-opportunity" ></i>签到</el-button>
-          <el-button type="warning" plain  @click="getGood"><i class="el-icon-present"></i>兑换礼品</el-button>
+          <el-button type="warning" plain @click="addIntegral" :disabled="regist"><i
+              class="el-icon-s-opportunity"></i>签到</el-button>
+          <el-button type="warning" plain @click="getGood"><i class="el-icon-present"></i>兑换礼品</el-button>
 
         </el-collapse-item>
         <el-collapse-item title="常用住址">
@@ -45,17 +46,17 @@
     components: {
       payWindow
     },
-    mounted () {
+    mounted() {
       this.integral = this.$userGlobal.getUserInfo().credit;
       this.money = this.$userGlobal.getUserInfo().money
       console.log(this.$userGlobal.getUserInfo().alreadlyRegist)
-      this.regist =  this.$userGlobal.getUserInfo().alreadlyRegist==undefined?false:this.$userGlobal.getUserInfo().alreadlyRegist
+      this.regist = this.$userGlobal.getUserInfo().alreadlyRegist == undefined ? false : this.$userGlobal.getUserInfo().alreadlyRegist
     },
     data() {
       return {
         integral: 0,
-        money:0,
-        regist:false
+        money: 0,
+        regist: false
       }
     },
     methods: {
@@ -86,8 +87,19 @@
         user.alreadlyRegist = true;
         this.$userGlobal.setUserInfo(user);
       },
-      getGood(){
-        this.$router.push({path:'/exchargeGood'})
+      getGood() {
+        this.$router.push({ path: '/exchargeGood' })
+      },
+      flushVipInfo() {
+        var user = this.$userGlobal.getUserInfo();
+
+        this.$axios.post("/vip/login", {
+          vipId: user.vipId
+        }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+          let info = res.data.message;
+          this.setUserInfo(JSON.parse(info));
+        })
+
       }
     }
 

@@ -21,9 +21,9 @@
 	<!--useGeneratedKeys:允许 JDBC 支持自动生成主键  -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="vid">
 		INSERT INTO vip(
-			vname,vphone,vmoney,reg_time,vtype,vip_id
+			vname,vphone,vmoney,reg_time,vtype,vip_id,cost_money,exp,count,credit
 		)VALUES(
-			#{vname},#{vphone},#{vmoney},#{regTime},#{vtype},#{vip_id}
+			#{vname},#{vphone},#{vmoney},#{regTime},#{vtype},#{vip_id},#{cost_money},#{exp},#{count},#{credit}
 		)
 	</insert>
 	

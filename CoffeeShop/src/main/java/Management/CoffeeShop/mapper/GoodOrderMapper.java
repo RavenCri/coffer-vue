@@ -19,7 +19,7 @@ public interface GoodOrderMapper {
 
     GoodOrder selectOrderById(int id);
 
-	void addOrder(GoodOrder goodOrder);
+	int addOrder(GoodOrder goodOrder);
 
 	List<GoodOrder> selectOrderByVipId(int vipId);
 }

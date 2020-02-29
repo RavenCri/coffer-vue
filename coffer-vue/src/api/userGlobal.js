@@ -14,3 +14,4 @@ function setUserInfo(user){
 export default{
     alreadyLogin,getUserInfo,setUserInfo
 }
+

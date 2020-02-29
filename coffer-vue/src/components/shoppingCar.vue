@@ -68,9 +68,9 @@
       </div>
     </div>
     <goodsWindow ref="goodsWindow" />
-    
+
     <payWindow ref="payWindow" />
-    
+
   </div>
 </template>
 
@@ -80,8 +80,8 @@
   export default {
     mounted() {
       this.init();
-    }, 
-   
+    },
+
     data() {
       return {
         totalMoney: 0,
@@ -101,7 +101,7 @@
         }
       };
     },
-   
+
     methods: {
       init() {
         this.shoppingCar = this.$shoppingCar.getShoppringCar();
@@ -111,6 +111,16 @@
         this.calculationMoney();
         this.logined = this.$userGlobal.alreadyLogin();
         console.log("登陆状态：" + this.logined)
+        if (this.logined) {
+          //更新信息 刷新余额
+          var user = this.$userGlobal.getUserInfo();
+          this.$axios.post("/vip/login", {
+            vipId: user.vipId
+          }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+            let info = res.data.message;
+            this.$userGlobal.setUserInfo(JSON.parse(info));
+          })
+        }
       },
       calculationMoney() {
         this.totalMoney = this.vipMoney = 0;
@@ -120,7 +130,7 @@
             this.totalMoney += (e.buyNum * e.price[e.cupType])
           });
           this.vipMoney = (this.totalMoney * 0.95).toFixed(2);
-          
+
         }
 
       },
@@ -153,7 +163,7 @@
           slice只会返回要截取的数组 （1，2）等价于 [1,2)
           splice返回被删除的项目
         */
-        this.$confirm('此操作将从购物车移除商品{'+row.name+'}, 是否继续?', '提示', {
+        this.$confirm('此操作将从购物车移除商品{' + row.name + '}, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -192,21 +202,33 @@
         this.$shoppingCar.setShoppringCar(this.shoppingCar);
       },
       countMoney() {
-        if(this.shoppingCar.length == 0){
+        if (this.shoppingCar.length == 0) {
           this.$message.error('购物车目前为空哦~');
           return;
         }
-        this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
-        this.$refs.payWindow.cancelBut = '取消支付';
-        this.$refs.payWindow.centerDialogVisible = true;
+        let param = JSON.parse(JSON.stringify(this.shoppingCar));
+        // 如果登陆了
         if (this.logined) {
-          this.$message({
-            message: "您共需要支付" + this.vipMoney + "元",
-            type: "warning"
-          });
-          this.$refs.payWindow.money=this.vipMoney;
+          console.log("登陆了啊"+this.logined)
+          let userInfo = this.$userGlobal.getUserInfo();
           
+          if (userInfo.money < this.vipMoney) {
+            this.$message({
+              message: "您当前余额为：" + userInfo.money + "元，不足以支付购物车商品，请先充值哦~",
+              type: "warning"
+            });
+            return;
+          }
+          // vip的卡号传递到后台 方便优惠与扣款
+
+          let orderInfo = {
+            param:param,
+            vipId:userInfo.vipId
+          }
+          param = orderInfo;
+          console.log("登陆了啊"+ param)
         } else {
+
           this.$confirm('登陆可享会员优惠95折，是否需要登录?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -214,19 +236,20 @@
           }).then(() => {
             this.$router.push({ name: 'login', params: { redirect: "/shoppingCar" } });
           }).catch(() => {
-            this.$message({
-              message: "您共需要支付" + this.totalMoney + "元",
-              type: "warning"
-            });
+            console.log(JSON.stringify(this.shoppingCar))
+            this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
+            this.$refs.payWindow.cancelBut = '取消支付';
+            this.$refs.payWindow.money = this.totalMoney;
+            this.$refs.payWindow.centerDialogVisible = true;
           });
-         
-          this.$refs.payWindow.money=this.totalMoney;
         }
-        
+        // 提交至后台
+        this.$refs.payWindow.addPays(param);
+
       }
     },
     components: {
-      goodsWindow,payWindow
+      goodsWindow, payWindow
     }
   };
 </script>
@@ -283,7 +306,7 @@
     position: relative;
     top: 50px;
   }
- 
+
   .totalMoney::after {
     content: "";
     display: block;

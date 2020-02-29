@@ -19,11 +19,11 @@ public class GoodOrder extends BaseEntity implements Serializable{
 	private String created_time;
 	private Goods good;
 	private String commodity_specification;
-
+	private String order_status;
 	public GoodOrder() {
 	}
 
-	public GoodOrder(int bid, String vid, int good_num, double money, double fmoney, String created_time, Goods good, String commodity_specification) {
+	public GoodOrder(int bid, String vid, int good_num, double money, double fmoney, String created_time, Goods good, String commodity_specification,String order_status) {
 		this.bid = bid;
 		this.vid = vid;
 		this.good_num = good_num;
@@ -32,20 +32,30 @@ public class GoodOrder extends BaseEntity implements Serializable{
 		this.created_time = created_time;
 		this.good = good;
 		this.commodity_specification = commodity_specification;
+		this.order_status = order_status;
 	}
 
 	@Override
 	public String toString() {
 		return "GoodOrder{" +
 				"bid=" + bid +
-				", vid=" + vid +
-				", good=" + good +
+				", vid='" + vid + '\'' +
 				", good_num=" + good_num +
-				", commodity_specification='" + commodity_specification + '\'' +
 				", money=" + money +
 				", fmoney=" + fmoney +
 				", created_time='" + created_time + '\'' +
+				", good=" + good +
+				", commodity_specification='" + commodity_specification + '\'' +
+				", order_status='" + order_status + '\'' +
 				'}';
+	}
+
+	public String getOrder_status() {
+		return order_status;
+	}
+
+	public void setOrder_status(String order_status) {
+		this.order_status = order_status;
 	}
 
 	public int getBid() {
