@@ -84,14 +84,19 @@ public class RechargeOrderController {
             Vip vip = vipService.vipLogin(rechargeOrder.getVid() + "");
 
             double addMoney = rechargeOrder.getRecharge_money();
-            if(rechargeOrder.getRecharge_money() >= 100 && rechargeOrder.getRecharge_money() <=500){
-                addMoney = (rechargeOrder.getRecharge_money()%100)*10;
+            //折扣卡才能享受优惠
+            if(vip.getVtype() == 0){
+                if(rechargeOrder.getRecharge_money() >= 100 && rechargeOrder.getRecharge_money() <=500){
+                    addMoney += ((int)(rechargeOrder.getRecharge_money()/100))*10;
 
-            }else if(rechargeOrder.getRecharge_money() > 500 && rechargeOrder.getRecharge_money() <1000){
-                addMoney = 50+((rechargeOrder.getRecharge_money()-500)%100)*20;
-            }else if(rechargeOrder.getRecharge_money() >= 1000){
-                addMoney = (rechargeOrder.getRecharge_money()%1000)*30;
+                }else if(rechargeOrder.getRecharge_money() > 500 && rechargeOrder.getRecharge_money() <1000){
+                    addMoney += 50+((int)((rechargeOrder.getRecharge_money()-500)/100))*20;
+                }else if(rechargeOrder.getRecharge_money() >= 1000){
+                    addMoney += ((int)(rechargeOrder.getRecharge_money()/1000))*30;
+                }
+
             }
+
             int redit = vip.getCredit()+(int)addMoney;
             //增加多少钱 送多少积分
             vip.setCredit(redit);
