@@ -21,6 +21,8 @@ layui.use('table', ()=>{
                 hasOrders()
             }else if(data['msgType']==='cancelOrder'){
                 cancelOrder()
+            }else if(data['msgType']==='rechargeOrder'){
+                hasRechargeOrder(JSON.parse(data.data));
             }
 
             //发现消息进入    调后台获取

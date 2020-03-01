@@ -44,7 +44,22 @@ public class VipController extends BaseController{
 
 		return  json;
 	}
+	@RequestMapping("/creditExchange")
+	public void updateVipInfo(@RequestBody JSONObject jsonObject){
+		String vipId = jsonObject.getString("vipId");
+		int credit = jsonObject.getInteger("credit");
+		Vip vip = service.vipLogin(vipId);
+		vip.setCredit(vip.getCredit()-credit);
+		service.updateVipInfo(vip);
+	}
+	@RequestMapping("/signInRedictAdd")
+	public void signInRedictAdd(@RequestBody JSONObject jsonObject){
+		String vipId = jsonObject.getString("vipId");
 
+		Vip vip = service.vipLogin(vipId);
+		vip.setCredit(vip.getCredit()+20);
+		service.updateVipInfo(vip);
+	}
 	/**
 	 * vip登陆
 	 * @return

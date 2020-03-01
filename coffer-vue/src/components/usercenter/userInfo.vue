@@ -47,6 +47,7 @@
       payWindow
     },
     mounted() {
+      this.flushVipInfo();
       this.integral = this.$userGlobal.getUserInfo().credit;
       this.money = this.$userGlobal.getUserInfo().money
       console.log(this.$userGlobal.getUserInfo().alreadlyRegist)
@@ -71,6 +72,9 @@
           this.$refs.payWindow.canncelMsg = "确定取消充值吗？";
           this.$refs.payWindow.cancelBut = "取消充值";
           this.$refs.payWindow.centerDialogVisible = true;
+
+          //提交订单至后台
+          this.$refs.payWindow.addMoneyOrder();
         }).catch(() => {
 
         });
@@ -78,6 +82,12 @@
       },
       addIntegral() {
         this.integral += 20;
+        this.$axios.post("/vip/signInRedictAdd", {
+          "vipId": this.$userGlobal.getUserInfo().vipId,
+        
+        }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+       
+        })
         this.$message({
           message: "您已签到成功，本次签到积分+20",
           type: "success"
@@ -97,7 +107,7 @@
           vipId: user.vipId
         }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
           let info = res.data.message;
-          this.setUserInfo(JSON.parse(info));
+          this.$userGlobal.setUserInfo(JSON.parse(info));
         })
 
       }

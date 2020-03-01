@@ -7,6 +7,7 @@ import Management.CoffeeShop.service.IGoodOrderService;
 import Management.CoffeeShop.service.IGoodsService;
 import Management.CoffeeShop.service.IVipService;
 import Management.CoffeeShop.websocket.WebSocketServer;
+import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -63,6 +64,9 @@ public class OrderController {
                     res.put("msg","余额不足");
                     return res;
                 }
+                //订单增加会员积分
+                vip.setCredit(vip.getCredit()+30);
+                vipService.updateVipInfo(vip);
                 order_status = 1;
 
                 res.put("takeGoodIndex",++takeGoodIndex);
@@ -134,7 +138,9 @@ public class OrderController {
             JSONObject price = curr.getJSONObject("price");
             int buyNum = curr.getInteger("buyNum");
             String cupType = curr.getString("cupType");
-
+            //订单增加积分
+            vip.setCredit(vip.getCredit()+30);
+            vipService.updateVipInfo(vip);
             checkMoneyNum += Double.valueOf(df.format(Double.valueOf(price.getString(cupType))*buyNum));
         }
         if(vipLoginStatus){
@@ -220,8 +226,12 @@ public class OrderController {
             }else{
                 buyNamePerson = "游客";
             }
-            curr.put("username",buyNamePerson );
+            String created_time = curr.getString("created_time");
+            DateTime dateTime = new DateTime();
+            dateTime.setTime(Long.valueOf(created_time));
+            curr.put("created_time", dateTime.toString());
 
+            curr.put("username",buyNamePerson );
             curr.put("goodName",allOrder.get(i).getGood().getName() );
             int order_status = curr.getIntValue("order_status");
             if(order_status == 0 ){

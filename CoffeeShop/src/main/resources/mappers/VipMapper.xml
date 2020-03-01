@@ -26,7 +26,18 @@
 			#{vname},#{vphone},#{vmoney},#{regTime},#{vtype},#{vip_id},#{cost_money},#{exp},#{count},#{credit}
 		)
 	</insert>
-	
+
+
+	<update id="updateVipInfo">
+		UPDATE
+			vip
+		SET
+			credit=#{credit}
+		WHERE
+			vid=#{vid}
+	</update>
+
+
 	<!--根据用户id更新手机号码  -->
 	<!--Integer updateVphoneByVid(Integer vid,String vphone);  -->
 	<update id="updateVphoneByVid">

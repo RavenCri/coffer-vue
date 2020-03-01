@@ -260,5 +260,10 @@ public class VipServiceImpl implements IVipService{
 		vipMapper.updateVmoneyByVphone(vmoney,vip.getVphone());
 	}
 
+	@Override
+	public void updateVipInfo(Vip vip) {
+		vipMapper.updateVipInfo(vip);
+	}
+
 
 }

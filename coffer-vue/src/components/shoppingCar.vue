@@ -183,6 +183,7 @@
       add(index) {
         this.shoppingCar[index].buyNum += 1;
         this.setShoppringCar();
+        // 计算金额
         this.calculationMoney();
       },
 

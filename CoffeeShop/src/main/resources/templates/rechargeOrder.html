@@ -49,7 +49,7 @@
             <li class="layui-nav-item"><a href="/web/vip-add.html">会员管理</a></li>
             <li class="layui-nav-item"><a href="/web/goods-add.html">商品管理</a></li>
             <li class="layui-nav-item"><a href="/orderManager">订单管理</a></li>
-            <li class="layui-nav-item"><a href="/echarts">统计报表</a></li>
+            <li class="layui-nav-item"><a href="">统计报表</a></li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
@@ -77,9 +77,9 @@
             </ul>
         </div>
     </div>
-    <div style="width: 1000px;position:relative;left:10px;margin: 0 auto;text-align: center;font-size: 25px;margin-top: 50px;">
-        <button class="layui-btn layui-btn-warm" onclick="beginClick()">语音播报</button>
-        <p>实时订单</p>
+    <div style="width: 1000px;position:relative;left:50px;margin: 0 auto;text-align: center;font-size: 25px;margin-top: 50px;">
+
+        <p>vip充值订单</p>
         <table id="demo" lay-filter="test" style=""></table>
     </div>
 
@@ -98,7 +98,7 @@
 
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">审核</a>
-<!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+    <!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 
 <script th:inline="none">
@@ -127,14 +127,14 @@
                 }, ()=> {
                     $.ajax(
                         {
-                            url:"/order/handleOrder/"+data.bid,//发送的路径
+                            url:"/recharge/handleOrder?id="+data.id,//发送的路径
                             type:"get",//发送的方式
                             dataType:"json",//服务器返回的数据类型
                             success: function(data) {
                                 console.log(data)
                                 layer.closeAll();
                                 layer.msg("审核成功！");
-                               // initTable()
+                                // initTable()
                                 getOrderAll(function(data){
                                     console.log(data)
                                     initTable(data)
@@ -148,31 +148,21 @@
             }
         })
     });
-    function beginClick() {
-        let audio=new Audio("/mp3/neworder.mp3");//路径
-        audio.play();
-    }
+
     function cancelOrder() {
         getOrderAll(function(data){
             //console.log("查询到的订单"+JSON.stringify(data))
             initTable(data)
         });
     }
-    function hasOrders(obj) {
-        layer.alert("有个顾客清空了购物车，快去处理一下吧~",{title:"新订单"});
 
-        getOrderAll(function(data){
-            //console.log("查询到的订单"+JSON.stringify(data))
-            initTable(data)
-        });
-    }
-    function hasOrder(obj) {
-        let good = obj.good;
+    function hasRechargeOrder(obj) {
+        console.log(obj)
         layer.closeAll()
-        console.log("商品名"+JSON.stringify(obj.good))
+       // console.log("商品名"+JSON.stringify(obj.good))
         layer.open({
             type: 1
-            ,title: "来新订单了"
+            ,title: "来新充值订单啦~"
             ,area: '300px;'
             ,shade: 0.8
             ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
@@ -180,11 +170,10 @@
             ,btnAlign: 'c'
             ,moveType: 1 //拖拽模式，0或者1
             ,content: '<div style="padding: 50px; line-height: 22px;  color: #000; font-weight: 300;">' +
-                '会员ID：'+obj.vid +'<br><br>'+
+                '会员ID：'+obj.vipId +'<br><br>'+
                 '顾客名：'+obj.customer +'<br><br>'+
-                '商品名：'+good.name +'<br><br>'+
-                '预览图：<img src="/getGoodsImg?filename='+good.image_url+'" width="100px" height="100px"/><br><br>'+
-                '应付款：'+obj.fmoney +'元<br><br>'+
+
+                '充值金额：'+obj.rechargeMoney +'<br><br>'+
                 '</div>'
 
         });
@@ -198,10 +187,10 @@
     function getOrderAll(callback){
         $.ajax({
             type: "get",
-            url: "/order/getAllOrder",
+            url: "/recharge/getAllOrder",
             async: false,
             success: function (data) {
-                //console.log(data)
+                console.log(data)
                 callback(data)
             },
             error: function (data) {
@@ -213,32 +202,29 @@
         table.render({
             elem: '#demo'
             , height: 500
-            , width: 1200,
+            , width: 1000,
             //, url: '/order/getAllOrder' //数据接口
             data:data.data
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'bid', title: '订单ID', sort: true}
-                , {field: 'created_time', title: '下单时间',width:180}
-                , {field: 'username', title: '购买者',}
-                , {field: 'goodName', title: '商品名', width: 120}
-                , {field: 'money', title: '金额', width: 100}
-                , {field: 'fmoney', title: '优惠后', width: 100}
-                , {field: 'goodNess', title: '甜度', width: 100}
-                , {field: 'cupType', title: '杯型', width: 100}
+                {field: 'id', title: '订单ID', sort: true}
+                , {field: 'time', title: '下单时间',width:150}
+                , {field: 'vid', title: '会员卡号',}
+                , {field: 'vipName', title: '会员姓名',}
+                , {field: 'recharge_money', title: '充值金额',}
                 , {field: 'order_status', title: '订单状态',}
                 , {toolbar: '#barDemo', width: 150, event: "but"}
             ]], done: function (res, curr, count) {
-                $("[data-field = 'good']").children().each(function () {
+                $("[data-field = 'order_status']").children().each(function () {
                     if ($(this).text() == '1') {
-                        // $(this).text("插件方式");
+                         $(this).text("已审核");
                     } else if ($(this).text() == '0') {
-                        // $(this).text("代码方式");
+                         $(this).text("未处理");
                     }
                 })
             }, initSort: {
                 type: 'desc',
-                field: 'bid'
+                field: 'id'
             }, parseData: function (res) { //res 即为原始返回的数据
                 return {
                     // "code": res.status, //解析接口状态

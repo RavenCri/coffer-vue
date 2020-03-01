@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>小型咖啡店管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style type="text/css">
+        #body {
+            margin: 65px 20px 0 20px;
+        }
+
+        #addOrder {
+            width: 790px;
+            height: 450px;
+            margin: 0px 20px 0 0px;
+            float: left;
+        }
+
+        #orderForm {
+            width: 450px;
+            top:-20px;
+            position: absolute;
+            right:2px;
+        }
+
+        #btn {
+            margin: 10px 20px 0 235px;
+        }
+
+        #form-fastSelect {
+            margin-top: -38px;
+            margin-left: 250px;
+        }
+
+        #Name-select, #Number-select {
+            height: 32px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">小型咖啡店管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/web/vip-add.html">会员管理</a></li>
+            <li class="layui-nav-item"><a href="/web/goods-add.html">商品管理</a></li>
+            <li class="layui-nav-item"><a href="/orderManager">订单管理</a></li>
+            <li class="layui-nav-item"><a href="/echarts">统计报表</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="userManger.html">账号管理</a></li>
+            <li class="layui-nav-item"><a href=""> <img
+                    src="http://t.cn/RCzsdCq" class="layui-nav-img"> 贤心
+            </a></li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+    <div>
+
+    </div>
+
+</div>
+
+</body>
+<script src="/layui/layui.js"></script>
+<script type="text/javascript" src="/bootstrap3/jquery.min.js"></script>
+<script type="text/javascript" src="/bootstrap3/js/bootstrap.js"></script>
+<script type="text/javascript" src="/bootstrap3/js/holder.js"></script>
+<script type="text/javascript" src="/bootstrap3/js/html5shiv.min.js"></script>
+<script type="text/javascript"
+        src="/bootstrap3/js/css3-mediaqueries.js"></script>
+<script type="text/javascript" src="/bootstrap3/js/respond.min.js"></script>
+
+<script th:inline="none">
+
+</script>
+<script src="/js/order.js"></script>
+</html>

@@ -32,4 +32,14 @@ public class PageContoller {
 
         return "orderManager";
     }
+    @RequestMapping("/rechargeOrder")
+    public String goRechargeOrder(){
+
+        return "rechargeOrder";
+    }
+    @RequestMapping("/echarts")
+    public String goEcharts(){
+
+        return "echarts";
+    }
 }

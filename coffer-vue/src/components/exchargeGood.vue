@@ -39,7 +39,7 @@
                 if (this.logined) {
                     // 后台获取积分 判断积分是否足够
                     let jf = 5000;
-                    if (jf > item.needIntegral) {
+                    if (jf >= item.needIntegral) {
                         this.randomString(32)
                         this.$confirm('您确定消费' + item.needIntegral + '点积分兑换' + item.name + "吗？", '提示', {
                             confirmButtonText: '确定',
@@ -53,13 +53,18 @@
                                 message: "兑换成功，你可凭取此号码去前台兑换。请妥善保存。",
                                 type: "success"
                             });
-                            this.$alert('请保管好您的兑换码：'+pwd+" 凭此兑换码前去前台兑换", '兑换提示', {
+                            this.$alert('请保管好您的兑换码：' + pwd + " 凭此兑换码前去前台兑换", '兑换提示', {
                                 confirmButtonText: '确定',
                                 callback: action => {
-                                   
                                 }
                             });
-
+                            this.$axios.post("/vip/creditExchange", {
+                                "vipId": this.$userGlobal.getUserInfo().vipId,
+                                "credit": item.needIntegral 
+                            }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+                                let info = res.data.message;
+                                this.$userGlobal.setUserInfo(JSON.parse(info));
+                            })
                         }).catch(() => {
 
                         })

@@ -71,4 +71,6 @@ public interface VipMapper {
 	Integer deleteByVphone(String vphone);
 
 	Vip getVipByVipId(String vip_id);
+
+    void updateVipInfo(Vip vip);
 }

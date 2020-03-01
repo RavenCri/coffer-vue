@@ -2,9 +2,18 @@ package Management.CoffeeShop.entity;
 
 public class RechargeOrder {
     private int id;
-    private int vid;
+    private String vid;
     private double recharge_money;
     private int order_status;
+    private String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public int getId() {
         return id;
@@ -14,11 +23,11 @@ public class RechargeOrder {
         this.id = id;
     }
 
-    public int getVid() {
+    public String getVid() {
         return vid;
     }
 
-    public void setVid(int vid) {
+    public void setVid(String vid) {
         this.vid = vid;
     }
 
@@ -34,6 +43,16 @@ public class RechargeOrder {
         return order_status;
     }
 
+    @Override
+    public String toString() {
+        return "RechargeOrder{" +
+                "id=" + id +
+                ", vid='" + vid + '\'' +
+                ", rechargeMoney=" + recharge_money +
+                ", orderStatus=" + order_status +
+                '}';
+    }
+
     public void setOrder_status(int order_status) {
         this.order_status = order_status;
     }
@@ -42,20 +61,5 @@ public class RechargeOrder {
 
     }
 
-    public RechargeOrder(int id, int vid, double recharge_money, int status) {
-        this.id = id;
-        this.vid = vid;
-        this.recharge_money = recharge_money;
-        this.order_status = status;
-    }
 
-    @Override
-    public String toString() {
-        return "RechargeOrder{" +
-                "id=" + id +
-                ", vid=" + vid +
-                ", recharge_money=" + recharge_money +
-                ", status=" + order_status +
-                '}';
-    }
 }

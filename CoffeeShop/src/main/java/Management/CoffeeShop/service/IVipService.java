@@ -63,4 +63,6 @@ public interface IVipService {
 	Vip vipLogin(String vip_id);
 
 	 void updateMoney(double vmoney, Vip vip);
+
+    void updateVipInfo(Vip vip);
 }
