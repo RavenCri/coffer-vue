@@ -92,19 +92,18 @@
 <script type="text/javascript"
         src="/bootstrap3/js/css3-mediaqueries.js"></script>
 <script type="text/javascript" src="/bootstrap3/js/respond.min.js"></script>
+<script src="/js/order.js"></script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">审核</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+<!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 <script th:inline="none">
-
+    getOrderAll(function(data){
+        console.log(data)
+        initTable(data)
+    });
     layui.use('table', ()=>{
         table = layui.table;
-
-        getOrderAll(function(data){
-            console.log(data)
-            initTable(data)
-        });
 
         table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data;
@@ -148,64 +147,7 @@
             }
         })
     });
-    function getOrderAll(callback){
-            $.ajax({
-                type: "get",
-                url: "/order/getAllOrder",
-                async: false,
-                success: function (data) {
-                    console.log(data)
-                    callback(data)
-                },
-                error: function (data) {
-                    console.log(data);
-                }
-            });
 
-    }
-    function initTable(data) {
-        table.render({
-            elem: '#demo'
-            , height: 500
-            , width: 1000,
-            //, url: '/order/getAllOrder' //数据接口
-            data:data.data
-            , page: true //开启分页
-            , cols: [[ //表头
-                {field: 'bid', title: '订单ID', sort: true}
-                , {field: 'username', title: '购买者',}
-                , {field: 'goodName', title: '商品名', width: 120}
-                , {field: 'money', title: '金额', width: 100}
-                , {field: 'fmoney', title: '优惠后', width: 100}
-                , {field: 'goodNess', title: '甜度', width: 100}
-                , {field: 'cupType', title: '杯型', width: 100}
-                , {field: 'order_status', title: '订单状态',}
-                , {toolbar: '#barDemo', width: 150, event: "but"}
-            ]], done: function (res, curr, count) {
-                $("[data-field = 'good']").children().each(function () {
-                    if ($(this).text() == '1') {
 
-                        // $(this).text("插件方式");
-
-                    } else if ($(this).text() == '0') {
-
-                        // $(this).text("代码方式");
-
-                    }
-
-                })
-            }, initSort: {
-                type: 'desc',
-                field: 'bid'
-            }, parseData: function (res) { //res 即为原始返回的数据
-                return {
-                    // "code": res.status, //解析接口状态
-                    // "msg": res.RSP_DESC, //解析提示文本
-                    // "count": res.rsp.ATTACH.COUNT, //解析数据长度
-                    "data": res.RSP.DATA //解析数据列表
-                };
-            }
-        });
-    }
 </script>
 </html>

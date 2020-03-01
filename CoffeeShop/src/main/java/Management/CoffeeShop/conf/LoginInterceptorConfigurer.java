@@ -3,12 +3,16 @@ package Management.CoffeeShop.conf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import Management.CoffeeShop.interceptor.LoginInterceptor;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+
 /**
  * 登陆拦截器配置类
  * @author nbtarena
@@ -16,7 +20,10 @@ import Management.CoffeeShop.interceptor.LoginInterceptor;
  */
 @Configuration //拦截器配置注解必须添加
 public class LoginInterceptorConfigurer implements WebMvcConfigurer{
-
+	@Bean
+	public ServerEndpointExporter serverEndpointExporter() {
+		return new ServerEndpointExporter();
+	}
 	//重写添加拦截器接口
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {

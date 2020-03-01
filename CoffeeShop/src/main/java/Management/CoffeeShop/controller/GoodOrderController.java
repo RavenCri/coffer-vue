@@ -6,6 +6,7 @@ import Management.CoffeeShop.entity.Vip;
 import Management.CoffeeShop.service.IGoodOrderService;
 import Management.CoffeeShop.service.IGoodsService;
 import Management.CoffeeShop.service.IVipService;
+import Management.CoffeeShop.websocket.WebSocketServer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -70,6 +71,7 @@ public class GoodOrderController {
         }
 
         GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_status);
+        WebSocketServer.sendInfo("您有新的订单啦");
         goodOrderService.addOrder(goodOrder);
 
         result.add(goodOrder.getBid());
