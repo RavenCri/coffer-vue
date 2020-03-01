@@ -232,7 +232,7 @@ public class GoodOrderController {
         res.put("msg","未付款");
         if(order_status == 1){
 
-            res.put("takeGoodIndex",takeGoodIndex);
+            res.put("takeGoodIndex",++takeGoodIndex);
         }
         return res;
     }

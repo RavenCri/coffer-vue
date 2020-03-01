@@ -138,6 +138,7 @@
                 }
                 let flag = this.$userGlobal.alreadyLogin();
                 if (flag && status === "success") {
+                    
                     this.$alert("下单成功了，请牢记您的取货号：" + response.data.takeGoodIndex + ",请及时去前台取餐哦", '购买成功', {
                         confirmButtonText: '确定',
                     });
@@ -165,7 +166,8 @@
                         }).then(res => {
                             console.log(res.data.status);
                             if (res.data.status == 1) {
-                                this.centerDialogVisible = true;
+                                this.centerDialogVisible = false;
+                                clearInterval(this.Interval);
                                 this.$alert("付款成功了，请牢记您的取货号：" + res.data.takeGoodIndex + ",请及时去前台取餐哦", '付款成功', {
                                     confirmButtonText: '确定',
                                 });

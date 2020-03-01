@@ -45,6 +45,6 @@
     </update>
 
     <select id="getAllOrder" resultMap="orderResult">
-        select * from good_order
+        select * from good_order order by bid desc
     </select>
 </mapper>
