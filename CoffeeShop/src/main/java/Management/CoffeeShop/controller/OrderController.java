@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("order")
-public class GoodOrderController {
+public class OrderController {
 
     @Autowired
     IGoodOrderService goodOrderService;
@@ -193,6 +193,10 @@ public class GoodOrderController {
 
                 goodOrderService.updateOrder(i,-1);
             });
+            JSONObject noticeMsg = new JSONObject();
+
+            noticeMsg.put("msgType","cancelOrder");
+            WebSocketServer.sendInfo(noticeMsg.toJSONString());
             return res.fluentPut("status","success");
         }catch (Exception e){
             res.fluentPut("msg",e.getMessage());

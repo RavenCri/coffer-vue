@@ -19,6 +19,8 @@ layui.use('table', ()=>{
                 hasOrder(JSON.parse(data.data))
             }else if(data['msgType']==='newOrders'){
                 hasOrders()
+            }else if(data['msgType']==='cancelOrder'){
+                cancelOrder()
             }
 
             //发现消息进入    调后台获取

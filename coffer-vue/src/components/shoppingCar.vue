@@ -206,7 +206,7 @@
           this.$message.error('购物车目前为空哦~');
           return;
         }
-        let param = JSON.parse(JSON.stringify(this.shoppingCar));
+      
         let vipId = "0";
         // 如果登陆了
         if (this.logined) {
@@ -222,7 +222,7 @@
           }
           // vip的卡号传递到后台 方便优惠与扣款
            vipId =  userInfo.vipId;
-         
+           this.submitOrder(vipId);
           
         } else {
 
@@ -233,25 +233,27 @@
           }).then(() => {
             this.$router.push({ name: 'login', params: { redirect: "/shoppingCar" } });
           }).catch(() => {
-            this.$message({
-            type: 'info',
-            message: '已取消'
-          });
+           
             console.log(JSON.stringify(this.shoppingCar))
-            this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
-            this.$refs.payWindow.cancelBut = '取消支付';
-            this.$refs.payWindow.money = this.totalMoney;
             this.$refs.payWindow.centerDialogVisible = true;
+            this.submitOrder(vipId);
           });
         }
-        let orderInfo = {
-            param:param,
-            vipId:vipId
-          }
-          param = orderInfo;
-        // 提交至后台
-        this.$refs.payWindow.addPays(param);
 
+      },
+      submitOrder(vipId){
+        let param = JSON.parse(JSON.stringify(this.shoppingCar));
+        this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
+            this.$refs.payWindow.cancelBut = '取消支付';
+            this.$refs.payWindow.money = this.totalMoney;
+          
+            let orderInfo = {
+                param:param,
+                vipId:vipId
+              }
+              param = orderInfo;
+            // 提交至后台
+            this.$refs.payWindow.addPays(param);
       }
     },
     components: {

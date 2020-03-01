@@ -171,14 +171,18 @@
                                 console.log(res.data.status);
                                 if (res.data.status == 1) {
                                     this.centerDialogVisible = false;
-                                    clearInterval(this.Interval);
+                                    this.Interval.forEach(e=>{
+                                        clearInterval(e);
+                                    })
                                     this.$alert("付款成功了，请牢记您的取货号：" + res.data.takeGoodIndex + ",请及时去前台取餐哦", '付款成功', {
                                         confirmButtonText: '确定',
                                     });
                                     //订单被删除
                                 }else if(res.data.status == -2){
                                     this.centerDialogVisible = false;
-                                    clearInterval(this.Interval);
+                                    this.Interval.forEach(e=>{
+                                        clearInterval(e);
+                                    })
                                     this.$alert(res.data.msg, '订单异常', {
                                         confirmButtonText: '确定',
                                     });
@@ -186,6 +190,9 @@
                                 }else if(res.data.status == -1){
                                     this.centerDialogVisible = false;
                                     clearInterval(this.Interval);
+                                    this.Interval.forEach(e=>{
+                                        clearInterval(e);
+                                    })
                                     this.$alert(res.data.msg, '订单过期', {
                                         confirmButtonText: '确定',
                                     });

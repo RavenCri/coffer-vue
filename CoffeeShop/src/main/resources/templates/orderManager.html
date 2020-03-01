@@ -152,6 +152,12 @@
         let audio=new Audio("/mp3/neworder.mp3");//路径
         audio.play();
     }
+    function cancelOrder() {
+        getOrderAll(function(data){
+            //console.log("查询到的订单"+JSON.stringify(data))
+            initTable(data)
+        });
+    }
     function hasOrders(obj) {
         layer.alert("有个顾客清空了购物车，快去处理一下吧~",{title:"新订单"});
 
