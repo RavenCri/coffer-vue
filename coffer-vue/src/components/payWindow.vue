@@ -144,7 +144,7 @@
                         confirmButtonText: '确定',
                     });
                 }
-            }
+            }，,
         }
 
     }
