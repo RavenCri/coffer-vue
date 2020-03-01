@@ -33,9 +33,13 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
+                }).then( ()=> {
                     this.centerDialogVisible = false;
-                    clearInterval(this.Interval);
+                    console.log(this.Interval)
+                    this.Interval.forEach(e=>{
+                        clearInterval(e);
+                    })
+                   
                     this.$axios.post("/order/cancelOrder", {
                         param: this.currOrderIdAll
                     }, {
@@ -44,6 +48,7 @@
                         }
                     }).then(response => {
                         console.log(response);
+                        
                         let type;
                         let message;
                         if (response.data.status === "status") {
@@ -52,7 +57,7 @@
                             type = "error"; message = response.data.msg;
                         }
                         this.$message({
-                            type: 'success',
+                            type: type,
                             message: '已取消该订单'
                         });
                     }).catch(function (error) {
@@ -153,29 +158,43 @@
                 this.getOrderStatus();
             },
             getOrderStatus() {
-
-
+                this.Interval = new Array();
                 this.currOrderIdAll.forEach(e => {
                     //console.log(e);
-                    this.Interval = setInterval(() => {
+                    this.Interval.push(setInterval(() => {
 
-                        this.$axios.get("/order/getOrderStatus/" + e, {
-                            headers: {
-                                'Content-type': 'application/json;charset=UTF-8'
-                            }
-                        }).then(res => {
-                            console.log(res.data.status);
-                            if (res.data.status == 1) {
-                                this.centerDialogVisible = false;
-                                clearInterval(this.Interval);
-                                this.$alert("付款成功了，请牢记您的取货号：" + res.data.takeGoodIndex + ",请及时去前台取餐哦", '付款成功', {
-                                    confirmButtonText: '确定',
-                                });
-                            }
-                        }).catch(err => {
+                            this.$axios.get("/order/getOrderStatus/" + e, {
+                                headers: {
+                                    'Content-type': 'application/json;charset=UTF-8'
+                                }
+                            }).then(res => {
+                                console.log(res.data.status);
+                                if (res.data.status == 1) {
+                                    this.centerDialogVisible = false;
+                                    clearInterval(this.Interval);
+                                    this.$alert("付款成功了，请牢记您的取货号：" + res.data.takeGoodIndex + ",请及时去前台取餐哦", '付款成功', {
+                                        confirmButtonText: '确定',
+                                    });
+                                    //订单被删除
+                                }else if(res.data.status == -2){
+                                    this.centerDialogVisible = false;
+                                    clearInterval(this.Interval);
+                                    this.$alert(res.data.msg, '订单异常', {
+                                        confirmButtonText: '确定',
+                                    });
+                                    //订单过期
+                                }else if(res.data.status == -1){
+                                    this.centerDialogVisible = false;
+                                    clearInterval(this.Interval);
+                                    this.$alert(res.data.msg, '订单过期', {
+                                        confirmButtonText: '确定',
+                                    });
+                                }
+                            }).catch(err => {
 
-                        })
-                    }, 2000);
+                            })
+                        }, 2000)
+                    )
                 })
             }
         }

@@ -233,6 +233,10 @@
           }).then(() => {
             this.$router.push({ name: 'login', params: { redirect: "/shoppingCar" } });
           }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消'
+          });
             console.log(JSON.stringify(this.shoppingCar))
             this.$refs.payWindow.canncelMsg = '确定退出支付页面吗?';
             this.$refs.payWindow.cancelBut = '取消支付';

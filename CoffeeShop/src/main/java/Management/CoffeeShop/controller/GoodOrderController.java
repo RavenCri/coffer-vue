@@ -51,9 +51,10 @@ public class GoodOrderController {
         double fmoney = money ;
         System.out.println("vipId"+vipId);
         int order_status = 0;
+        Vip vip = null;
         // 如果登陆了
         if(!vipId.equals("0")){
-            Vip vip = vipService.vipLogin(vipId);
+             vip = vipService.vipLogin(vipId);
             // 防止前端伪造数据
             if(vip !=null){
                 fmoney=Double.valueOf(df.format(money*0.95));
@@ -71,9 +72,19 @@ public class GoodOrderController {
         }
 
         GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_status);
-        WebSocketServer.sendInfo("您有新的订单啦");
-        goodOrderService.addOrder(goodOrder);
 
+        goodOrderService.addOrder(goodOrder);
+        JSONObject noticeMsg = new JSONObject();
+        JSONObject data = JSONObject.parseObject(JSON.toJSONString(goodOrder));
+        if(vip != null){
+            data.put("customer",vip.getVname());
+        }else{
+            data.put("customer","游客");
+        }
+
+        noticeMsg.put("data",data.toJSONString());
+        noticeMsg.put("msgType","newOrder");
+        WebSocketServer.sendInfo(noticeMsg.toJSONString());
         result.add(goodOrder.getBid());
         res.put("result",result);
 
@@ -157,6 +168,9 @@ public class GoodOrderController {
             goodOrderService.addOrder(goodOrder);
             result.add(goodOrder.getBid());
         }
+        JSONObject noticeMsg = new JSONObject();
+        noticeMsg.put("msgType","newOrders");
+        WebSocketServer.sendInfo(noticeMsg.toJSONString());
         if(vipLoginStatus){
 
             res.put("takeGoodIndex",++takeGoodIndex);
@@ -228,8 +242,15 @@ public class GoodOrderController {
     @ResponseBody
     public JSONObject getOrderStatus(@PathVariable("bid") int bid){
         GoodOrder goodOrder = goodOrderService.selectOrderById(bid);
-        int order_status = goodOrder.getOrder_status();
         JSONObject res = new JSONObject();
+        if(goodOrder == null){
+            // 订单被删除
+            res.put("status",-2);
+            res.put("msg","订单被删除");
+            return res;
+        }
+        int order_status = goodOrder.getOrder_status();
+
         res.put("status",order_status);
         res.put("msg","未付款");
         if(order_status == 1){
