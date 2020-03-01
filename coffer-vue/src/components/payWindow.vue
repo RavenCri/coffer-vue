@@ -173,10 +173,12 @@
                                 clearInterval(t);
                                 this.centerDialogVisible = false;
 
-                                this.$alert("付款成功,您的现有余额：" + res.data.balance + ",感谢您的相伴~", '付款成功', {
+                                this.$alert("付款成功,您的现有余额：" + res.data.balance + ",现有积分："+res.data.credit
+                                 +",感谢您的相伴~", '付款成功', {
                                     confirmButtonText: '确定',
                                 });
                                 this.$parent.money = res.data.balance;
+                                this.$parent.integral = res.data.credit;
                                 this.flushVipInfo();
                             }
 

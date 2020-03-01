@@ -92,7 +92,7 @@ public class RechargeOrderController {
                 }else if(rechargeOrder.getRecharge_money() > 500 && rechargeOrder.getRecharge_money() <1000){
                     addMoney += 50+((int)((rechargeOrder.getRecharge_money()-500)/100))*20;
                 }else if(rechargeOrder.getRecharge_money() >= 1000){
-                    addMoney += ((int)(rechargeOrder.getRecharge_money()/1000))*30;
+                    addMoney += ((int)(rechargeOrder.getRecharge_money()/1000))*300;
                 }
 
             }
@@ -104,6 +104,7 @@ public class RechargeOrderController {
             vipService.updateMoney(vip.getVmoney()+addMoney,vip);
             rechargeOrder.setOrder_status(1);
             rechargeOrderService.updateRechargeOrderStatus(rechargeOrder);
+
             res.put("status","success");
             res.put("msg","充值成功");
         }else{
@@ -123,6 +124,7 @@ public class RechargeOrderController {
                 res.put("status",rechargeOrder.getOrder_status());
                 res.put("msg","充值成功");
                 res.put("balance",vip.getVmoney());
+                res.put("credit",vip.getCredit());
             }else{
                 res.put("status",0);
                 res.put("msg","未付款");

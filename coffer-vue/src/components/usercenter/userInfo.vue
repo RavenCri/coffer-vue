@@ -46,6 +46,9 @@
     components: {
       payWindow
     },
+    created () {
+      this.flushVipInfo();
+    },
     mounted() {
       this.flushVipInfo();
       this.integral = this.$userGlobal.getUserInfo().credit;
