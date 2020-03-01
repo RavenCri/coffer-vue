@@ -22,7 +22,8 @@ public interface IGoodOrderService {
 
 	public List<GoodOrder> selectOrderByVipId(int  vipId);
 
-	void cancelOrder(Integer i);
+	void updateOrder(Integer bid,Integer status);
 
 	List<GoodOrder> getAllOrder();
+
 }

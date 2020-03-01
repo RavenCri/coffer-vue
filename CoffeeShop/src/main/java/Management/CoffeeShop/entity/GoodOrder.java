@@ -19,11 +19,11 @@ public class GoodOrder extends BaseEntity implements Serializable{
 	private String created_time;
 	private Goods good;
 	private String commodity_specification;
-	private String order_status;
+	private int order_status;
 	public GoodOrder() {
 	}
 
-	public GoodOrder(int bid, String vid, int good_num, double money, double fmoney, String created_time, Goods good, String commodity_specification,String order_status) {
+	public GoodOrder(int bid, String vid, int good_num, double money, double fmoney, String created_time, Goods good, String commodity_specification, int order_status) {
 		this.bid = bid;
 		this.vid = vid;
 		this.good_num = good_num;
@@ -50,11 +50,11 @@ public class GoodOrder extends BaseEntity implements Serializable{
 				'}';
 	}
 
-	public String getOrder_status() {
+	public int getOrder_status() {
 		return order_status;
 	}
 
-	public void setOrder_status(String order_status) {
+	public void setOrder_status(int order_status) {
 		this.order_status = order_status;
 	}
 

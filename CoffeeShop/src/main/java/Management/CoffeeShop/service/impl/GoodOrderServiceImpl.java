@@ -41,8 +41,8 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 	}
 
 	@Override
-	public void cancelOrder(Integer i) {
-		orderMapper.cancelOrder(i);
+	public void updateOrder(Integer bid,Integer status) {
+		 orderMapper.updateOrder(bid,status);
 	}
 
 	@Override
@@ -50,6 +50,8 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 		List<GoodOrder> allOrder = orderMapper.getAllOrder();
 		return allOrder;
 	}
+
+
 
 
 }

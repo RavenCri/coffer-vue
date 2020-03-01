@@ -3,12 +3,9 @@ package Management.CoffeeShop.controller;
 import Management.CoffeeShop.entity.GoodOrder;
 import Management.CoffeeShop.entity.Goods;
 import Management.CoffeeShop.entity.Vip;
-import Management.CoffeeShop.mapper.GoodOrderMapper;
-import Management.CoffeeShop.mapper.GoodsMapper;
 import Management.CoffeeShop.service.IGoodOrderService;
 import Management.CoffeeShop.service.IGoodsService;
 import Management.CoffeeShop.service.IVipService;
-import Management.CoffeeShop.util.JsonResult;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -52,7 +49,7 @@ public class GoodOrderController {
         String vipId = param.getString("vipId")==null?"0":param.getString("vipId");
         double fmoney = money ;
         System.out.println("vipId"+vipId);
-        String order_describe = "";
+        int order_status = 0;
         // 如果登陆了
         if(!vipId.equals("0")){
             Vip vip = vipService.vipLogin(vipId);
@@ -64,17 +61,15 @@ public class GoodOrderController {
                     res.put("msg","余额不足");
                     return res;
                 }
-                order_describe = "1";
+                order_status = 1;
 
                 res.put("takeGoodIndex",++takeGoodIndex);
                 vip.setVmoney(vip.getVmoney()-fmoney);
                 vipService.updateMoney(vip.getVmoney(),vip);
             }
-        }else{
-            order_describe = "0";
         }
 
-        GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_describe);
+        GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_status);
         goodOrderService.addOrder(goodOrder);
 
         result.add(goodOrder.getBid());
@@ -147,18 +142,16 @@ public class GoodOrderController {
             String create_time = System.currentTimeMillis()+"";
             String commodity_specification = curr.getString("cupType")+"#"+curr.getString("sweetNess");
             double fmoney = money;
-            String order_describe = "";
+            int order_status = 0;
             // 如果登陆了
             if(vipLoginStatus) {
                 fmoney=Double.valueOf(df.format(money*0.95));
 
                 vip.setVmoney(vip.getVmoney()-fmoney);
                 vipService.updateMoney(vip.getVmoney(),vip);
-                order_describe = "1";
-            }else{
-                order_describe = "0";
+                order_status = 1;
             }
-            GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_describe);
+            GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_status);
             goodOrderService.addOrder(goodOrder);
             result.add(goodOrder.getBid());
         }
@@ -182,7 +175,7 @@ public class GoodOrderController {
 
             array.forEach(i-> {
 
-                goodOrderService.cancelOrder(i);
+                goodOrderService.updateOrder(i,-1);
             });
             return res.fluentPut("status","success");
         }catch (Exception e){
@@ -191,7 +184,7 @@ public class GoodOrderController {
         }
 
     }
-    @GetMapping("/getAllOrder")
+    @GetMapping("getAllOrder")
     @ResponseBody
     public JSONObject getAllOrder(){
         List<GoodOrder> allOrder = goodOrderService.getAllOrder();
@@ -227,6 +220,38 @@ public class GoodOrderController {
         obj.put("data",jsonArray);
         obj.put("code",0);
         return obj;
+    }
+
+    @GetMapping("getOrderStatus/{bid}")
+    @ResponseBody
+    public JSONObject getOrderStatus(@PathVariable("bid") int bid){
+        GoodOrder goodOrder = goodOrderService.selectOrderById(bid);
+        int order_status = goodOrder.getOrder_status();
+        JSONObject res = new JSONObject();
+        res.put("status",order_status);
+        res.put("msg","未付款");
+        if(order_status == 1){
+
+            res.put("takeGoodIndex",takeGoodIndex);
+        }
+        return res;
+    }
+    @GetMapping("/handleOrder/{bid}")
+    @ResponseBody
+    public JSONObject handOrder(@PathVariable("bid")  int bid){
+
+        goodOrderService.updateOrder(bid, 1);
+        GoodOrder goodOrder = goodOrderService.selectOrderById(bid);
+        JSONObject jsonObject = new JSONObject();
+        if(goodOrder.getOrder_status() != 1){
+            jsonObject.put("status","error");
+            jsonObject.put("msg","审核失败");
+
+        }else{
+            jsonObject.put("status","success");
+            jsonObject.put("msg","审核成功");
+        }
+        return jsonObject;
     }
     public String goodNessChinese(String goodNess){
         switch (goodNess){

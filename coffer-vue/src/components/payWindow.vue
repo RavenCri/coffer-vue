@@ -23,7 +23,8 @@
                 centerDialogVisible: false,
                 canncelMsg: "",
                 cancelBut: "",
-                currOrderIdAll: null
+                currOrderIdAll: null,
+                Interval:null
             }
         },
         methods: {
@@ -34,6 +35,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.centerDialogVisible = false;
+                    clearInterval(this.Interval);
                     this.$axios.post("/order/cancelOrder", {
                         param: this.currOrderIdAll
                     }, {
@@ -45,14 +47,14 @@
                         let type;
                         let message;
                         if (response.data.status === "status") {
-                            type="success";message="已取消订单";
+                            type = "success"; message = "已取消订单";
                         } else {
-                            type="error";message=response.data.msg;
+                            type = "error"; message = response.data.msg;
                         }
                         this.$message({
-                                type: 'success',
-                                message: '已取消该订单'
-                            });
+                            type: 'success',
+                            message: '已取消该订单'
+                        });
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -139,12 +141,41 @@
                     this.$alert("下单成功了，请牢记您的取货号：" + response.data.takeGoodIndex + ",请及时去前台取餐哦", '购买成功', {
                         confirmButtonText: '确定',
                     });
+                    return;
                 } else if (status === "error") {
                     this.$alert("下单失败了，错误信息：" + response.data.msg, '下单失败', {
                         confirmButtonText: '确定',
                     });
+                    return;
                 }
-            }，,
+                //检测订单状态
+                this.getOrderStatus();
+            },
+            getOrderStatus() {
+
+
+                this.currOrderIdAll.forEach(e => {
+                    //console.log(e);
+                    this.Interval = setInterval(() => {
+
+                        this.$axios.get("/order/getOrderStatus/" + e, {
+                            headers: {
+                                'Content-type': 'application/json;charset=UTF-8'
+                            }
+                        }).then(res => {
+                            console.log(res.data.status);
+                            if (res.data.status == 1) {
+                                this.centerDialogVisible = true;
+                                this.$alert("付款成功了，请牢记您的取货号：" + res.data.takeGoodIndex + ",请及时去前台取餐哦", '付款成功', {
+                                    confirmButtonText: '确定',
+                                });
+                            }
+                        }).catch(err => {
+
+                        })
+                    }, 2000);
+                })
+            }
         }
 
     }
