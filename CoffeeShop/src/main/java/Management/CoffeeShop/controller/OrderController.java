@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class OrderController {
         String cupType = param.getString("cupType");
         DecimalFormat    df   = new DecimalFormat("######0.00");
         double money  = Double.valueOf(df.format(Double.valueOf(price.getString(cupType))*buyNum));
-        String create_time = System.currentTimeMillis()+"";
+        String create_time = new DateTime().toString();
         String commodity_specification = param.getString("cupType")+"#"+param.getString("sweetNess");
         // 会员id
         String vipId = param.getString("vipId")==null?"0":param.getString("vipId");
@@ -101,16 +102,29 @@ public class OrderController {
     @RequestMapping("/selectOrderByVipId")
     @ResponseBody
     public JSONArray selectOrderByVipId(@RequestBody JSONObject json){
-        String id = json.getString("id");
-        List<GoodOrder> goodOrders = goodOrderService.selectOrderByVipId(1);
-        return JSONArray.parseArray(JSON.toJSONString(goodOrders));
+        String vipId = json.getString("vipId");
+        List<GoodOrder> goodOrders = goodOrderService.selectOrderByVipId(vipId);
+       JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(goodOrders));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject curr = jsonArray.getJSONObject(i);
+
+
+            curr.put("createdTime",curr.getString("created_time"));
+            curr.put("goodName",curr.getJSONObject("good").getString("name"));
+            String commodity_specification = curr.getString("commodity_specification");
+            String[] split = commodity_specification.split("#");
+            curr.put("cupType",cupTypeChinese(split[0]) );
+            curr.put("goodNess",goodNessChinese(split[1]) );
+            System.out.println(curr);
+        }
+        return jsonArray;
     }
 
     @RequestMapping("/selectOrderById")
     @ResponseBody
     public String selectOrderById(@RequestBody JSONObject json){
-        String id = json.getString("id");
-        GoodOrder goodOrder = goodOrderService.selectOrderById(1);
+        int id = json.getInteger("id");
+        GoodOrder goodOrder = goodOrderService.selectOrderById(id);
         return JSON.toJSONString(goodOrder);
 
     }
@@ -166,7 +180,7 @@ public class OrderController {
             String cupType = curr.getString("cupType");
 
             double money  = Double.valueOf(df.format(Double.valueOf(price.getString(cupType))*buyNum));
-            String create_time = System.currentTimeMillis()+"";
+            String create_time =  new DateTime().toString();
             String commodity_specification = curr.getString("cupType")+"#"+curr.getString("sweetNess");
             double fmoney = money;
             int order_status = 0;
@@ -242,9 +256,8 @@ public class OrderController {
                 buyNamePerson = "游客";
             }
             String created_time = curr.getString("created_time");
-            DateTime dateTime = new DateTime();
-            dateTime.setTime(Long.valueOf(created_time));
-            curr.put("created_time", dateTime.toString());
+
+            curr.put("created_time", created_time);
 
             curr.put("username",buyNamePerson );
             curr.put("goodName",allOrder.get(i).getGood().getName() );
@@ -339,5 +352,18 @@ public class OrderController {
 
         }
         return null;
+    }
+//SELECT * FROM good_order WHERE date_format(created_time,'%Y-%m-%d')=date_format('2020-03-01','%Y-%m-%d');
+    @PostMapping("/getDateSelectOrder")
+    @ResponseBody
+    public void getDateSelectOrder(@RequestBody JSONObject jsonObject){
+        ArrayList<String> array = (ArrayList)jsonObject.get("param");
+        String begintTime = array.get(0);
+        String endTime =  array.get(1);
+        List<String> daysStr = IGoodOrderService.findDaysStr(begintTime, endTime);
+        daysStr.forEach(e->{
+            System.out.println(e);
+        });
+        // goodOrderService.getDateSelectOrder();
     }
 }

@@ -12,7 +12,7 @@
           <div style="font-size: 18px;">
             <span style="color: forestgreen;"><i class="el-icon-position"></i>余额：{{money}}元</span></br>
             <span style="color: indianred;"><i class="el-icon-star-off"></i>积分：{{integral}}</span></br>
-            <span><i class="el-icon-s-opportunity"></i>消费：{{money_desc}}折</span></br>
+            <span><i class="el-icon-s-opportunity"></i>消费折扣：{{money_desc}}折</span></br>
             <span style="color: lightgreen;"><i class="el-icon-medal-1"></i>会员等级：V7</span></br>
             <div style="width: 200px;margin: 0 auto;">
               <span>v7<el-progress :text-inside="true" :stroke-width="20" :width="5" :percentage="70"></el-progress>

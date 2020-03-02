@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import Management.CoffeeShop.service.IGoodOrderService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,14 +24,14 @@ import java.util.List;
 public class GoodOrderServiceImpl implements IGoodOrderService {
 	@Autowired
 	GoodOrderMapper orderMapper;
+
 	/**
 	 * 订单添加商品
 	 */
 
 
-
 	@Override
-	public void addOrder(GoodOrder goodOrder){
+	public void addOrder(GoodOrder goodOrder) {
 		orderMapper.addOrder(goodOrder);
 	}
 
@@ -36,13 +41,13 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 	}
 
 	@Override
-	public List<GoodOrder> selectOrderByVipId(int vipId) {
+	public List<GoodOrder> selectOrderByVipId(String vipId) {
 		return orderMapper.selectOrderByVipId(vipId);
 	}
 
 	@Override
-	public void updateOrder(Integer bid,Integer status) {
-		 orderMapper.updateOrder(bid,status);
+	public void updateOrder(Integer bid, Integer status) {
+		orderMapper.updateOrder(bid, status);
 	}
 
 	@Override
@@ -50,8 +55,6 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 		List<GoodOrder> allOrder = orderMapper.getAllOrder();
 		return allOrder;
 	}
-
-
 
 
 }

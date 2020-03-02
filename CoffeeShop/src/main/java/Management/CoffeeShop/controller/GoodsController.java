@@ -153,6 +153,8 @@ public class GoodsController extends BaseController{
 		});
 		return  jsonArray;
 	}
+
+
 	/**
 	 * 根据商品编号或者名称显示商品资料
 	 * @return 返回商品资料

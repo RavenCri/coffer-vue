@@ -21,7 +21,7 @@ public interface GoodOrderMapper {
 
 	void addOrder(GoodOrder goodOrder);
 
-	List<GoodOrder> selectOrderByVipId(int vipId);
+	List<GoodOrder> selectOrderByVipId(String vipId);
 
 	void updateOrder(int bid,int status);
 
