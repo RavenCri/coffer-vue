@@ -7,6 +7,7 @@ import exchargeGood from '@/components/exchargeGood'
 import userInfo from '@/components/usercenter/userInfo'
 import updateInfo from '@/components/usercenter/updateInfo'
 import userBill from '@/components/usercenter/userBill'
+import collectGood from '@/components/usercenter/collectGood'
 import shoppingCar from '@/components/shoppingCar'
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
           path: 'updateInfo',
           component: updateInfo
         },
+        {
+          path: 'collectGood',
+          component: collectGood
+        },
+      
       ]
     },
     {

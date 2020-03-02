@@ -52,6 +52,7 @@
           <ul class="navigationIn">
             <li><router-link to="/personCenter/userInfo">账户中心</router-link></li>
             <li><router-link to="/personCenter/userBill">修改密码</router-link></li>
+            <li><router-link to="/personCenter/collectGood">我的收藏</router-link></li>
             <li><router-link to="/personCenter/updateInfo">我的账单</router-link></li>
          
            

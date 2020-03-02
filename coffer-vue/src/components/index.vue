@@ -41,7 +41,11 @@
               <div class="card">
                 <span>{{item3.name}}</span></br>
                 <span><sup>$</sup>{{item3.price.middleCup}}</span><span>(中杯)</span>
-                <img :src="item3.imageUrl" alt="?" />
+                <div>
+                  <img :src="item3.imageUrl" style="position: absolute;" alt="?" />
+                  <div class="collGoods" style="display: table-cell;"><i class="el-icon-star-off"
+                      @click="collGood(item3)" style="font-size: 50px;"></i></div>
+                </div>
                 <div class="OperationArea">
                   <span @click="buyGoods(item3)"><i class="el-icon-shopping-cart-1" aria-hidden="true"></i>购买</span>
                   <span>|</span>
@@ -73,7 +77,7 @@
     name: "index",
     mounted() {
       this.$axios.get("/goods/newGoods").then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.newGoods = res.data;
       }).catch(function (error) {
         console.log(error);
@@ -84,6 +88,13 @@
       }).catch(function (error) {
         console.log(error);
       });
+      if (JSON.stringify(this.$route.query) != '{}') {
+
+
+        let name = this.$route.query.name;
+        this.clickImageGoods(name)
+      }
+
       this.flushInfo();
     },
     methods: {
@@ -113,7 +124,7 @@
         this.$refs.goodsWindow.goods.imageUrl = goods.imageUrl;
         this.$refs.goodsWindow.goods.buyType = buyType;
         this.$refs.goodsWindow.goods.buyNum = 1;
-        this.$refs.goodsWindow.goods.time = this.dateFormat(new Date());
+        this.$refs.goodsWindow.goods.time = this.$refs.goodsWindow.dateFormat(new Date());
         this.$refs.goodsWindow.dialogVisible = true;
       },
       addShoppingCar(goods) {
@@ -125,26 +136,6 @@
         this.buy(goods, 'buy');
 
       },
-      dateFormat(date) {
-        let ret;
-        let fmt = "YYYY-mm-dd HH:MM";
-        const opt = {
-          "Y+": date.getFullYear().toString(),        // 年
-          "m+": (date.getMonth() + 1).toString(),     // 月
-          "d+": date.getDate().toString(),            // 日
-          "H+": date.getHours().toString(),           // 时
-          "M+": date.getMinutes().toString(),         // 分
-          "S+": date.getSeconds().toString()          // 秒
-          // 有其他格式化字符需求可以继续添加，必须转化成字符串
-        };
-        for (let k in opt) {
-          ret = new RegExp("(" + k + ")").exec(fmt);
-          if (ret) {
-            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
-          };
-        };
-        return fmt;
-      },
       flushInfo() {
         if (this.$userGlobal.alreadyLogin()) {
           var user = this.$userGlobal.getUserInfo();
@@ -155,6 +146,40 @@
             this.$userGlobal.setUserInfo(JSON.parse(info));
           })
         }
+      },
+      collGood(item) {
+        console.log(item)
+        if (this.$userGlobal.alreadyLogin()) {
+          this.$axios.post("/collect/add", {
+            vipId: this.$userGlobal.getUserInfo().vipId,
+            goodName: item.name
+          }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
+            let status = res.data.status;
+
+            if (status == 'success') {
+              this.$message({
+                message: "已收藏,可以在个人中心查看哦~",
+                type: "success"
+              });
+            } else if (status == 'alreadyColl') {
+              this.$message({
+                message: "已经收藏过该商品啦~换个喜欢的商品收藏吧~",
+                type: "error"
+              });
+            }
+          })
+        } else {
+          this.$confirm('你还未登陆，是否需要登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({ name: 'login', params: { redirect: "/" } });
+          }).catch(() => {
+
+          });
+        }
+
       }
     },
     components: {
@@ -382,6 +407,26 @@
     /* background-color: white;
   color: black; */
     display: inline;
+  }
+
+  .card div:nth-child(2) {
+    width: 200px;
+    height: 301px;
+
+  }
+
+  .collGoods {
+    background-color: rgba(255, 255, 244, 0.5);
+    line-height: 280px;
+    text-align: center;
+    top: -20px;
+    position: relative;
+    opacity: 0;
+
+  }
+
+  .collGoods:hover {
+    opacity: 0.8;
   }
 
   .card div span {

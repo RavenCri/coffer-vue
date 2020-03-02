@@ -133,9 +133,9 @@
                 }).then(response => {
                     console.log(response);
                     this.orderRuturnHandle(response);
-                    let flag = this.$userGlobal.alreadyLogin();
-                    // 登陆且支付成功了
-                    if (flag && response.data.status === "success") {
+                   // let flag = this.$userGlobal.alreadyLogin();
+                    // 支付成功了 应该清空购物车
+                    if ( response.data.status === "success") {
                         // 把购物车的数据删除掉
                         this.$parent.shoppingCar.splice(0, this.$parent.shoppingCar.length);
                         this.$parent.vipMoney = 0;

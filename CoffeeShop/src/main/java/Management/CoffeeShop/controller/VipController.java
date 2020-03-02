@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import Management.CoffeeShop.entity.Goods;
+import Management.CoffeeShop.service.IGoodsService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -105,7 +107,7 @@ public class VipController extends BaseController{
 		System.err.println("2");
 		return new JsonResult<Void>(OK);
 	}
-	
+
 	/**
 	 * 获取会员信息
 	 * @param session 存储vid

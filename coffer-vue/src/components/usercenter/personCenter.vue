@@ -7,6 +7,7 @@
                     <template slot="title"><i class="el-icon-message"></i>我的账户</template>
                     <el-menu-item-group>
                         <el-menu-item index="/personCenter/userInfo">账户信息</el-menu-item>
+                        <el-menu-item index="/personCenter/collectGood">我的收藏</el-menu-item>
                         <el-menu-item index="/personCenter/userBill">流水账单</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>

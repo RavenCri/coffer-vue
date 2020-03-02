@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-
+    static List<ArrayList<Integer>> shoppringCar = new ArrayList();
     @Autowired
     IGoodOrderService goodOrderService;
     @Autowired
@@ -133,15 +134,20 @@ public class OrderController {
         }
         DecimalFormat    df   = new DecimalFormat("######0.00");
         double checkMoneyNum = 0;
+
         for (int i = 0; i < param.size(); i++) {
             JSONObject curr = param.getJSONObject(i);
             JSONObject price = curr.getJSONObject("price");
             int buyNum = curr.getInteger("buyNum");
             String cupType = curr.getString("cupType");
-            //订单增加积分
-            vip.setCredit(vip.getCredit()+30);
-            vipService.updateVipInfo(vip);
+            if(vipLoginStatus){
+                //订单增加积分
+                vip.setCredit(vip.getCredit()+30);
+                vipService.updateVipInfo(vip);
+            }
+
             checkMoneyNum += Double.valueOf(df.format(Double.valueOf(price.getString(cupType))*buyNum));
+
         }
         if(vipLoginStatus){
             if(vip.getVmoney()<checkMoneyNum){
@@ -150,6 +156,7 @@ public class OrderController {
                 return res;
             }
         }
+        ArrayList<Integer> temp = new ArrayList();
         for (int i = 0; i < param.size(); i++) {
             JSONObject curr = param.getJSONObject(i);
             JSONObject price = curr.getJSONObject("price");
@@ -172,8 +179,14 @@ public class OrderController {
             }
             GoodOrder goodOrder = new GoodOrder(0,vipId,buyNum,money,fmoney,create_time,good,commodity_specification,order_status);
             goodOrderService.addOrder(goodOrder);
-            result.add(goodOrder.getBid());
+            temp.add(goodOrder.getBid());
+            // 添加一个单号就行了 判断一个付款成功，该购物车的其他订单就都审核了
+            if(i==0){
+
+                result.add(goodOrder.getBid());
+            }
         }
+        shoppringCar.add(temp);
         JSONObject noticeMsg = new JSONObject();
         noticeMsg.put("msgType","newOrders");
         WebSocketServer.sendInfo(noticeMsg.toJSONString());
@@ -276,8 +289,18 @@ public class OrderController {
     @GetMapping("/handleOrder/{bid}")
     @ResponseBody
     public JSONObject handOrder(@PathVariable("bid")  int bid){
-
-        goodOrderService.updateOrder(bid, 1);
+        AtomicBoolean flag = new AtomicBoolean(true);
+        for (ArrayList<Integer> e : shoppringCar) {
+            if(e.contains(bid)){
+                e.forEach(index->{
+                    goodOrderService.updateOrder(index, 1);
+                    flag.set(false);
+                });
+            }
+        }
+        if(flag.get()){
+            goodOrderService.updateOrder(bid, 1);
+        }
         GoodOrder goodOrder = goodOrderService.selectOrderById(bid);
         JSONObject jsonObject = new JSONObject();
         if(goodOrder.getOrder_status() != 1){
@@ -289,6 +312,7 @@ public class OrderController {
             jsonObject.put("msg","审核成功");
         }
         return jsonObject;
+
     }
     public String goodNessChinese(String goodNess){
         switch (goodNess){
