@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 01/03/2020 23:56:47
+ Date: 02/03/2020 13:00:44
 */
 
 SET NAMES utf8mb4;
@@ -37,6 +37,24 @@ CREATE TABLE `cart`  (
 -- Records of cart
 -- ----------------------------
 INSERT INTO `cart` VALUES (12.00, 15, 842, 1, NULL, 1, '小北咖啡', 12.00);
+
+-- ----------------------------
+-- Table structure for coll_good
+-- ----------------------------
+DROP TABLE IF EXISTS `coll_good`;
+CREATE TABLE `coll_good`  (
+  `vip_id` int(11) NULL DEFAULT NULL,
+  `good_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of coll_good
+-- ----------------------------
+INSERT INTO `coll_good` VALUES (123456, '美式咖啡', 1);
+INSERT INTO `coll_good` VALUES (123456, '拿铁咖啡', 2);
+INSERT INTO `coll_good` VALUES (123456, '卡布奇诺', 3);
 
 -- ----------------------------
 -- Table structure for column_goods
@@ -85,6 +103,14 @@ INSERT INTO `good_order` VALUES (220, '123456', 2, 36.00, 34.20, '1583053366244'
 INSERT INTO `good_order` VALUES (221, '123456', 1, 10.00, 9.50, '1583053366260', 42, 'middleCup#middleSweet', 1);
 INSERT INTO `good_order` VALUES (222, '123456', 1, 15.00, 14.25, '1583053366273', 46, 'bigCup#middleSweet', 1);
 INSERT INTO `good_order` VALUES (223, '123456', 1, 18.00, 17.10, '1583053366287', 42, 'bigPlusCup#manySweet', 1);
+INSERT INTO `good_order` VALUES (224, '0', 1, 10.00, 10.00, '1583115798506', 42, 'middleCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (225, '0', 1, 15.00, 15.00, '1583115798548', 46, 'bigCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (226, '0', 1, 10.00, 10.00, '1583115837689', 42, 'middleCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (227, '0', 1, 15.00, 15.00, '1583115837705', 46, 'bigCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (228, '0', 1, 10.00, 10.00, '1583116122745', 42, 'middleCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (229, '0', 1, 15.00, 15.00, '1583116122774', 46, 'bigCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (230, '0', 1, 10.00, 10.00, '1583116258623', 42, 'middleCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (231, '0', 1, 15.00, 15.00, '1583116258654', 46, 'bigCup#middleSweet', 1);
 
 -- ----------------------------
 -- Table structure for goods
