@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 02/03/2020 13:00:44
+ Date: 02/03/2020 19:22:24
 */
 
 SET NAMES utf8mb4;
@@ -83,7 +83,7 @@ CREATE TABLE `good_order`  (
   `good_num` int(11) NULL DEFAULT NULL COMMENT '货品数量',
   `money` double(11, 2) NULL DEFAULT NULL COMMENT '订单金额',
   `fmoney` double(11, 2) NULL DEFAULT NULL COMMENT '最终支付金额',
-  `created_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单创建世界',
+  `created_time` datetime(3) NULL DEFAULT NULL COMMENT '订单创建时间',
   `good_id` int(255) NULL DEFAULT NULL COMMENT '商品ID',
   `commodity_specification` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品属性',
   `order_status` int(255) NULL DEFAULT NULL COMMENT '订单状态',
@@ -93,24 +93,69 @@ CREATE TABLE `good_order`  (
 -- ----------------------------
 -- Records of good_order
 -- ----------------------------
-INSERT INTO `good_order` VALUES (214, '0', 1, 18.00, 18.00, '1583053211072', 40, 'bigPlusCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (215, '0', 1, 15.00, 15.00, '1583053258821', 46, 'bigCup#middleSweet', -1);
-INSERT INTO `good_order` VALUES (216, '0', 1, 18.00, 18.00, '1583053276042', 40, 'bigPlusCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (217, '0', 1, 10.00, 10.00, '1583053276061', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (218, '0', 1, 15.00, 15.00, '1583053276075', 46, 'bigCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (219, '123456', 1, 10.00, 9.50, '1583053318241', 40, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (220, '123456', 2, 36.00, 34.20, '1583053366244', 40, 'bigPlusCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (221, '123456', 1, 10.00, 9.50, '1583053366260', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (222, '123456', 1, 15.00, 14.25, '1583053366273', 46, 'bigCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (223, '123456', 1, 18.00, 17.10, '1583053366287', 42, 'bigPlusCup#manySweet', 1);
-INSERT INTO `good_order` VALUES (224, '0', 1, 10.00, 10.00, '1583115798506', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (225, '0', 1, 15.00, 15.00, '1583115798548', 46, 'bigCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (226, '0', 1, 10.00, 10.00, '1583115837689', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (227, '0', 1, 15.00, 15.00, '1583115837705', 46, 'bigCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (228, '0', 1, 10.00, 10.00, '1583116122745', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (229, '0', 1, 15.00, 15.00, '1583116122774', 46, 'bigCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (230, '0', 1, 10.00, 10.00, '1583116258623', 42, 'middleCup#middleSweet', 1);
-INSERT INTO `good_order` VALUES (231, '0', 1, 15.00, 15.00, '1583116258654', 46, 'bigCup#middleSweet', 1);
+INSERT INTO `good_order` VALUES (234, '123456', 1, 10.00, 3.00, '2020-03-01 16:49:50.000', 42, 'middleCup#littleSweet', 1);
+INSERT INTO `good_order` VALUES (235, '123456', 1, 50.00, 67857.00, '2020-01-01 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (236, '123456', 1, 50.00, 27183.00, '2020-01-02 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (237, '123456', 1, 50.00, 96082.00, '2020-01-03 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (238, '123456', 1, 50.00, 68383.00, '2020-01-04 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (239, '123456', 1, 50.00, 59024.00, '2020-01-05 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (240, '123456', 1, 50.00, 26443.00, '2020-01-06 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (241, '123456', 1, 50.00, 29823.00, '2020-01-07 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (242, '123456', 1, 50.00, 62127.00, '2020-01-08 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (243, '123456', 1, 50.00, 53041.00, '2020-01-09 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (244, '123456', 1, 50.00, 85820.00, '2020-01-10 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (245, '123456', 1, 50.00, 46306.00, '2020-01-11 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (246, '123456', 1, 50.00, 59085.00, '2020-01-12 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (247, '123456', 1, 50.00, 89425.00, '2020-01-13 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (248, '123456', 1, 50.00, 84893.00, '2020-01-14 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (249, '123456', 1, 50.00, 11811.00, '2020-01-15 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (250, '123456', 1, 50.00, 47097.00, '2020-01-16 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (251, '123456', 1, 50.00, 19247.00, '2020-01-17 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (252, '123456', 1, 50.00, 41405.00, '2020-01-18 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (253, '123456', 1, 50.00, 91853.00, '2020-01-19 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (254, '123456', 1, 50.00, 59336.00, '2020-01-20 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (255, '123456', 1, 50.00, 65014.00, '2020-01-21 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (256, '123456', 1, 50.00, 59438.00, '2020-01-22 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (257, '123456', 1, 50.00, 57061.00, '2020-01-23 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (258, '123456', 1, 50.00, 14782.00, '2020-01-24 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (259, '123456', 1, 50.00, 32839.00, '2020-01-25 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (260, '123456', 1, 50.00, 98062.00, '2020-01-26 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (261, '123456', 1, 50.00, 66955.00, '2020-01-27 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (262, '123456', 1, 50.00, 59677.00, '2020-01-28 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (263, '123456', 1, 50.00, 79935.00, '2020-01-29 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (264, '123456', 1, 50.00, 29614.00, '2020-01-30 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (265, '123456', 1, 50.00, 32328.00, '2020-01-31 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (266, '123456', 1, 50.00, 27324.00, '2020-02-01 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (267, '123456', 1, 50.00, 19101.00, '2020-02-02 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (268, '123456', 1, 50.00, 23031.00, '2020-02-03 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (269, '123456', 1, 50.00, 1079.00, '2020-02-04 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (270, '123456', 1, 50.00, 52794.00, '2020-02-05 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (271, '123456', 1, 50.00, 99006.00, '2020-02-06 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (272, '123456', 1, 50.00, 20652.00, '2020-02-07 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (273, '123456', 1, 50.00, 68671.00, '2020-02-08 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (274, '123456', 1, 50.00, 31559.00, '2020-02-09 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (275, '123456', 1, 50.00, 38453.00, '2020-02-10 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (276, '123456', 1, 50.00, 85360.00, '2020-02-11 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (277, '123456', 1, 50.00, 23933.00, '2020-02-12 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (278, '123456', 1, 50.00, 50886.00, '2020-02-13 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (279, '123456', 1, 50.00, 61125.00, '2020-02-14 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (280, '123456', 1, 50.00, 13041.00, '2020-02-15 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (281, '123456', 1, 50.00, 16125.00, '2020-02-16 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (282, '123456', 1, 50.00, 17093.00, '2020-02-17 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (283, '123456', 1, 50.00, 47454.00, '2020-02-18 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (284, '123456', 1, 50.00, 76260.00, '2020-02-19 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (285, '123456', 1, 50.00, 19103.00, '2020-02-20 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (286, '123456', 1, 50.00, 92833.00, '2020-02-21 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (287, '123456', 1, 50.00, 58829.00, '2020-02-22 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (288, '123456', 1, 50.00, 91985.00, '2020-02-23 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (289, '123456', 1, 50.00, 22701.00, '2020-02-24 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (290, '123456', 1, 50.00, 20925.00, '2020-02-25 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (291, '123456', 1, 50.00, 95651.00, '2020-02-26 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (292, '123456', 1, 50.00, 99648.00, '2020-02-27 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (293, '123456', 1, 50.00, 47899.00, '2020-02-28 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (294, '123456', 1, 50.00, 8492.00, '2020-02-29 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (295, '123456', 1, 50.00, 54660.00, '2020-03-01 12:00:00.000', 42, 'test', 1);
+INSERT INTO `good_order` VALUES (296, '123456', 1, 50.00, 38997.00, '2020-03-02 12:00:00.000', 42, 'test', 1);
 
 -- ----------------------------
 -- Table structure for goods
@@ -174,7 +219,7 @@ CREATE TABLE `recharge_order`  (
   `recharge_money` decimal(10, 0) NULL DEFAULT NULL,
   `order_status` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of recharge_order
@@ -186,6 +231,16 @@ INSERT INTO `recharge_order` VALUES ('2020-03-01 23:43:59', 18, '123456', 425, 1
 INSERT INTO `recharge_order` VALUES ('2020-03-01 23:45:57', 19, '123456', 425, 1);
 INSERT INTO `recharge_order` VALUES ('2020-03-01 23:46:54', 20, '123456', 2000, 1);
 INSERT INTO `recharge_order` VALUES ('2020-03-01 23:53:30', 21, '123456', 400, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:29:25', 22, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:33:34', 23, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:35:59', 24, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:37:26', 25, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:39:07', 26, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:41:35', 27, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:45:25', 28, '123456', 1000001, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:48:28', 29, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 13:58:34', 30, '123456', 100000, 1);
+INSERT INTO `recharge_order` VALUES ('2020-03-02 14:07:35', 31, '123456', 100000, 1);
 
 -- ----------------------------
 -- Table structure for user
@@ -225,12 +280,13 @@ CREATE TABLE `vip`  (
   `exp` int(11) NULL DEFAULT NULL COMMENT '会员经验等级',
   `count` int(11) NULL DEFAULT NULL COMMENT '签到次数',
   `vip_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'vip专属ID',
+  `money_disc` double(11, 2) NULL DEFAULT NULL COMMENT '打折率',
   PRIMARY KEY (`vid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of vip
 -- ----------------------------
-INSERT INTO `vip` VALUES (23, 'raven', '18856975969', 0.00, 7987, NULL, '2020-02-28 12:22:35', 0, NULL, NULL, NULL, '123456');
+INSERT INTO `vip` VALUES (23, 'raven', '18856975969', 99989.50, 100090, NULL, '2020-02-28 12:22:35', 1, NULL, NULL, NULL, '123456', 0.30);
 
 SET FOREIGN_KEY_CHECKS = 1;
