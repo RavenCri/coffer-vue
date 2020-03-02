@@ -6,11 +6,13 @@ import Management.CoffeeShop.entity.Vip;
 import Management.CoffeeShop.service.IGoodOrderService;
 import Management.CoffeeShop.service.IGoodsService;
 import Management.CoffeeShop.service.IVipService;
+import Management.CoffeeShop.service.impl.GoodOrderServiceImpl;
 import Management.CoffeeShop.websocket.WebSocketServer;
 import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -353,17 +355,52 @@ public class OrderController {
         }
         return null;
     }
-//SELECT * FROM good_order WHERE date_format(created_time,'%Y-%m-%d')=date_format('2020-03-01','%Y-%m-%d');
+
     @PostMapping("/getDateSelectOrder")
     @ResponseBody
-    public void getDateSelectOrder(@RequestBody JSONObject jsonObject){
+    public String getDateSelectOrder(@RequestBody JSONObject jsonObject){
         ArrayList<String> array = (ArrayList)jsonObject.get("param");
         String begintTime = array.get(0);
         String endTime =  array.get(1);
         List<String> daysStr = IGoodOrderService.findDaysStr(begintTime, endTime);
+        List<String > data1 = new ArrayList<>();
+        List<Double > data2 = new ArrayList<>();
         daysStr.forEach(e->{
-            System.out.println(e);
+            data1.add(e);
+            String str = goodOrderService.getDateSelectOrder(e);
+            double money;
+            if(str == null){
+                money = 0;
+            }else{
+                money = Double.valueOf(str) ;
+            }
+            data2.add(money);
+            //System.out.println(e);
+//            List<GoodOrder> dateSelectOrder = goodOrderService.getDateSelectOrder(e);
+//            dateSelectOrder.forEach(item->{
+//                System.out.println(item.toString());
+//            });
         });
-        // goodOrderService.getDateSelectOrder();
+        JSONObject obj = new JSONObject();
+        obj.put("data1",data1);
+        obj.put("data2",data2);
+        return obj.toJSONString();
+    }
+    @GetMapping("/test")
+    @ResponseBody
+    public void test(String[] args) {
+        String begin = "2020-01-01 12:00:24";
+        String end = "2020-03-02 12:00:24";
+        List<String> daysStr = IGoodOrderService.findDaysStr(begin, end);
+        daysStr.forEach(e->{
+           // System.out.println();
+            Goods good = new Goods();
+            good.setId(42);
+
+            GoodOrder goodOrder = new GoodOrder(0,"123456",1,50.0, Double.valueOf(RandomStringUtils.randomNumeric(5)),
+                    e +" 12:00:00",good,"test",1);
+            goodOrderService.addOrder(goodOrder);
+        });
+
     }
 }

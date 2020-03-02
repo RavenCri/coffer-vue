@@ -47,4 +47,9 @@
     <select id="getAllOrder" resultMap="orderResult">
         select * from good_order order by bid desc
     </select>
+
+
+    <select id="getDateSelectOrder" resultType="java.lang.String">
+        SELECT sum(fmoney) as count FROM good_order WHERE date_format(created_time,'%Y-%m-%d')=date_format(#{dateTime},'%Y-%m-%d');
+    </select>
 </mapper>

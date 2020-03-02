@@ -55,4 +55,5 @@ public interface IGoodOrderService {
 		return daysStrList;
 	}
 
+	String getDateSelectOrder(String dateTime);
 }

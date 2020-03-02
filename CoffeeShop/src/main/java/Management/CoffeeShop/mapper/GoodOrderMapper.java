@@ -26,4 +26,6 @@ public interface GoodOrderMapper {
 	void updateOrder(int bid,int status);
 
     List<GoodOrder> getAllOrder();
+
+	String getDateSelectOrder(String dateTime);
 }

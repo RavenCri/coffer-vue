@@ -56,5 +56,10 @@ public class GoodOrderServiceImpl implements IGoodOrderService {
 		return allOrder;
 	}
 
+	@Override//List<GoodOrder>
+	public  String getDateSelectOrder(String dateTime) {
+		return orderMapper.getDateSelectOrder(dateTime);
+	}
+
 
 }
