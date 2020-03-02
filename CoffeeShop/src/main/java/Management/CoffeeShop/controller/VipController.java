@@ -83,6 +83,7 @@ public class VipController extends BaseController{
 			res.put("money",vip.getVmoney());
 			res.put("name",vip.getVname());
 			res.put("vipId",vip.getVip_id());
+			res.put("money_desc",vip.getMoney_disc());
 			jsonResult.setMessage(res.toJSONString());
 		}
 		return  jsonResult;

@@ -12,6 +12,7 @@
           <div style="font-size: 18px;">
             <span style="color: forestgreen;"><i class="el-icon-position"></i>余额：{{money}}元</span></br>
             <span style="color: indianred;"><i class="el-icon-star-off"></i>积分：{{integral}}</span></br>
+            <span><i class="el-icon-s-opportunity"></i>消费：{{money_desc}}折</span></br>
             <span style="color: lightgreen;"><i class="el-icon-medal-1"></i>会员等级：V7</span></br>
             <div style="width: 200px;margin: 0 auto;">
               <span>v7<el-progress :text-inside="true" :stroke-width="20" :width="5" :percentage="70"></el-progress>
@@ -29,7 +30,7 @@
 
         </el-collapse-item>
         <el-collapse-item title="尊享服务">
-          <span><i class="el-icon-s-opportunity"></i>消费：88折</span></br>
+          <span><i class="el-icon-help"></i>至尊vip服务</span></br>
           <span><i class="el-icon-help"></i>免费休息室</span></br>
         </el-collapse-item>
 
@@ -46,21 +47,19 @@
     components: {
       payWindow
     },
-    created () {
+    created() {
       this.flushVipInfo();
     },
     mounted() {
       this.flushVipInfo();
-      this.integral = this.$userGlobal.getUserInfo().credit;
-      this.money = this.$userGlobal.getUserInfo().money
-      console.log(this.$userGlobal.getUserInfo().alreadlyRegist)
-      this.regist = this.$userGlobal.getUserInfo().alreadlyRegist == undefined ? false : this.$userGlobal.getUserInfo().alreadlyRegist
+
     },
     data() {
       return {
         integral: 0,
         money: 0,
-        regist: false
+        regist: false,
+        money_desc: 0
       }
     },
     methods: {
@@ -87,9 +86,9 @@
         this.integral += 20;
         this.$axios.post("/vip/signInRedictAdd", {
           "vipId": this.$userGlobal.getUserInfo().vipId,
-        
+
         }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
-       
+
         })
         this.$message({
           message: "您已签到成功，本次签到积分+20",
@@ -111,6 +110,11 @@
         }, { headers: { 'Content-type': 'application/json;charset=UTF-8' } }).then(res => {
           let info = res.data.message;
           this.$userGlobal.setUserInfo(JSON.parse(info));
+          this.integral = this.$userGlobal.getUserInfo().credit;
+          this.money_desc = this.$userGlobal.getUserInfo().money_desc;
+          this.money = this.$userGlobal.getUserInfo().money
+          console.log(this.$userGlobal.getUserInfo().alreadlyRegist)
+          this.regist = this.$userGlobal.getUserInfo().alreadlyRegist == undefined ? false : this.$userGlobal.getUserInfo().alreadlyRegist
         })
 
       }

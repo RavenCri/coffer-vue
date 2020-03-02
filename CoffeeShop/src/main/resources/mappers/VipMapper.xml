@@ -32,7 +32,7 @@
 		UPDATE
 			vip
 		SET
-			credit=#{credit}
+			credit=#{credit},money_disc=#{money_disc},vmoney=#{vmoney}
 		WHERE
 			vid=#{vid}
 	</update>

@@ -76,6 +76,7 @@ public class RechargeOrderController {
         }
 
     }
+
     @RequestMapping("/handleOrder")
     private JSONObject handleRechargeOrder(int id){
         RechargeOrder rechargeOrder = rechargeOrderService.getRechargrOrderById(id);
@@ -94,14 +95,44 @@ public class RechargeOrderController {
                 }else if(rechargeOrder.getRecharge_money() >= 1000){
                     addMoney += ((int)(rechargeOrder.getRecharge_money()/1000))*300;
                 }
+            }else if(vip.getVtype() == 1){
+                System.out.println("vip为打折卡，当前打折率："+vip.getMoney_disc()+",充值金额："+rechargeOrder.getRecharge_money());
+               if( vip.getMoney_disc()>=0.95 && rechargeOrder.getRecharge_money() >100){
+                   vip.setMoney_disc(0.95);
+               }
+               if( vip.getMoney_disc()>=0.92 && rechargeOrder.getRecharge_money() >=200){
+                   vip.setMoney_disc(0.92);
+               }
+               if( vip.getMoney_disc()>=0.88 && rechargeOrder.getRecharge_money() >=500){
+                   vip.setMoney_disc(0.88);
+               }
+               if( vip.getMoney_disc()>=0.85 && rechargeOrder.getRecharge_money() >=1000){
+                   vip.setMoney_disc(0.85);
+               }
+               if( vip.getMoney_disc()>=0.80 && rechargeOrder.getRecharge_money() >=5000 ){
+                   vip.setMoney_disc(0.80);
+               }
+               if( vip.getMoney_disc()>=0.70 && rechargeOrder.getRecharge_money() >=10000 ){
+                   vip.setMoney_disc(0.70);
+               }
+               if( vip.getMoney_disc()>=0.65 && rechargeOrder.getRecharge_money() >=30000 ){
+                   vip.setMoney_disc(0.65);
+               }
+               if( vip.getMoney_disc()>=0.50 && rechargeOrder.getRecharge_money() >=50000 ){
+                   vip.setMoney_disc(0.50);
+               }
+               if( vip.getMoney_disc()>=0.30 && rechargeOrder.getRecharge_money() >=100000 ){
 
+                   vip.setMoney_disc(0.30);
+               }
             }
 
             int redit = vip.getCredit()+(int)addMoney;
             //增加多少钱 送多少积分
             vip.setCredit(redit);
+            vip.setVmoney(vip.getVmoney()+addMoney);
             vipService.updateVipInfo(vip);
-            vipService.updateMoney(vip.getVmoney()+addMoney,vip);
+
             rechargeOrder.setOrder_status(1);
             rechargeOrderService.updateRechargeOrderStatus(rechargeOrder);
 
@@ -125,6 +156,7 @@ public class RechargeOrderController {
                 res.put("msg","充值成功");
                 res.put("balance",vip.getVmoney());
                 res.put("credit",vip.getCredit());
+                res.put("money_desc",vip.getMoney_disc());
             }else{
                 res.put("status",0);
                 res.put("msg","未付款");
@@ -140,12 +172,10 @@ public class RechargeOrderController {
     private JSONObject getAllRechargeOrder(){
 
         List<RechargeOrder> allOrder = rechargeOrderService.getAllOrder();
-        allOrder.forEach(e->{
-            System.out.println("--->"+e);
-        });
+
         JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(allOrder));
         for (int i = 0; i < jsonArray.size(); i++) {
-            System.out.println(jsonArray.toJSONString());
+            //System.out.println(jsonArray.toJSONString());
             JSONObject curr = jsonArray.getJSONObject(i);
             Vip vip = vipService.vipLogin(allOrder.get(i).getVid());
             curr.put("vipName",vip.getVname());

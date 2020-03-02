@@ -29,9 +29,20 @@ public class Vip extends BaseEntity implements Serializable{
 	private int exp;
 	private int count;
 
+	private double money_disc;
+
+	public double getMoney_disc() {
+		return money_disc;
+	}
+
+	public void setMoney_disc(double money_disc) {
+		this.money_disc = money_disc;
+	}
+
 	public double getCost_money() {
 		return cost_money;
 	}
+
 
 	public void setCost_money(double cost_money) {
 		this.cost_money = cost_money;

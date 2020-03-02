@@ -17,7 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest req,HttpServletResponse res,Object handle) throws IOException{
 		//从request中获取session存储的信息
 		HttpSession session = req.getSession();
-			System.out.println(req.getServletPath());
+//			System.out.println(req.getServletPath());
 
 //		//如果存储的uid为空,则重定向至登陆页面
 //		if(session.getAttribute("uid") == null ){

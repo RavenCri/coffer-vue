@@ -179,6 +179,7 @@
                                 });
                                 this.$parent.money = res.data.balance;
                                 this.$parent.integral = res.data.credit;
+                                this.$parent.money_desc = res.data.money_desc;
                                 this.flushVipInfo();
                             }
 

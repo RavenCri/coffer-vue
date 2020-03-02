@@ -59,7 +59,8 @@ public class OrderController {
              vip = vipService.vipLogin(vipId);
             // 防止前端伪造数据
             if(vip !=null){
-                fmoney=Double.valueOf(df.format(money*0.95));
+                double money_disc = vip.getMoney_disc();
+                fmoney=Double.valueOf(df.format(money*money_disc));
                 if(vip.getVmoney() < fmoney){
                     res.put("status","error");
                     res.put("msg","余额不足");
@@ -171,7 +172,8 @@ public class OrderController {
             int order_status = 0;
             // 如果登陆了
             if(vipLoginStatus) {
-                fmoney=Double.valueOf(df.format(money*0.95));
+                double money_disc = vip.getMoney_disc();
+                fmoney=Double.valueOf(df.format(money*money_disc));
 
                 vip.setVmoney(vip.getVmoney()-fmoney);
                 vipService.updateMoney(vip.getVmoney(),vip);

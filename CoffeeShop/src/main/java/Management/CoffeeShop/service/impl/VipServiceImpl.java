@@ -71,6 +71,7 @@ public class VipServiceImpl implements IVipService{
 		String id = RandomStringUtils.randomNumeric(10);
 		vip.setVip_id(id);
 		vip.setVmoney(vmoney);
+		vip.setMoney_disc(0.95);
 		vip.setVdiscount(vdiscount);
 		//注册日期,不可更改
 		Date now = new Date();
@@ -248,9 +249,9 @@ public class VipServiceImpl implements IVipService{
 
 	@Override
 	public Vip vipLogin(String vip_id) {
-		System.out.println(vip_id);
+		//System.out.println(vip_id);
 		Vip vip = vipMapper.getVipByVipId(vip_id);
-		System.out.println(vip);
+		//System.out.println(vip);
 		return vip;
 
 	}
