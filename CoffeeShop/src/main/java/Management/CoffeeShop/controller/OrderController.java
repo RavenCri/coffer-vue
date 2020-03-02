@@ -389,7 +389,7 @@ public class OrderController {
     @GetMapping("/test")
     @ResponseBody
     public void test(String[] args) {
-        String begin = "2020-01-01 12:00:24";
+        String begin = "2019-01-01 12:00:24";
         String end = "2020-03-02 12:00:24";
         List<String> daysStr = IGoodOrderService.findDaysStr(begin, end);
         daysStr.forEach(e->{
@@ -398,7 +398,7 @@ public class OrderController {
             good.setId(42);
 
             GoodOrder goodOrder = new GoodOrder(0,"123456",1,50.0, Double.valueOf(RandomStringUtils.randomNumeric(5)),
-                    e +" 12:00:00",good,"test",1);
+                    e +" 12:00:00",good,"middleCup#littleSweet",1);
             goodOrderService.addOrder(goodOrder);
         });
 
