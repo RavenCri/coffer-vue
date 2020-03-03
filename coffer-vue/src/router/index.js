@@ -41,9 +41,7 @@ export default new Router({
         {
           path: 'collectGood',
           component: collectGood
-        },
-      
-      ]
+        }]
     },
     {
       path: '/login',
