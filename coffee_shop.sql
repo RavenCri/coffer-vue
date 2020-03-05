@@ -4,14 +4,14 @@
  Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 80017
- Source Host           : 127.0.0.1:3300
+ Source Host           : localhost:3306
  Source Schema         : coffee_shop
 
  Target Server Type    : MySQL
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 02/03/2020 19:27:15
+ Date: 05/03/2020 14:18:18
 */
 
 SET NAMES utf8mb4;
@@ -43,11 +43,11 @@ INSERT INTO `cart` VALUES (12.00, 15, 842, 1, NULL, 1, '小北咖啡', 12.00);
 -- ----------------------------
 DROP TABLE IF EXISTS `coll_good`;
 CREATE TABLE `coll_good`  (
-  `vip_id` int(11) NULL DEFAULT NULL,
-  `good_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vip_id` int(11) NULL DEFAULT NULL COMMENT 'vipID',
+  `good_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '货物名称',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '收藏主键',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of coll_good
@@ -88,7 +88,7 @@ CREATE TABLE `good_order`  (
   `commodity_specification` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品属性',
   `order_status` int(255) NULL DEFAULT NULL COMMENT '订单状态',
   PRIMARY KEY (`bid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 224 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 724 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of good_order
@@ -562,7 +562,7 @@ CREATE TABLE `goods_type`  (
   `big_column` int(255) NULL DEFAULT NULL,
   `small_column` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods_type
